@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulado — Física: Termodinâmica e Máquinas Térmicas (2º ano)</title>
+<style>
+  :root{
+    --bg:#f5f6fa;
+    --card:#ffffff;
+    --ink:#1a1c23;
+    --muted:#6b7280;
+    --line:#e3e6ee;
+    --accent:#4f46e5;
+    --accent-soft:#eef0ff;
+    --ok:#15803d;
+    --ok-soft:#e9f8ef;
+    --ok-line:#b7e4c7;
+    --no:#b91c1c;
+    --no-soft:#fdecec;
+    --no-line:#f3bcbc;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:28px 18px 80px}
+
+  header.top{margin-bottom:22px}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  h1{font-size:clamp(22px,3.4vw,30px);line-height:1.2;margin:6px 0 6px;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:14px;margin:0}
+
+  .bar{
+    position:sticky;top:0;z-index:5;
+    background:rgba(245,246,250,.92);
+    backdrop-filter:blur(8px);
+    padding:12px 0 10px;margin:-4px 0 18px;
+    border-bottom:1px solid var(--line);
+  }
+  .bar-inner{max-width:840px;margin:0 auto;padding:0 18px;display:flex;align-items:center;gap:14px}
+  .track{flex:1;height:7px;border-radius:99px;background:#e4e7f0;overflow:hidden}
+  .fill{height:100%;width:0%;background:linear-gradient(90deg,#6366f1,#8b5cf6);transition:width .35s ease}
+  .count{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .count b{color:var(--ink)}
+
+  .timer{
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;
+    padding:4px 10px;border-radius:9px;white-space:nowrap;
+    background:#fff;border:1.5px solid var(--line);color:var(--ink);
+  }
+  .timer::before{content:"⏱ ";font-size:12.5px;opacity:.5;font-weight:400}
+  .timer.warn{border-color:#efd08f;background:#fffaf0;color:#a16207}
+  .timer.danger{border-color:#f3bcbc;background:var(--no-soft);color:var(--no);animation:pulse 1.5s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+  .timer.hidden{display:none}
+
+  .start-rules{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-direction:column;gap:10px}
+  .start-rules li{font-size:14.5px;line-height:1.5;color:#3b4051;padding-left:22px;position:relative}
+  .start-rules li::before{content:"›";position:absolute;left:5px;top:-1px;color:var(--accent);font-weight:800;font-size:17px}
+  .big{font-size:16px;padding:15px 28px;width:100%}
+  .banner{
+    margin:0 0 16px;padding:11px 14px;border-radius:10px;
+    background:var(--no-soft);border:1px solid var(--no-line);color:var(--no);
+    font-size:14px;font-weight:600;
+  }
+  .meta-row{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0 0;font-size:13.5px;color:var(--muted)}
+  .meta-row b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+
+  /* ---------- botao "aprender o assunto" ---------- */
+  .lesson-btn{
+    display:flex;align-items:center;gap:9px;width:100%;
+    margin-top:14px;padding:12px 15px;
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+    color:#fff;border:0;border-radius:11px;cursor:pointer;
+    font-family:inherit;font-size:14.5px;font-weight:700;text-align:left;
+    box-shadow:0 2px 10px -3px rgba(79,70,229,.5);
+    transition:transform .08s,box-shadow .15s;
+  }
+  .lesson-btn:hover{box-shadow:0 4px 16px -3px rgba(79,70,229,.6)}
+  .lesson-btn:active{transform:scale(.994)}
+  .lesson-btn .ico{
+    flex:0 0 26px;height:26px;border-radius:8px;
+    background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:14px;
+  }
+  .lesson-btn .lbl{flex:1;min-width:0}
+  .lesson-btn .lbl small{display:block;font-weight:500;opacity:.85;font-size:12px;margin-top:1px}
+  .lesson-btn .arrow{opacity:.7;font-size:16px;flex:0 0 auto}
+
+  /* ---------- modal da aula ---------- */
+  .modal{
+    position:fixed;inset:0;z-index:60;display:none;
+    background:rgba(16,18,28,.55);backdrop-filter:blur(3px);
+    padding:24px 16px;overflow-y:auto;
+  }
+  .modal.open{display:block;animation:fadeIn .16s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .lesson{
+    max-width:720px;margin:0 auto;background:#fff;border-radius:16px;
+    box-shadow:0 24px 60px -20px rgba(0,0,0,.45);overflow:hidden;
+    animation:up .22s cubic-bezier(.2,.8,.3,1);
+  }
+  @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .lesson-head{
+    padding:20px 22px 16px;border-bottom:1px solid var(--line);
+    background:linear-gradient(135deg,#f5f4ff,#faf9ff);
+    display:flex;align-items:flex-start;gap:12px;
+  }
+  .lesson-head .eyebrow{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:800;margin:0 0 5px;
+  }
+  .lesson-head h2{
+    margin:0;font-size:19px;line-height:1.25;letter-spacing:-.01em;flex:1;
+  }
+  .lesson-close{
+    flex:0 0 32px;height:32px;border-radius:9px;border:1px solid #ddd9f5;
+    background:#fff;color:#5b5871;font-size:17px;cursor:pointer;line-height:1;
+    display:grid;place-items:center;font-family:inherit;
+  }
+  .lesson-close:hover{border-color:var(--accent);color:var(--accent)}
+  .lesson-body{padding:20px 22px 24px}
+  .lesson-resumo{
+    font-size:15px;line-height:1.6;color:#33384a;
+    background:#f7f8fc;border-left:3px solid var(--accent);
+    padding:12px 15px;border-radius:0 9px 9px 0;margin:0 0 20px;
+  }
+  .lesson-body h3{
+    font-size:14px;letter-spacing:.02em;text-transform:uppercase;
+    color:var(--accent);margin:24px 0 8px;font-weight:800;
+  }
+  .lesson-body h3:first-of-type{margin-top:0}
+  .lesson-body p{font-size:15px;line-height:1.65;color:#2f3444;margin:0 0 12px}
+  .lesson-body ul{margin:0 0 14px;padding-left:20px}
+  .lesson-body li{font-size:15px;line-height:1.6;color:#2f3444;margin-bottom:7px}
+  .lesson-form{
+    font-family:"Cascadia Mono",Consolas,monospace;font-size:16px;font-weight:600;
+    background:#111827;color:#e5e7eb;border-radius:10px;
+    padding:14px 16px;margin:0 0 14px;text-align:center;overflow-x:auto;
+  }
+  .lesson-form .leg{
+    display:block;font-family:inherit;font-size:11.5px;font-weight:400;
+    color:#9ca3af;margin-top:7px;letter-spacing:.02em;
+  }
+  .lesson-hi{
+    background:#eef0ff;border:1px solid #d7d9f7;border-radius:10px;
+    padding:12px 14px;margin:0 0 14px;font-size:14.5px;line-height:1.55;
+    color:#3b3f57;font-weight:500;
+  }
+  .lesson-hi::before{content:"💡 ";font-weight:400}
+  .lesson-erros{
+    margin:6px 0 0;padding:14px 16px;background:var(--no-soft);
+    border:1px solid var(--no-line);border-radius:10px;
+  }
+  .lesson-erros .tit{
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--no);font-weight:800;margin:0 0 8px;
+  }
+  .lesson-erros ul{margin:0;padding-left:18px}
+  .lesson-erros li{font-size:14px;color:#7f1d1d;margin-bottom:5px;line-height:1.5}
+  .lesson-foot{
+    display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;
+    padding:16px 22px;border-top:1px solid var(--line);background:#fbfbfe;
+  }
+
+  /* ---------- painel de registro de tentativas ---------- */
+  .log{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:12px 14px;margin:0 0 16px;box-shadow:0 1px 2px rgba(16,24,40,.04);
+  }
+  .log-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .log-title{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .log-badges{display:flex;gap:6px;flex-wrap:wrap;flex:1;min-width:0}
+  .badge{
+    font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px;
+    background:#f0f2f8;color:#4b5060;white-space:nowrap;font-variant-numeric:tabular-nums;
+  }
+  .badge.zero{opacity:.45}
+  .badge.warn{background:#fff6e5;color:#a16207}
+  .badge.bad{background:var(--no-soft);color:var(--no)}
+  .badge.good{background:var(--ok-soft);color:var(--ok)}
+  .log-toggle{
+    font-size:12px;font-weight:600;padding:5px 11px;border-radius:8px;cursor:pointer;
+    background:#fff;border:1px solid var(--line);color:#4b5060;font-family:inherit;
+  }
+  .log-toggle:hover{border-color:#c3c8f5;color:var(--accent)}
+  .log-note{
+    margin:10px 0 0;font-size:13px;line-height:1.45;color:var(--no);
+    background:var(--no-soft);border:1px solid var(--no-line);border-radius:9px;padding:8px 11px;
+  }
+  .log-note b{font-variant-numeric:tabular-nums}
+  .log-list{
+    list-style:none;margin:11px 0 0;padding:0;display:flex;flex-direction:column;
+    gap:0;max-height:190px;overflow-y:auto;
+  }
+  .log-list[hidden]{display:none}
+  .log-list li{
+    display:flex;gap:9px;align-items:baseline;font-size:13px;line-height:1.4;
+    padding:7px 0;border-bottom:1px dashed #edf0f7;color:#3b4051;
+  }
+  .log-list li:last-child{border-bottom:0}
+  .log-time{font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted);flex:0 0 auto}
+  .log-tipo{font-weight:700;flex:0 0 auto}
+  .log-tipo.iniciou{color:var(--accent)}
+  .log-tipo.reiniciou{color:#a16207}
+  .log-tipo.interrompeu{color:var(--no)}
+  .log-tipo.concluiu{color:var(--ok)}
+  .log-tipo.tempo{color:var(--no)}
+  .log-nota{color:var(--muted);font-size:12.5px}
+  .log-foot{display:flex;justify-content:flex-end;margin-top:11px}
+  .log-foot[hidden]{display:none}
+  .log-clear{
+    font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:7px;cursor:pointer;
+    background:none;border:1px solid var(--line);color:var(--muted);font-family:inherit;
+  }
+  .log-clear:hover{border-color:var(--no-line);color:var(--no)}
+
+  /* ---------- confirmacao antes de revelar ---------- */
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+  .opt.sel .key{background:var(--accent);color:#fff}
+  .confirm{
+    margin-top:16px;padding:14px 16px;border-radius:12px;
+    border:1.5px dashed var(--accent);background:#f8f9ff;animation:in .18s ease;
+  }
+  .confirm-q{font-size:14.5px;line-height:1.5;color:#33384a;margin:0 0 12px}
+  .confirm-q b{color:var(--ink)}
+  .confirm-q .pick{
+    display:block;margin-top:6px;font-weight:600;color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;
+  }
+  .confirm-btns{display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap}
+  .confirm-btns .btn{padding:9px 18px;font-size:14.5px}
+  .danger-btn{background:var(--no);border-color:var(--no)}
+  .danger-btn:hover{background:#991b1b}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px 24px 20px;
+    box-shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px -18px rgba(16,24,40,.18);
+  }
+  .chip{
+    display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--accent);background:var(--accent-soft);
+    padding:4px 10px;border-radius:99px;margin-bottom:14px;
+  }
+  .q{font-size:17.5px;line-height:1.6;margin:0 0 6px;font-weight:500}
+  .q strong{font-weight:700}
+
+  .formula{
+    font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+    font-size:15px;line-height:1.45;
+    background:#f8f9fc;border:1px dashed #d6dae7;border-radius:10px;
+    padding:14px 16px;margin:14px 0 4px;
+    white-space:pre;overflow-x:auto;color:#242736;
+  }
+  .formula .lbl{display:block;font-family:inherit;font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+
+  .opts{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-direction:column;gap:10px}
+  .opt{
+    display:flex;gap:12px;align-items:flex-start;
+    border:1.5px solid var(--line);border-radius:12px;
+    padding:13px 15px;cursor:pointer;background:#fff;
+    transition:border-color .15s,background .15s,transform .06s;
+    font-size:15.5px;line-height:1.5;text-align:left;
+  }
+  .opt:hover:not(.locked){border-color:#c3c8f5;background:#fbfbff}
+  .opt:active:not(.locked){transform:scale(.997)}
+  .opt .key{
+    flex:0 0 26px;height:26px;border-radius:8px;background:#f0f2f8;color:#4b5060;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12.5px;font-weight:700;font-family:ui-monospace,monospace;
+  }
+  .opt .txt{flex:1}
+  .opt.locked{cursor:default}
+  .opt.correct{border-color:var(--ok-line);background:var(--ok-soft)}
+  .opt.correct .key{background:#cdeedd;color:var(--ok)}
+  .opt.wrong{border-color:var(--no-line);background:var(--no-soft)}
+  .opt.wrong .key{background:#f8cfcf;color:var(--no)}
+  .opt.dim{opacity:.62}
+  .mark{font-weight:800;margin-left:auto;flex:0 0 auto;font-size:15px}
+  .opt.correct .mark{color:var(--ok)}
+  .opt.wrong .mark{color:var(--no)}
+
+  .fb{
+    margin-top:20px;border-top:1px solid var(--line);padding-top:18px;
+    animation:in .22s ease;
+  }
+  @keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .verdict{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;margin-bottom:10px}
+  .verdict.ok{color:var(--ok)}
+  .verdict.no{color:var(--no)}
+  .concept{font-size:14.5px;color:#33384a;background:#f8f9fc;border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0;padding:10px 14px;margin:0 0 14px}
+  .why{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
+  .why li{font-size:14.5px;line-height:1.55;padding-left:26px;position:relative;color:#3b4051}
+  .why li::before{position:absolute;left:0;top:0;font-weight:800}
+  .why li.good::before{content:"✓";color:var(--ok)}
+  .why li.bad::before{content:"✕";color:var(--no)}
+  .why li b.lbl{display:inline-block;font-family:ui-monospace,monospace;font-size:12.5px;
+    background:#eef0f6;color:#40465a;border-radius:5px;padding:0 5px;margin-right:5px}
+  .why li.picked{background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px 8px 30px;color:var(--ink)}
+  .why li.picked::before{left:10px;top:8px}
+
+  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+  button{font-family:inherit;font-size:15px;font-weight:600;border-radius:11px;cursor:pointer;transition:.15s}
+  .btn{background:var(--accent);color:#fff;border:1px solid var(--accent);padding:11px 22px}
+  .btn:hover{background:#4338ca}
+  .btn:disabled{background:#c9ccd8;border-color:#c9ccd8;cursor:not-allowed}
+  .btn.ghost{background:#fff;color:#3b4051;border:1.5px solid var(--line)}
+  .btn.ghost:hover{border-color:#c3c8f5;color:var(--accent)}
+  .hint{font-size:12.5px;color:var(--muted);margin-right:auto;align-self:center}
+
+  /* resultado */
+  .score{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:6px 0 4px}
+  .ring{
+    --p:0;
+    width:104px;height:104px;border-radius:50%;flex:0 0 auto;
+    background:conic-gradient(var(--accent) calc(var(--p)*1%),#e7e9f2 0);
+    display:grid;place-items:center;
+  }
+  .ring span{width:82px;height:82px;border-radius:50%;background:#fff;display:grid;place-items:center;
+    font-size:23px;font-weight:800;letter-spacing:-.02em}
+  .score-txt h2{margin:0 0 4px;font-size:21px;letter-spacing:-.01em}
+  .score-txt p{margin:0;color:var(--muted);font-size:14.5px}
+  table{width:100%;border-collapse:collapse;margin:20px 0 4px;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+  th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  td.num{font-variant-numeric:tabular-nums;text-align:right;width:70px}
+  .pill{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:99px}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.mid{background:#fff6e5;color:#a16207}
+  .pill.no{background:var(--no-soft);color:var(--no)}
+  .rev-list{margin:18px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+  .rev-list li{font-size:14.5px;background:#fbfbfe;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .rev-list b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+  footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:26px}
+  @media (max-width:520px){
+    .wrap{padding:20px 12px 60px}
+    .card{padding:18px 15px 16px;border-radius:13px}
+    .q{font-size:16.5px}
+    .opt{font-size:15px;padding:12px 12px}
+    .bar-inner{padding:0 12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="count" id="count"><b>1</b> / 26</div>
+    <div class="timer hidden" id="timer">50:00</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="top">
+    <div class="kicker">Física · Termodinâmica e Máquinas Térmicas</div>
+    <h1>Simulado de Física — Máquinas Térmicas</h1>
+    <p class="sub">Montado a partir da sua aula de Física (46 min) sobre Termodinâmica. Responda, confirme e veja o motivo do erro de cada alternativa.</p>
+  </header>
+
+  <div class="log" id="log">
+    <div class="log-head">
+      <span class="log-title">Registro de tentativas</span>
+      <div class="log-badges" id="logBadges"></div>
+      <button class="log-toggle" id="logToggle" type="button">Histórico</button>
+    </div>
+    <p class="log-note" id="logNote" hidden></p>
+    <ul class="log-list" id="logList" hidden></ul>
+    <div class="log-foot" id="logFoot" hidden>
+      <button class="log-clear" id="logClear" type="button">Apagar histórico</button>
+    </div>
+  </div>
+
+  <main id="stage"></main>
+
+<div class="modal" id="modal">
+  <div class="lesson" id="lesson"></div>
+</div>
+
+  <footer>Simulado gerado a partir da transcrição da sua aula de Física · funciona offline</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    tema: "Máquinas térmicas",
+    enunciado: "O que é uma máquina térmica?",
+    conceito: "A máquina térmica recebe energia em forma de <b>calor</b> de uma fonte quente e devolve apenas <b>parte</b> dela como trabalho mecânico. O resto é rejeitado para uma fonte fria — por isso o advérbio \"parcialmente\" é o coração da definição.",
+    alternativas: [
+      {t:"Todo dispositivo que converte energia mecânica integralmente em calor.", ok:false,
+       porque:"Isso descreve o atrito, não uma máquina térmica. A máquina térmica faz o caminho inverso: calor → trabalho."},
+      {t:"Um dispositivo que converte parcialmente energia térmica em trabalho mecânico.", ok:true,
+       porque:"É a definição trabalhada em aula: locomotiva a vapor, motor de combustão, usina. O \"parcialmente\" é o que a 2ª lei garante."},
+      {t:"Um dispositivo que produz calor a partir de trabalho, como um aquecedor.", ok:false,
+       porque:"Aquecedor não é máquina térmica no sentido estudado; ele é o objetivo inverso. Refrigerador e bomba de calor é que realizam trabalho para mover calor."},
+      {t:"Qualquer máquina que funcione com eletricidade.", ok:false,
+       porque:"Usinas nucleares, sim, mas um motor elétrico converte energia elétrica em mecânica diretamente, sem passar por calor como etapa obrigatória."},
+      {t:"Um sistema que transforma calor em trabalho com rendimento de 100%.", ok:false,
+       porque:"Rendimento 100% é impossível — violaria o enunciado de Kelvin-Planck da 2ª lei."}
+    ]
+  },
+  {
+    tema: "Sistema termodinâmico",
+    enunciado: "Um <strong>sistema termodinâmico</strong>, na definição usada na aula, é:",
+    conceito: "O sistema é a região delimitada que você escolheu analisar — o gás dentro do pistão, por exemplo. Tudo que está fora é a vizinhança. A fronteira (parede do cilindro, êmbolo) é o que separa os dois.",
+    alternativas: [
+      {t:"Uma região do espaço delimitada por paredes ou membranas, separada da vizinhança, escolhida para análise.", ok:true,
+       porque:"Exatamente: o gás dentro do pistão é o sistema; o cilindro e o êmbolo são a fronteira; o resto do laboratório é a vizinhança."},
+      {t:"Todo o universo, considerado como um conjunto único.", ok:false,
+       porque:"Universo = sistema + vizinhança. Se você tratar tudo como sistema, não sobra vizinhança para trocar calor e trabalho."},
+      {t:"Apenas a parte do recipiente que contém o combustível.", ok:false,
+       porque:"O combustível é a fonte de energia; o sistema é a <b>substância de trabalho</b> (o gás ou vapor) que sofre as transformações."},
+      {t:"O conjunto de todas as moléculas que já trocaram calor entre si.", ok:false,
+       porque:"Isso não é uma definição de sistema, e sim uma descrição de interação. O sistema é definido pela fronteira que você escolhe."},
+      {t:"Um sistema que obrigatoriamente troca calor com o ambiente.", ok:false,
+       porque:"Não obrigatoriamente: um sistema adiabático é justamente o que <b>não</b> troca calor (a garrafa térmica)."}
+    ]
+  },
+  {
+    tema: "Parâmetros de estado",
+    enunciado: "Para analisar um gás ideal, a Termodinâmica usa três parâmetros de estado. Quais são?",
+    conceito: "Um gás é um caos de moléculas, impossível de acompanhar uma a uma. Em vez disso medimos três grandezas macroscópicas: <b>pressão, volume e temperatura</b>. Elas definem o estado do gás e aparecem em toda a matéria.",
+    alternativas: [
+      {t:"Massa, densidade e calor específico.", ok:false,
+       porque:"São propriedades do material, não variáveis de estado do gás. Elas não mudam a cada instante do ciclo."},
+      {t:"Pressão, volume e temperatura.", ok:true,
+       porque:"São os três parâmetros pedidos em aula: P, V e T. Com eles você descreve qualquer estado e acompanha o ciclo no gráfico P × V."},
+      {t:"Força, área e altura do pistão.", ok:false,
+       porque:"Essas grandezas aparecem na <b>dedução</b> do trabalho (P = F/A e A·h = ΔV), mas são intermediárias — não são os parâmetros de estado."},
+      {t:"Energia interna, entropia e entalpia.", ok:false,
+       porque:"São grandezas derivadas, úteis no cálculo, mas não são os parâmetros que definem o estado no modelo do gás ideal."},
+      {t:"Velocidade, massa e número de moléculas.", ok:false,
+       porque:"São grandezas microscópicas. A Termodinâmica trabalha com as macroscópicas justamente para não precisar delas."}
+    ]
+  },
+  {
+    tema: "Trabalho do gás",
+    enunciado: "A expressão do trabalho realizado por um gás em uma transformação a pressão constante é:",
+    estrutura: "W = P · ΔV      (P em Pa, ΔV em m³ → W em joule)",
+    conceito: "Em aula a fórmula foi <b>deduzida</b>, não decorada: W = F·h, e como P = F/A, temos F = P·A. Logo W = P·A·h. E A·h é exatamente a variação de volume do cilindro. Resultado: W = P·ΔV.",
+    alternativas: [
+      {t:"W = P · ΔV", ok:true,
+       porque:"Dedução da aula: W = F·h → F = P·A → W = P·A·h → A·h = ΔV → W = P·ΔV. Só vale diretamente quando a pressão é constante."},
+      {t:"W = ΔV / P", ok:false,
+       porque:"Inverte a relação. Dividir volume por pressão não resulta em joule; a análise dimensional já denuncia o erro."},
+      {t:"W = P / ΔV", ok:false,
+       porque:"Também inverte. Além disso, em transformação isovolumétrica (ΔV = 0) essa expressão explodiria, quando o trabalho deveria ser zero."},
+      {t:"W = Q + ΔU", ok:false,
+       porque:"Mistura a 1ª lei com a fórmula do trabalho. Da 1ª lei vem ΔU = Q − W, ou seja, W = Q − ΔU."},
+      {t:"W = m · c · ΔT", ok:false,
+       porque:"Essa é a fórmula do calor sensível (Q = mcΔT), não do trabalho."}
+    ]
+  },
+  {
+    tema: "Trabalho do gás",
+    enunciado: "Quando o gás <strong>se expande</strong> e empurra o pistão para fora, o trabalho realizado <strong>pelo gás</strong> é:",
+    conceito: "Convenção da aula: o trabalho é positivo quando o gás é quem produz o movimento (empurra o pistão para fora, aumentando o volume). É positivo porque a força do gás está no mesmo sentido do deslocamento.",
+    alternativas: [
+      {t:"Negativo, porque o volume aumentou.", ok:false,
+       porque:"Aumento de volume com o gás empurrando é exatamente o caso de trabalho positivo. Negativo é quando o volume diminui."},
+      {t:"Zero, porque a temperatura não variou.", ok:false,
+       porque:"Trabalho depende de variação de <b>volume</b>, não de temperatura. Existe expansão isotérmica com trabalho diferente de zero."},
+      {t:"Positivo, pois o gás empurra o pistão no sentido do movimento.", ok:true,
+       porque:"Força e deslocamento no mesmo sentido → trabalho positivo. É o gás realizando trabalho sobre o meio."},
+      {t:"Positivo apenas se a transformação for adiabática.", ok:false,
+       porque:"O sinal do trabalho não depende de ser adiabática. Depende só de o volume aumentar (positivo) ou diminuir (negativo)."},
+      {t:"Impossível determinar sem conhecer a pressão.", ok:false,
+       porque:"O sinal é dado pela variação de volume. A pressão influencia o <b>valor</b> do trabalho, não o sinal."}
+    ]
+  },
+  {
+    tema: "Trabalho do gás",
+    enunciado: "Durante a compressão, algo empurra o pistão para dentro e o volume do gás diminui. O trabalho realizado <strong>pelo gás</strong> nesse processo é:",
+    conceito: "Compressão → volume diminui → ΔV negativo → W = P·ΔV negativo. Fisicamente, o gás está sendo forçado: ele \"resiste\" empurrando ao contrário, então quem realiza trabalho positivo é o agente externo.",
+    alternativas: [
+      {t:"Positivo, porque o gás está reagindo à força.", ok:false,
+       porque:"Reagir não é realizar. O deslocamento é para dentro, e a força do gás aponta para fora: sentidos opostos → trabalho do gás negativo."},
+      {t:"Negativo, porque o volume diminui e o gás é empurrado.", ok:true,
+       porque:"ΔV < 0, logo W = P·ΔV < 0. É o caso do pistão voltando, como no ciclo do trem a vapor quando o vapor esfria."},
+      {t:"Zero, porque o gás não se move por vontade própria.", ok:false,
+       porque:"Trabalho é força vezes deslocamento efetivo. Houve deslocamento, então há trabalho — só com sinal negativo."},
+      {t:"Igual ao da expansão, pois o módulo do deslocamento é o mesmo.", ok:false,
+       porque:"O <b>módulo</b> pode até coincidir num ciclo simétrico, mas o sinal é oposto. Eles se cancelam no ciclo completo."},
+      {t:"Só pode ser calculado se a transformação for isotérmica.", ok:false,
+       porque:"A fórmula W = P·ΔV vale para pressão constante. Em outros processos o cálculo muda, mas o sinal continua dado pela variação de volume."}
+    ]
+  },
+  {
+    tema: "Energia interna",
+    enunciado: "A energia interna de um gás ideal depende <strong>exclusivamente</strong> de qual parâmetro?",
+    estrutura: "ΔU = 0  ⟺  ΔT = 0",
+    conceito: "Energia interna é a soma das energias cinéticas das moléculas — ou seja, o grau de agitação. Quem mede agitação é a temperatura. Logo, só a temperatura altera a energia interna de um gás ideal.",
+    alternativas: [
+      {t:"Da pressão do gás.", ok:false,
+       porque:"A pressão pode mudar com a temperatura constante (numa isotérmica, P e V variam juntos). Se só a pressão mudasse a energia interna, a isotérmica teria ΔU ≠ 0 — e não tem."},
+      {t:"Do volume ocupado.", ok:false,
+       porque:"Numa isovolumétrica o volume é constante e a energia interna varia (o gás esquenta). Então não é o volume."},
+      {t:"Da temperatura, que mede o grau de agitação das moléculas.", ok:true,
+       porque:"Exatamente: mais agitação → mais energia cinética média → maior energia interna. É por isso que ΔT = 0 implica ΔU = 0."},
+      {t:"Da quantidade de calor recebida, sempre.", ok:false,
+       porque:"Calor <b>altera</b> a energia interna, mas não é o que ela \"depende\". Na isotérmica entra calor e ΔU continua zero."},
+      {t:"Do trabalho realizado, sempre.", ok:false,
+       porque:"Trabalho também altera a energia interna, mas o valor dela num estado depende só da temperatura naquele estado."}
+    ]
+  },
+  {
+    tema: "Energia interna",
+    enunciado: "Em uma transformação <strong>isotérmica</strong> de um gás ideal, a variação da energia interna é:",
+    conceito: "Isotérmica = temperatura constante. Se a temperatura não muda, o grau de agitação não muda, então a energia interna não muda: <b>ΔU = 0</b>. Combinando com a 1ª lei, sobra Q = W.",
+    alternativas: [
+      {t:"Zero, porque a temperatura é constante.", ok:true,
+       porque:"ΔT = 0 → ΔU = 0. Consequência importante: na isotérmica todo o calor recebido se converte em trabalho (Q = W)."},
+      {t:"Positiva, porque o gás recebe calor.", ok:false,
+       porque:"O gás recebe calor, sim, mas usa tudo em trabalho. Não sobra nada para aumentar a energia interna."},
+      {t:"Negativa, porque o gás se expande.", ok:false,
+       porque:"Expansão afeta o trabalho, não a energia interna. O que zeraria ΔU é a variação de temperatura."},
+      {t:"Igual ao calor recebido.", ok:false,
+       porque:"Na isotérmica ΔU = 0, e é o <b>trabalho</b> que se iguala ao calor (Q = W), não a energia interna."},
+      {t:"Impossível determinar sem o volume.", ok:false,
+       porque:"Não precisa do volume: a informação \"isotérmica\" já fixa ΔT = 0 e, portanto, ΔU = 0."}
+    ]
+  },
+  {
+    tema: "1ª lei da Termodinâmica",
+    enunciado: "A Primeira Lei da Termodinâmica, na forma usada na aula, é expressa por:",
+    estrutura: "ΔU = Q − W",
+    conceito: "É o balanço de energia do gás: a variação da energia interna é o calor que <b>entra</b> menos o trabalho que <b>sai</b>. Nada se cria, nada se perde — a energia apenas muda de forma.",
+    alternativas: [
+      {t:"Q = ΔU + W", ok:false,
+       porque:"É a mesma equação rearranjada — está correta algebricamente, mas a forma adotada em aula é ΔU = Q − W. Se a pergunta pede a expressão da aula, essa é a reescrita, não o formato usado."},
+      {t:"ΔU = Q − W", ok:true,
+       porque:"Forma da aula: energia interna varia pelo calor que entra menos o trabalho que o gás realiza. É a conservação de energia aplicada ao gás."},
+      {t:"ΔU = W − Q", ok:false,
+       porque:"Inverte os sinais. Com essa forma, um gás que recebe calor sem trabalhar teria energia interna diminuindo — absurdo."},
+      {t:"ΔU = Q + W com W sempre positivo", ok:false,
+       porque:"O trabalho tem sinal: positivo quando o gás expande, negativo quando é comprimido. Tratá-lo sempre positivo quebra o balanço."},
+      {t:"Q = W, sempre", ok:false,
+       porque:"Q = W só é verdade na isotérmica (ΔU = 0). Em geral, calor também altera a energia interna."}
+    ]
+  },
+  {
+    tema: "1ª lei da Termodinâmica",
+    enunciado: "Em uma transformação <strong>adiabática</strong>, o que acontece na equação ΔU = Q − W?",
+    estrutura: "ΔU = 0 − W   →   ΔU = −W",
+    conceito: "Adiabática vem de <b>garrafa térmica</b>: não há troca de calor com o ambiente, então Q = 0. Toda a variação de energia interna vem do trabalho. Se o gás expande adiabaticamente, ele gasta energia interna e esfria.",
+    alternativas: [
+      {t:"O trabalho se anula, pois não há calor.", ok:false,
+       porque:"Quem se anula é o <b>calor</b>, não o trabalho. Sem troca de calor, o trabalho é a única forma de variar a energia interna."},
+      {t:"O calor se anula, ficando ΔU = −W.", ok:true,
+       porque:"Q = 0, logo ΔU = −W. Por isso a expansão adiabática resfria o gás: ele realiza trabalho às custas da própria energia interna."},
+      {t:"A energia interna se anula.", ok:false,
+       porque:"A energia interna não zera — ela <b>varia</b>. Zerar ΔU exigiria ΔT = 0, o que não é o caso."},
+      {t:"Nada se anula, só muda o sinal do calor.", ok:false,
+       porque:"Não há calor para mudar de sinal: por definição Q = 0 na adiabática."},
+      {t:"Temperatura e volume ficam constantes.", ok:false,
+       porque:"Na adiabática tanto a temperatura quanto o volume variam (o gás expande e esfria). Constantes são casos de outras transformações."}
+    ]
+  },
+  {
+    tema: "Transformações gasosas",
+    enunciado: "Em uma transformação <strong>isovolumétrica</strong>, o que se anula na equação da 1ª lei?",
+    conceito: "Isovolumétrica = volume constante. Sem variação de volume (ΔV = 0), o pistão não se desloca, então o gás não realiza nem recebe trabalho: <b>W = 0</b>. Assim, ΔU = Q — todo calor vira variação de energia interna.",
+    alternativas: [
+      {t:"O trabalho, pois não há variação de volume.", ok:true,
+       porque:"ΔV = 0 → W = P·ΔV = 0. Por isso aquecer um gás em recipiente fechado rígido aumenta a pressão e a temperatura, sem realizar trabalho."},
+      {t:"O calor, pois o recipiente é fechado.", ok:false,
+       porque:"Fechado não significa isolado termicamente. Um recipiente rígido pode perfeitamente receber calor e esquentar."},
+      {t:"A energia interna, pois o gás não se move.", ok:false,
+       porque:"A energia interna varia justamente porque o calor recebido não tem para onde ir além de agitar as moléculas."},
+      {t:"A pressão, pois o volume é constante.", ok:false,
+       porque:"Ao contrário: em volume constante, a pressão é a grandeza que mais varia quando a temperatura muda."},
+      {t:"Nada se anula; a equação permanece completa.", ok:false,
+       porque:"Se nada se anulasse, qual seria então a marca da isovolumétrica? A ausência de deslocamento é justamente o que zera o trabalho."}
+    ]
+  },
+  {
+    tema: "Transformações gasosas",
+    enunciado: "Uma garrafa térmica é o exemplo clássico de qual transformação?",
+    conceito: "A garrafa térmica é projetada para impedir troca de calor com o ambiente. Em Termodinâmica, o processo sem troca de calor recebe o nome de <b>adiabático</b>.",
+    alternativas: [
+      {t:"Isotérmica, porque mantém a temperatura do café.", ok:false,
+       porque:"Ela mantém a temperatura justamente porque <b>não</b> deixa o calor escapar — o nome do processo é adiabático. Isotérmica é processo em que a temperatura do sistema varia junto com o meio para se manter constante."},
+      {t:"Isobárica, porque a pressão atmosférica é constante.", ok:false,
+       porque:"A pressão é de fato constante, mas o critério decisivo da garrafa térmica é o isolamento térmico, não a pressão."},
+      {t:"Adiabática, porque não há troca de calor com o ambiente.", ok:true,
+       porque:"Exato: Q = 0. É a analogia usada em aula para lembrar do processo adiabático."},
+      {t:"Isovolumétrica, porque o volume é fixo.", ok:false,
+       porque:"O volume é fixo, mas isso descreveria uma isovolumétrica; o que caracteriza a garrafa térmica é o isolamento térmico."},
+      {t:"Cíclica, porque o café volta à temperatura inicial.", ok:false,
+       porque:"O café não descreve ciclo nenhum — ele só permanece quente. Ciclo é o que a máquina térmica faz."}
+    ]
+  },
+  {
+    tema: "Transformações gasosas",
+    enunciado: "Numa transformação <strong>isobárica</strong>, qual é a vantagem de cálculo que ela oferece?",
+    conceito: "Isobárica = pressão constante. Como a pressão não muda, ela pode sair da integral e a fórmula simples <b>W = P·ΔV</b> vale sem complicação. Nas outras transformações a pressão varia e o cálculo exige o gráfico ou integração.",
+    alternativas: [
+      {t:"O trabalho pode ser calculado diretamente por W = P·ΔV.", ok:true,
+       porque:"Com P constante, a fórmula deduzida em aula se aplica direto. É também por isso que no gráfico P × V o trabalho é a área sob a linha horizontal."},
+      {t:"O trabalho é sempre nulo.", ok:false,
+       porque:"Trabalho nulo é da isovolumétrica. Na isobárica o gás expande e realiza trabalho normalmente."},
+      {t:"O calor é sempre nulo.", ok:false,
+       porque:"Calor nulo é da adiabática. Na isobárica há troca de calor — é o caso mais comum dos processos reais."},
+      {t:"A energia interna permanece constante.", ok:false,
+       porque:"ΔU constante só na isotérmica. Na isobárica o gás geralmente muda de temperatura."},
+      {t:"A temperatura permanece constante.", ok:false,
+       porque:"Na isobárica, se o volume muda, a temperatura muda obrigatoriamente (P·V/T constante)."}
+    ]
+  },
+  {
+    tema: "2ª lei da Termodinâmica",
+    enunciado: "O enunciado de Kelvin-Planck para a Segunda Lei da Termodinâmica afirma que:",
+    conceito: "É impossível uma máquina térmica operando em ciclos converter <b>integralmente</b> o calor recebido em trabalho. Sempre sobra calor rejeitado para a fonte fria. É por isso que nenhum rendimento chega a 100% — nem em máquina ideal.",
+    alternativas: [
+      {t:"O calor sempre flui do corpo frio para o quente espontaneamente.", ok:false,
+       porque:"Isso é o enunciado de <b>Clausius</b>, e ainda por cima invertido: espontaneamente o calor vai do quente para o frio."},
+      {t:"É impossível converter integralmente calor em trabalho em uma máquina que opera em ciclos.", ok:true,
+       porque:"Essa é a forma de Kelvin-Planck trabalhada na aula. Sempre há calor rejeitado para a fonte fria, então η < 1 sempre."},
+      {t:"A energia total do universo diminui a cada transformação.", ok:false,
+       porque:"A conservação da energia é a <b>1ª lei</b>: a energia total se mantém. A 2ª lei trata da qualidade/direção da transformação, não da quantidade total."},
+      {t:"Toda máquina térmica real tem rendimento maior que a de Carnot.", ok:false,
+       porque:"Ao contrário: a de Carnot é o limite máximo. Nenhuma máquina real supera o rendimento de Carnot entre as mesmas temperaturas."},
+      {t:"O rendimento de uma máquina térmica pode chegar a 100% se não houver atrito.", ok:false,
+       porque:"Eliminar atrito melhora o rendimento, mas não fura a 2ª lei. O limite de Carnot continua valendo mesmo com máquina perfeita."}
+    ]
+  },
+  {
+    tema: "Rendimento",
+    enunciado: "O rendimento de uma máquina térmica é definido por:",
+    estrutura: "η = W / Q₁\n\nW = trabalho realizado · Q₁ = calor recebido da fonte quente",
+    conceito: "Rendimento é a fração da energia que entrou e virou trabalho útil. Compara o que <b>saída</b> (trabalho) com o que <b>entrou</b> (calor da fonte quente). Por ser razão entre energias, é um número puro, sem unidade.",
+    alternativas: [
+      {t:"η = W / Q₁, o trabalho dividido pelo calor recebido da fonte quente.", ok:true,
+       porque:"É a definição. Se uma máquina recebe 1000 J e entrega 300 J de trabalho, η = 0,30 = 30%."},
+      {t:"η = Q₁ / W, o calor dividido pelo trabalho.", ok:false,
+       porque:"Inverte a fração. Como W < Q₁ sempre, isso daria η > 1 — ou seja, mais de 100% de rendimento, o que é impossível."},
+      {t:"η = Q₂ / Q₁, o calor rejeitado dividido pelo recebido.", ok:false,
+       porque:"Essa razão mede a <b>fração desperdiçada</b>. O rendimento é o complemento: η = 1 − Q₂/Q₁."},
+      {t:"η = W · Q₁, o produto entre trabalho e calor.", ok:false,
+       porque:"Produto de duas energias daria joule ao quadrado — não é adimensional. Rendimento é razão, não produto."},
+      {t:"η = Q₁ − Q₂, a diferença entre os calores.", ok:false,
+       porque:"Essa diferença é o próprio trabalho (W = Q₁ − Q₂), não o rendimento."}
+    ]
+  },
+  {
+    tema: "Rendimento",
+    enunciado: "Uma máquina térmica recebe 800 J da fonte quente e rejeita 600 J para a fonte fria a cada ciclo. Qual é o seu rendimento?",
+    estrutura: "W = Q₁ − Q₂ = 800 − 600 = 200 J\nη = W / Q₁ = 200 / 800",
+    conceito: "Primeiro ache o trabalho pela conservação de energia: o que entrou menos o que foi desperdiçado. Depois divida pelo calor de entrada. Nunca divida por Q₂ — o denominador é sempre a energia que entrou.",
+    alternativas: [
+      {t:"25%", ok:true,
+       porque:"W = 800 − 600 = 200 J. η = 200/800 = 0,25 = 25%. Confere com a outra forma: 1 − 600/800 = 1 − 0,75 = 0,25."},
+      {t:"75%", ok:false,
+       porque:"75% é a fração <b>desperdiçada</b> (600/800). O rendimento é o que sobra: 25%."},
+      {t:"33%", ok:false,
+       porque:"Sairia de 200/600, dividindo o trabalho pelo calor rejeitado. O denominador correto é o calor recebido (800 J)."},
+      {t:"200%", ok:false,
+       porque:"Rendimento nunca passa de 100%. Valor acima disso indica erro de fórmula ou de unidade."},
+      {t:"50%", ok:false,
+       porque:"Seria o caso de rejeitar 400 J. Aqui a máquina rejeita 600 J dos 800 J, ou seja, é pouco eficiente."}
+    ]
+  },
+  {
+    tema: "Rendimento",
+    enunciado: "Uma máquina térmica tem rendimento de 40% e realiza 2 000 J de trabalho por ciclo. Quanto calor ela recebe da fonte quente?",
+    estrutura: "η = W / Q₁  →  0,40 = 2000 / Q₁",
+    conceito: "Isolando Q₁: Q₁ = W / η. Sempre que o problema dá rendimento e trabalho, o calor de entrada vem de uma divisão simples. Se pedir o calor rejeitado, faça Q₂ = Q₁ − W.",
+    alternativas: [
+      {t:"800 J", ok:false,
+       porque:"Isso é 40% de 2000 — o cálculo ao contrário. O rendimento diz que 2000 J é 40% do total, não que o total seja 40% do trabalho."},
+      {t:"5 000 J", ok:true,
+       porque:"Q₁ = 2000/0,40 = 5 000 J. Conferindo: 40% de 5 000 = 2 000 J de trabalho, e 3 000 J vão para a fonte fria."},
+      {t:"2 400 J", ok:false,
+       porque:"Sairia de 2000 + 400, somando o percentual como se fosse energia. Percentual não se soma ao joule."},
+      {t:"1 200 J", ok:false,
+       porque:"Sairia de 2000 × 0,60. Não há motivo para usar o complemento do rendimento no calor de entrada."},
+      {t:"3 000 J", ok:false,
+       porque:"3 000 J é o calor <b>rejeitado</b> (5000 − 2000), não o recebido."}
+    ]
+  },
+  {
+    tema: "Ciclo de Carnot",
+    enunciado: "O ciclo de Carnot é formado por quais transformações?",
+    conceito: "Quatro etapas alternadas: expansão isotérmica, expansão adiabática, compressão isotérmica e compressão adiabática. Duas a temperatura constante e duas sem troca de calor — é o ciclo mais eficiente possível entre duas temperaturas.",
+    alternativas: [
+      {t:"Duas isobáricas e duas isovolumétricas.", ok:false,
+       porque:"Esse é o ciclo de Otto (motor a gasolina), não o de Carnot."},
+      {t:"Duas isotérmicas e duas adiabáticas.", ok:true,
+       porque:"Expansão e compressão isotérmicas (contato com as fontes) alternadas com expansão e compressão adiabáticas (isoladas). É o que aparece no gráfico P × V em forma de ciclo fechado."},
+      {t:"Quatro isotérmicas.", ok:false,
+       porque:"Sem as adiabáticas, não haveria como mudar de temperatura entre uma fonte e outra — o ciclo não fecharia."},
+      {t:"Duas adiabáticas e duas isobáricas.", ok:false,
+       porque:"Mistura as etapas. As trocas de calor com as fontes, no ciclo de Carnot, são isotérmicas."},
+      {t:"Uma isotérmica e três adiabáticas.", ok:false,
+       porque:"Seria assimétrico e não corresponderia ao ciclo reversível idealizado por Carnot."}
+    ]
+  },
+  {
+    tema: "Ciclo de Carnot",
+    enunciado: "O rendimento máximo de uma máquina de Carnot que opera entre 500 K (fonte quente) e 300 K (fonte fria) é:",
+    estrutura: "η = 1 − T_fria / T_quente = 1 − 300/500",
+    conceito: "Para Carnot o rendimento depende só das temperaturas absolutas. Aqui: 1 − 0,6 = 0,4. Atenção: as temperaturas <b>precisam</b> estar em Kelvin; usar Celsius na fórmula é o erro mais comum.",
+    alternativas: [
+      {t:"40%", ok:true,
+       porque:"η = 1 − 300/500 = 1 − 0,6 = 0,4 = 40%. Nenhuma máquina real entre essas duas temperaturas pode superar isso."},
+      {t:"60%", ok:false,
+       porque:"60% é a fração rejeitada (300/500). O rendimento é o complemento."},
+      {t:"20%", ok:false,
+       porque:"Sairia de (500−300)/500 dividido por 2, ou de alguma manipulação indevida. A conta correta é 1 − 300/500."},
+      {t:"67%", ok:false,
+       porque:"Sairia de 200/300, invertendo o denominador. O denominador é a temperatura da fonte quente."},
+      {t:"100%", ok:false,
+       porque:"Só seria possível com fonte fria a 0 K, o que é inatingível (3ª lei). Na prática, é sempre menor que 100%."}
+    ]
+  },
+  {
+    tema: "Ciclo de Carnot",
+    enunciado: "Por que a máquina de Carnot é usada como <strong>referência</strong> para avaliar máquinas reais?",
+    conceito: "Carnot define o teto teórico: entre duas temperaturas, nenhuma máquina pode render mais que ele. Se sua máquina rende 20% e o Carnot entre as mesmas temperaturas renderia 70%, ela está muito abaixo do possível — é esse o diagnóstico que o professor mostrou em aula.",
+    alternativas: [
+      {t:"Porque é uma máquina que existe comercialmente e é barata de fabricar.", ok:false,
+       porque:"A máquina de Carnot é <b>teórica</b>: exige processos infinitamente lentos (isotérmicas reversíveis) e infinitamente rápidos (adiabáticas), o que é impraticável."},
+      {t:"Porque define o rendimento máximo possível entre duas temperaturas; nenhuma máquina real a supera.", ok:true,
+       porque:"É o teto teórico. Serve de régua: comparar o rendimento real com o de Carnot mostra quanto ainda se pode melhorar o projeto."},
+      {t:"Porque seu rendimento é de 100%, servindo de meta ideal.", ok:false,
+       porque:"Nem Carnot chega a 100%. Ele é o máximo <b>possível</b> para aquelas temperaturas, e esse máximo é sempre menor que 100%."},
+      {t:"Porque dispensa fonte fria, simplificando o projeto.", ok:false,
+       porque:"Todo ciclo de Carnot depende das duas fontes. Sem fonte fria não há rejeição de calor, e a 2ª lei proíbe."},
+      {t:"Porque funciona sem receber calor.", ok:false,
+       porque:"Ao contrário: ele recebe calor na expansão isotérmica. É uma máquina térmica como qualquer outra, só que ideal."}
+    ]
+  },
+  {
+    tema: "Refrigeradores",
+    enunciado: "Um refrigerador funciona:",
+    conceito: "Ele faz o caminho contrário ao natural: retira calor da fonte fria (dentro da geladeira) e o descarrega na fonte quente (atrás da geladeira, aquela grade quente). Como isso não acontece espontaneamente, é preciso <b>fornecer trabalho</b> — é o compressor.",
+    alternativas: [
+      {t:"Retirando calor da fonte fria e entregando-o à fonte quente, às custas de trabalho recebido.", ok:true,
+       porque:"Exatamente. O calor vai do frio para o quente, mas só porque um trabalho externo (compressor) é realizado. É o processo inverso da máquina térmica."},
+      {t:"Convertendo calor da fonte quente em trabalho, como qualquer máquina térmica.", ok:false,
+       porque:"Essa é a máquina térmica. O refrigerador opera no sentido inverso: consome trabalho para mover calor."},
+      {t:"Retirando calor da fonte fria sem consumir energia.", ok:false,
+       porque:"Violaria a 2ª lei. Transferir calor do frio para o quente espontaneamente é impossível — é justamente por isso que a geladeira tem motor."},
+      {t:"Produzindo frio a partir do nada, criando energia negativa.", ok:false,
+       porque:"Frio não é uma substância, é ausência de agitação térmica. O refrigerador apenas <b>transporta</b> calor de um lugar para outro."},
+      {t:"Aumentando o rendimento acima de 100% por meio do congelamento.", ok:false,
+       porque:"Nenhum dispositivo supera 100% de rendimento. Na geladeira mede-se o coeficiente de desempenho, que não é rendimento no sentido da máquina térmica."}
+    ]
+  },
+  {
+    tema: "Refrigeradores",
+    enunciado: "A eficiência (coeficiente de desempenho) de um refrigerador é calculada por:",
+    estrutura: "ε = Q_fria / W\n\nQ_fria = calor retirado do interior · W = trabalho do compressor",
+    conceito: "O objetivo do refrigerador não é produzir trabalho, é <b>retirar calor</b> do ambiente frio. Por isso a conta se inverte em relação ao rendimento: o que se quer (calor removido) vai no numerador, e o que se gasta (trabalho) vai no denominador.",
+    alternativas: [
+      {t:"ε = W / Q_fria", ok:false,
+       porque:"Inverte a razão. Como o trabalho é menor que o calor removido, isso daria eficiência menor que 1 — e a geladeira teria desempenho pior que o de uma máquina comum."},
+      {t:"ε = Q_fria / W", ok:true,
+       porque:"É o objetivo dividido pelo custo. Uma geladeira que retira 400 J do interior gastando 100 J de trabalho tem ε = 4."},
+      {t:"ε = Q_quente / Q_fria", ok:false,
+       porque:"Essa razão não inclui o trabalho, que é justamente o custo do processo. Não mede desempenho."},
+      {t:"ε = 1 − Q_fria/Q_quente", ok:false,
+       porque:"Essa é a forma do rendimento de uma máquina térmica de Carnot, não do refrigerador."},
+      {t:"ε = W · Q_fria", ok:false,
+       porque:"Produto de energias não é adimensional e não representa eficiência."}
+    ]
+  },
+  {
+    tema: "Refrigeradores",
+    enunciado: "Uma geladeira retira 400 J de calor do seu interior consumindo 100 J de trabalho do compressor. Qual é o seu coeficiente de desempenho?",
+    estrutura: "ε = Q_fria / W = 400 / 100",
+    conceito: "Basta dividir o calor removido pelo trabalho gasto. Note que esse número <b>pode</b> ser maior que 1 — e isso não viola a 2ª lei, porque ele não mede conversão de calor em trabalho, mas transporte de calor.",
+    alternativas: [
+      {t:"0,25", ok:false,
+       porque:"Sairia de 100/400, invertendo a razão. O trabalho é o custo, então vai no denominador."},
+      {t:"4", ok:true,
+       porque:"ε = 400/100 = 4. Significa que, para cada joule de trabalho, a geladeira move 4 joules de calor do interior para fora."},
+      {t:"5", ok:false,
+       porque:"Sairia de (400+100)/100, somando o trabalho ao calor removido. O calor descarregado na fonte quente é 500 J, mas a eficiência usa só o calor da fonte fria."},
+      {t:"75%", ok:false,
+       porque:"Sairia de 300/400, usando uma diferença que não existe no problema. E eficiência de refrigerador não é percentual."},
+      {t:"Impossível calcular sem a temperatura.", ok:false,
+       porque:"Com Q_fria e W já é possível. A temperatura só seria necessária para o caso teórico de Carnot."}
+    ]
+  },
+  {
+    tema: "Aplicação real",
+    enunciado: "Numa locomotiva a vapor, qual é a sequência correta de transformações de energia?",
+    conceito: "É o exemplo central da aula: queima do carvão libera calor → aquece a água e produz vapor → o vapor se expande e empurra o pistão → o pistão, ligado às bielas, gira a roda. Calor → trabalho mecânico → movimento.",
+    alternativas: [
+      {t:"Energia elétrica → energia luminosa → movimento.", ok:false,
+       porque:"Não há eletricidade no circuito da locomotiva a vapor. Trens elétricos são outro tipo de máquina."},
+      {t:"Energia química do carvão → calor → expansão do vapor → movimento do pistão e das rodas.", ok:true,
+       porque:"Essa é a sequência completa. O carvão é a fonte quente; o vapor é a substância de trabalho; o pistão converte expansão em rotação."},
+      {t:"Calor → energia nuclear → movimento.", ok:false,
+       porque:"Inverte a ordem e introduz um processo que não existe na locomotiva. Usinas nucleares também geram calor, mas por fissão."},
+      {t:"Movimento → calor → energia química.", ok:false,
+       porque:"Essa é a ordem inversa (frenagem regenerativa, por exemplo). Na locomotiva o objetivo é calor → movimento."},
+      {t:"Energia solar → calor → vapor.", ok:false,
+       porque:"A fonte é a queima de carvão, não a radiação solar."}
+    ]
+  },
+  {
+    tema: "Aplicação real",
+    enunciado: "Por que as máquinas térmicas exigem grande quantidade de combustível para produzir trabalho útil?",
+    conceito: "Como o rendimento real é baixo (motores a gasolina em torno de 20%, diesel cerca de 30%), a maior parte do calor vai embora pela fonte fria. Foi por isso que em aula a energia térmica foi chamada de \"o lixo das energias\": abundante, mas difícil de aproveitar.",
+    alternativas: [
+      {t:"Porque o combustível tem baixo poder calorífico e não queima.", ok:false,
+       porque:"O combustível queima muito bem. O problema não é a quantidade de energia liberada, e sim a fração que se consegue converter em trabalho."},
+      {t:"Porque grande parte do calor é rejeitada para a fonte fria, e o rendimento real é baixo.", ok:true,
+       porque:"É a consequência direta da 2ª lei. Se o rendimento é 30%, 70% do calor vai para o ambiente — daí a necessidade de muito combustível."},
+      {t:"Porque as máquinas térmicas violam a conservação de energia.", ok:false,
+       porque:"Nenhuma máquina viola a 1ª lei. A energia é conservada; o que se perde é <b>qualidade</b>, não quantidade."},
+      {t:"Porque o vapor não consegue empurrar pistões.", ok:false,
+       porque:"Consegue — é exatamente assim que a locomotiva funciona. O limite está na termodinâmica, não na mecânica do pistão."},
+      {t:"Porque o atrito consome toda a energia.", ok:false,
+       porque:"O atrito contribui, mas é pequeno comparado à rejeição de calor pela fonte fria, que é obrigatória pela 2ª lei."}
+    ]
+  },
+  {
+    tema: "Temperatura absoluta",
+    enunciado: "Ao usar a fórmula do rendimento de Carnot, as temperaturas devem ser expressas em:",
+    estrutura: "η = 1 − T_fria / T_quente     (T em kelvin)",
+    conceito: "A fórmula de Carnot exige escala <b>absoluta</b>, porque ela vem de uma razão entre energias proporcionais à temperatura absoluta. Em Celsius, uma fonte a 0 °C daria divisão por zero ou rendimento negativo — resultados sem sentido.",
+    alternativas: [
+      {t:"Celsius, porque é a escala usada no Brasil.", ok:false,
+       porque:"Em Celsius a razão deixa de fazer sentido físico: 0 °C não é ausência de agitação, então a proporcionalidade quebra."},
+      {t:"Fahrenheit, porque tem mais precisão.", ok:false,
+       porque:"Fahrenheit também não é absoluta (tem valores negativos). Precisão não resolve o problema conceitual."},
+      {t:"Kelvin, a escala absoluta.", ok:true,
+       porque:"Só em kelvin a temperatura é proporcional à energia cinética média das moléculas. Converta sempre: T(K) = T(°C) + 273."},
+      {t:"Qualquer escala, desde que as duas estejam na mesma.", ok:false,
+       porque:"É um erro comum, mas a razão T_fria/T_quente só é válida em escala absoluta. Em Celsius o resultado numérico sai errado."},
+      {t:"Joule, convertendo a temperatura em energia.", ok:false,
+       porque:"Joule mede energia, não temperatura. A conversão entre as duas envolve a constante de Boltzmann, fora do escopo aqui."}
+    ]
+  },
+  {
+    tema: "1ª lei aplicada",
+    enunciado: "Um gás recebe 500 J de calor e, ao mesmo tempo, realiza 200 J de trabalho. Qual é a variação da sua energia interna?",
+    estrutura: "ΔU = Q − W = 500 − 200",
+    conceito: "Aplique a 1ª lei com os sinais corretos: calor <b>recebido</b> é positivo, trabalho <b>realizado pelo gás</b> também entra positivo na fórmula (subtraindo). Sobra 300 J que ficam no gás como aumento de agitação — e a temperatura sobe.",
+    alternativas: [
+      {t:"300 J, e a temperatura do gás aumenta.", ok:true,
+       porque:"ΔU = 500 − 200 = 300 J. Como ΔU > 0, a agitação das moléculas aumentou, logo a temperatura subiu."},
+      {t:"700 J, somando calor e trabalho.", ok:false,
+       porque:"Somar seria usar ΔU = Q + W. Pela convenção da aula, o trabalho realizado pelo gás <b>sai</b> do balanço e é subtraído."},
+      {t:"−300 J, pois o gás realizou trabalho.", ok:false,
+       porque:"O sinal negativo apareceria se o trabalho fosse maior que o calor recebido. Aqui 500 > 200, então ΔU é positivo."},
+      {t:"200 J, pois é o trabalho realizado.", ok:false,
+       porque:"200 J é o trabalho, não a variação de energia interna. Confundir os dois é o erro mais comum nesse tipo de questão."},
+      {t:"Zero, pois o gás voltou ao estado inicial.", ok:false,
+       porque:"Não se trata de um ciclo completo. Num ciclo fechado ΔU = 0; aqui é uma transformação parcial."}
+    ]
+  },
+  {
+    tema: "1ª lei aplicada",
+    enunciado: "Um gás é comprimido recebendo 400 J de trabalho, sem trocar calor com o ambiente. O que acontece com sua temperatura?",
+    estrutura: "Adiabática: Q = 0  →  ΔU = −W\nW = −400 J (compressão)  →  ΔU = +400 J",
+    conceito: "Compressão adiabática é o caso clássico de aquecimento: o trabalho entra, não há calor para escapar, então tudo vira energia interna. É o que acontece no cilindro do motor a diesel, que inflama o combustível só pela compressão.",
+    alternativas: [
+      {t:"Diminui, porque o gás foi comprimido.", ok:false,
+       porque:"Intuição invertida. Na compressão adiabática o gás <b>esquenta</b> — é a expansão adiabática que resfria."},
+      {t:"Aumenta, porque o trabalho recebido eleva a energia interna.", ok:true,
+       porque:"ΔU = +400 J, então a agitação cresce e a temperatura sobe. Por isso o diesel pega fogo sem vela de ignição."},
+      {t:"Permanece constante, porque não houve troca de calor.", ok:false,
+       porque:"Q = 0 não significa ΔU = 0. Significa que a energia interna varia apenas pelo trabalho."},
+      {t:"Diminui, porque o volume diminui.", ok:false,
+       porque:"Volume menor não implica temperatura menor. Aqui os dois efeitos vão em sentidos opostos: V cai, T sobe."},
+      {t:"Não é possível saber sem conhecer o volume final.", ok:false,
+       porque:"A informação \"sem trocar calor\" já basta: Q = 0 e W é conhecido, então ΔU está determinado."}
+    ]
+  }
+];
+
+/* ============================================================
+   AULAS — uma pagina explicativa por assunto
+   Cada questao aponta para uma aula; o aluno abre quando erra
+   (ou quando quer entender melhor) e volta na mesma posicao.
+   ============================================================ */
+const LICOES = {
+
+  "maquinas-termicas": {
+    titulo: "O que é uma máquina térmica",
+    resumo: "Um dispositivo que pega calor de uma fonte quente e devolve só uma parte dele como trabalho. O resto é jogado fora — e isso não é defeito de projeto, é lei da Física.",
+    blocos: [
+      {t:"h", v:"A ideia central"},
+      {t:"p", v:"Toda máquina térmica tem três personagens: uma <b>fonte quente</b> (a queima do carvão, a explosão da gasolina, o reator nuclear), uma <b>substância de trabalho</b> (o vapor d'água, os gases da combustão) e uma <b>fonte fria</b> (o ar atmosférico, a água do rio, o ambiente)."},
+      {t:"p", v:"A fonte quente fornece calor Q₁. A substância de trabalho se expande e empurra algo (o pistão). Uma parte do calor vira trabalho W. O que sobra, Q₂, é rejeitado para a fonte fria."},
+      {t:"formula", v:"Q₁ = W + Q₂", leg:"Energia que entra = trabalho útil + energia desperdiçada"},
+      {t:"h", v:"Por que \"parcialmente\""},
+      {t:"p", v:"A palavra <b>parcialmente</b> é o coração da definição. Se uma máquina convertesse todo o calor em trabalho, ela teria rendimento de 100% — e a Segunda Lei da Termodinâmica proíbe isso. Sempre existe Q₂."},
+      {t:"destaque", v:"Nenhuma máquina térmica, nem a mais perfeita já construída, aproveita todo o calor que recebe."},
+      {t:"h", v:"Exemplos"},
+      {t:"lista", v:[
+        "Locomotiva a vapor — queima carvão, aquece água, o vapor empurra o pistão.",
+        "Motor de combustão interna — a explosão da gasolina empurra o pistão.",
+        "Usina nuclear — a fissão aquece água, o vapor gira a turbina.",
+        "Usina termoelétrica — queima gás ou carvão para gerar vapor."
+      ]},
+      {t:"p", v:"Repare que todas fazem o mesmo caminho: <b>calor → trabalho</b>. A diferença é só o combustível."},
+      {t:"h", v:"Cuidado para não confundir"},
+      {t:"p", v:"O <b>refrigerador</b> faz o caminho inverso: gasta trabalho para mover calor do frio para o quente. Ele não é uma máquina térmica no sentido de \"produzir trabalho\", é o contrário disso."},
+      {t:"p", v:"E uma <b>usina hidrelétrica</b> também não é máquina térmica: ela converte energia potencial da água em trabalho, sem passar por calor."}
+    ],
+    erros: [
+      "Achar que máquina térmica é qualquer máquina — motor elétrico e hidrelétrica não entram.",
+      "Esquecer a fonte fria: sem ela não existe ciclo, e é ela que \"carrega\" o Q₂."
+    ]
+  },
+
+  "sistema": {
+    titulo: "Sistema, vizinhança e fronteira",
+    resumo: "Antes de calcular qualquer coisa, você escolhe o que está analisando. O que ficou dentro do recorte é o sistema; o resto é vizinhança.",
+    blocos: [
+      {t:"h", v:"A definição"},
+      {t:"p", v:"Um <b>sistema termodinâmico</b> é uma região do espaço delimitada por paredes ou membranas, separada da vizinhança, que você escolheu estudar."},
+      {t:"lista", v:[
+        "<b>Sistema</b> — o gás dentro do cilindro, por exemplo.",
+        "<b>Fronteira</b> — a parede do cilindro e a face do pistão. É por onde calor e trabalho atravessam.",
+        "<b>Vizinhança</b> — tudo o que está fora: o ar da sala, o operador, o chão."
+      ]},
+      {t:"formula", v:"Universo = Sistema + Vizinhança", leg:"Se você trata tudo como sistema, não sobra ninguém para trocar calor com ele"},
+      {t:"h", v:"Por que isso importa"},
+      {t:"p", v:"O sinal do calor e do trabalho depende de onde você colocou a fronteira. Se o gás é o sistema e ele empurra o pistão, o trabalho é realizado <b>pelo</b> sistema (positivo, na convenção da aula). Se você tivesse escolhido o pistão como sistema, o sinal se inverteria."},
+      {t:"destaque", v:"Escolha o sistema primeiro. Quase todo erro de sinal nasce de não saber quem é o sistema."},
+      {t:"h", v:"Tipos de sistema"},
+      {t:"lista", v:[
+        "<b>Aberto</b> — troca massa e energia (um copo de água quente evaporando).",
+        "<b>Fechado</b> — troca energia, mas não massa (o gás dentro do cilindro vedado).",
+        "<b>Isolado</b> — não troca nem massa nem energia (a garrafa térmica ideal)."
+      ]}
+    ],
+    erros: [
+      "Confundir o combustível com o sistema. O sistema é a substância de trabalho (o gás/vapor), não o carvão.",
+      "Achar que sistema fechado é o mesmo que isolado: fechado ainda pode trocar calor."
+    ]
+  },
+
+  "parametros": {
+    titulo: "Os três parâmetros de estado",
+    resumo: "Um gás é um caos de moléculas impossível de acompanhar uma a uma. Em vez disso, medimos três grandezas macroscópicas: pressão, volume e temperatura.",
+    blocos: [
+      {t:"h", v:"O problema"},
+      {t:"p", v:"Um mol de gás tem cerca de 6×10²³ moléculas, cada uma com sua velocidade e direção. Acompanhar isso é inviável. A Termodinâmica contorna o problema descrevendo o gás por três números que resumem o conjunto."},
+      {t:"formula", v:"P · V = n · R · T", leg:"Equação de Clapeyron — liga os três parâmetros de estado"},
+      {t:"h", v:"O que cada um significa"},
+      {t:"lista", v:[
+        "<b>Pressão (P)</b> — resultado das colisões das moléculas contra as paredes. Em pascal (Pa) ou atm.",
+        "<b>Volume (V)</b> — espaço ocupado pelo gás, igual ao volume interno do recipiente. Em m³ ou litro.",
+        "<b>Temperatura (T)</b> — mede o grau de agitação das moléculas. Em kelvin, sempre que houver fórmula."
+      ]},
+      {t:"h", v:"Estado x processo"},
+      {t:"p", v:"Um <b>estado</b> é um conjunto (P, V, T) num instante. Um <b>processo</b> é a passagem de um estado a outro. Quando dizemos \"transformação isotérmica\", estamos dizendo qual parâmetro ficou fixo durante o processo."},
+      {t:"destaque", v:"Temperatura mede agitação, não \"quanto calor tem\". Um objeto pode ter muita energia interna e temperatura baixa se for enorme."},
+      {t:"h", v:"As quatro transformações e o parâmetro fixo"},
+      {t:"lista", v:[
+        "<b>Isotérmica</b> — temperatura constante.",
+        "<b>Isobárica</b> — pressão constante.",
+        "<b>Isovolumétrica</b> (ou isocórica) — volume constante.",
+        "<b>Adiabática</b> — nenhuma troca de calor (Q = 0)."
+      ]},
+      {t:"p", v:"Note que adiabática não é \"parâmetro constante\": é ausência de troca de calor. É uma categoria diferente das outras três."}
+    ],
+    erros: [
+      "Usar graus Celsius nas fórmulas. Toda equação da termodinâmica com T exige kelvin.",
+      "Achar que adiabática significa temperatura constante — não significa."
+    ]
+  },
+
+  "trabalho": {
+    titulo: "Trabalho de um gás: de onde vem W = P·ΔV",
+    resumo: "Não é fórmula para decorar. Ela sai de W = F·d, com dois passos de álgebra. Se você entender a dedução, nunca mais erra o sinal.",
+    blocos: [
+      {t:"h", v:"Passo 1 — o trabalho mecânico"},
+      {t:"p", v:"Trabalho é força vezes deslocamento. Se o gás empurra o pistão por uma altura h:"},
+      {t:"formula", v:"W = F · h"},
+      {t:"h", v:"Passo 2 — trocar força por pressão"},
+      {t:"p", v:"Pressão é força dividida por área, então força é pressão vezes área:"},
+      {t:"formula", v:"P = F / A    ⟹    F = P · A"},
+      {t:"h", v:"Passo 3 — juntar tudo"},
+      {t:"p", v:"Substituindo F na primeira equação:"},
+      {t:"formula", v:"W = P · A · h"},
+      {t:"p", v:"E aqui está o truque: <b>área da base vezes altura</b> é o volume de um cilindro. Então A·h é a variação de volume do gás:"},
+      {t:"formula", v:"A · h = ΔV    ⟹    W = P · ΔV", leg:"Válida quando a pressão é constante"},
+      {t:"h", v:"O sinal — a parte que mais cai em prova"},
+      {t:"lista", v:[
+        "<b>Expansão</b> (volume aumenta, ΔV > 0) → W positivo. O gás produz o movimento.",
+        "<b>Compressão</b> (volume diminui, ΔV < 0) → W negativo. Alguém empurra o gás.",
+        "<b>Volume constante</b> (ΔV = 0) → W = 0. Sem deslocamento, sem trabalho."
+      ]},
+      {t:"destaque", v:"Pense em quem faz o esforço: se o gás empurra, trabalho positivo; se empurram o gás, negativo."},
+      {t:"h", v:"E no gráfico P × V?"},
+      {t:"p", v:"O trabalho é a <b>área sob a curva</b> do processo. Numa expansão (curva indo para a direita) a área conta positiva; numa compressão, negativa. Num ciclo fechado, o trabalho líquido é a área interna do ciclo."}
+    ],
+    erros: [
+      "Trocar o sinal: expansão é positivo, compressão é negativo. Não é o contrário.",
+      "Usar W = P·ΔV numa transformação em que a pressão varia — ali é preciso calcular área no gráfico.",
+      "Esquecer de converter litro para m³ e atm para Pa nas contas em joule."
+    ]
+  },
+
+  "energia-interna": {
+    titulo: "Energia interna: a agitação das moléculas",
+    resumo: "Energia interna é a soma das energias cinéticas de todas as moléculas. Como agitação é medida pela temperatura, só a temperatura altera a energia interna de um gás ideal.",
+    blocos: [
+      {t:"h", v:"A definição"},
+      {t:"p", v:"Cada molécula do gás se move com certa velocidade, e isso é energia cinética. A <b>energia interna (U)</b> é a soma dessa energia cinética para todas as moléculas do sistema."},
+      {t:"formula", v:"U = (3/2) · n · R · T", leg:"Para gás ideal monoatômico"},
+      {t:"h", v:"A consequência mais importante"},
+      {t:"p", v:"Olhe a fórmula: só aparece T. Não aparece pressão, não aparece volume. Isso significa que, para um gás ideal, a energia interna depende <b>exclusivamente da temperatura</b>."},
+      {t:"formula", v:"ΔT = 0    ⟹    ΔU = 0", leg:"Se a temperatura não muda, a energia interna não muda"},
+      {t:"destaque", v:"Isso explica por que a transformação isotérmica tem ΔU = 0, mesmo com o gás recebendo calor e realizando trabalho."},
+      {t:"h", v:"Para onde vai o calor na isotérmica?"},
+      {t:"p", v:"Se ΔU = 0 na 1ª lei (ΔU = Q − W), sobra Q = W. Todo o calor recebido é imediatamente convertido em trabalho. Nada fica guardado como aumento de temperatura."},
+      {t:"h", v:"E a temperatura caindo?"},
+      {t:"p", v:"Se a temperatura diminui, a agitação diminui, então a energia interna diminui: ΔU negativo. Isso acontece na expansão adiabática, em que o gás gasta energia interna para se expandir e esfria."}
+    ],
+    erros: [
+      "Achar que energia interna depende do volume. Se dependesse, a isotérmica teria ΔU ≠ 0 — e não tem.",
+      "Confundir energia interna com calor. Calor é energia <b>em trânsito</b>; energia interna é a que está guardada no gás."
+    ]
+  },
+
+  "primeira-lei": {
+    titulo: "1ª Lei da Termodinâmica: o balanço de energia",
+    resumo: "Nada se cria, nada se perde. A energia que entra no gás como calor, ou sai como trabalho, ou fica guardada como energia interna.",
+    blocos: [
+      {t:"h", v:"A equação"},
+      {t:"formula", v:"ΔU = Q − W", leg:"ΔU: variação da energia interna · Q: calor recebido · W: trabalho realizado pelo gás"},
+      {t:"p", v:"Leia em voz alta: a variação da energia interna é o calor que <b>entrou</b> menos o trabalho que <b>saiu</b>. É contabilidade pura."},
+      {t:"h", v:"Tabela de sinais — decore esta, não a fórmula"},
+      {t:"lista", v:[
+        "Calor <b>recebido</b> pelo gás → Q positivo.",
+        "Calor <b>cedido</b> pelo gás → Q negativo.",
+        "Gás <b>se expande</b> (empurra o pistão) → W positivo.",
+        "Gás é <b>comprimido</b> → W negativo.",
+        "Temperatura <b>sobe</b> → ΔU positivo.",
+        "Temperatura <b>desce</b> → ΔU negativo.",
+        "Temperatura constante → ΔU = 0."
+      ]},
+      {t:"destaque", v:"Se você acertar os sinais, a conta é soma e subtração. Quase todo erro nessa matéria é erro de sinal."},
+      {t:"h", v:"Exemplo resolvido"},
+      {t:"p", v:"Um gás recebe 500 J de calor e realiza 200 J de trabalho. Quanto vale ΔU?"},
+      {t:"formula", v:"ΔU = 500 − 200 = +300 J"},
+      {t:"p", v:"A energia interna aumentou 300 J, então a temperatura subiu. Os 300 J ficaram guardados no gás."},
+      {t:"h", v:"Os quatro casos particulares"},
+      {t:"lista", v:[
+        "<b>Adiabática</b> (Q = 0): ΔU = −W. Expansão adiabática esfria, compressão adiabática esquenta.",
+        "<b>Isovolumétrica</b> (ΔV = 0, logo W = 0): ΔU = Q. Todo calor vira energia interna.",
+        "<b>Isotérmica</b> (ΔT = 0, logo ΔU = 0): Q = W. Todo calor vira trabalho.",
+        "<b>Ciclo completo</b> (volta ao estado inicial): ΔU = 0, então Q = W no ciclo inteiro."
+      ]}
+    ],
+    erros: [
+      "Somar Q e W quando a convenção manda subtrair o trabalho realizado pelo gás.",
+      "Achar que Q = 0 significa ΔU = 0. Significa apenas que a energia interna varia só pelo trabalho.",
+      "Esquecer que, num ciclo fechado, ΔU = 0 porque o estado final é igual ao inicial."
+    ]
+  },
+
+  "transformacoes": {
+    titulo: "As quatro transformações gasosas",
+    resumo: "Cada transformação tem um parâmetro fixo e uma consequência direta na 1ª lei. Saber qual termo zera resolve a maioria das questões.",
+    blocos: [
+      {t:"h", v:"Isotérmica — temperatura constante"},
+      {t:"p", v:"O gás troca calor com a fonte devagar o suficiente para a temperatura não mudar. Como U depende só de T, ΔU = 0."},
+      {t:"formula", v:"ΔU = 0    ⟹    Q = W"},
+      {t:"p", v:"Todo o calor recebido sai como trabalho. É o que acontece na expansão isotérmica do ciclo de Carnot."},
+      {t:"h", v:"Isobárica — pressão constante"},
+      {t:"p", v:"A pressão não muda, então a fórmula simples do trabalho se aplica direto."},
+      {t:"formula", v:"W = P · ΔV", leg:"A vantagem da isobárica é poder usar essa fórmula sem integrar"},
+      {t:"p", v:"Nada se anula na 1ª lei: há calor, há trabalho e a energia interna varia porque a temperatura muda."},
+      {t:"h", v:"Isovolumétrica — volume constante"},
+      {t:"p", v:"O volume não muda, então o pistão não se desloca. Sem deslocamento, não há trabalho."},
+      {t:"formula", v:"ΔV = 0    ⟹    W = 0    ⟹    ΔU = Q"},
+      {t:"p", v:"Todo o calor recebido fica no gás como energia interna: a temperatura e a pressão sobem. É o caso de aquecer uma panela de pressão fechada e rígida."},
+      {t:"h", v:"Adiabática — sem troca de calor"},
+      {t:"p", v:"Aqui não é um parâmetro que fica constante, é a <b>ausência de troca térmica</b>. O exemplo clássico é a garrafa térmica: ela impede que o calor entre ou saia."},
+      {t:"formula", v:"Q = 0    ⟹    ΔU = −W"},
+      {t:"p", v:"Se o gás expande adiabaticamente, ele realiza trabalho às custas da própria energia interna e <b>esfria</b>. Se é comprimido adiabaticamente, ganha energia interna e <b>esquenta</b> — é assim que o motor a diesel inflama o combustível sem vela."},
+      {t:"destaque", v:"A garrafa térmica é a imagem mental da adiabática. Guarde essa associação."},
+      {t:"h", v:"Resumo em uma tabela"},
+      {t:"lista", v:[
+        "Isotérmica → ΔT = 0 → ΔU = 0 → Q = W",
+        "Isobárica → P constante → W = P·ΔV",
+        "Isovolumétrica → ΔV = 0 → W = 0 → ΔU = Q",
+        "Adiabática → Q = 0 → ΔU = −W"
+      ]}
+    ],
+    erros: [
+      "Confundir adiabática com isotérmica. Não são parecidas: numa a temperatura varia muito.",
+      "Achar que na isovolumétrica o calor também é zero porque o recipiente é fechado. Fechado não é isolado.",
+      "Trocar isobárica por isovolumétrica na hora de aplicar W = P·ΔV."
+    ]
+  },
+
+  "segunda-lei": {
+    titulo: "2ª Lei: por que 100% é impossível",
+    resumo: "A 1ª lei diz que a energia se conserva. A 2ª lei diz que, mesmo se conservando, ela não pode ser convertida integralmente em trabalho.",
+    blocos: [
+      {t:"h", v:"O enunciado de Kelvin-Planck"},
+      {t:"p", v:"É impossível construir uma máquina térmica que, operando em ciclos, converta <b>integralmente</b> em trabalho todo o calor que recebe de uma fonte."},
+      {t:"formula", v:"η < 100%   sempre", leg:"Sempre sobra Q₂ rejeitado para a fonte fria"},
+      {t:"h", v:"O que isso significa na prática"},
+      {t:"p", v:"Não adianta caprichar no projeto, polir o pistão ou eliminar o atrito. Mesmo uma máquina termodinamicamente perfeita precisa jogar calor fora. O calor rejeitado é uma exigência da lei, não um defeito."},
+      {t:"destaque", v:"A 1ª lei proíbe criar energia. A 2ª lei proíbe usar toda a energia. São proibições diferentes."},
+      {t:"h", v:"O outro enunciado: Clausius"},
+      {t:"p", v:"É impossível transferir calor espontaneamente de um corpo frio para um corpo quente. Para fazer isso é preciso <b>fornecer trabalho</b> — é exatamente o que o compressor da geladeira faz."},
+      {t:"p", v:"Os dois enunciados são equivalentes: se um fosse violado, o outro também seria."},
+      {t:"h", v:"Onde isso aparece no seu dia a dia"},
+      {t:"lista", v:[
+        "O celular carregando esquenta: parte da energia da tomada vira calor, não carga.",
+        "O carregador fica morno pelo mesmo motivo.",
+        "O motor do carro precisa de radiador: sem jogar calor fora, ele funde.",
+        "A lâmpada incandescente esquentava mais do que iluminava."
+      ]},
+      {t:"h", v:"E a entropia?"},
+      {t:"p", v:"A 2ª lei também pode ser escrita assim: a entropia de um sistema isolado nunca diminui. Entropia é uma medida de desordem. O universo caminha para mais desordem, e é por isso que certas transformações têm sentido único."}
+    ],
+    erros: [
+      "Achar que a 2ª lei fala de conservação de energia — isso é a 1ª.",
+      "Pensar que uma máquina perfeita, sem atrito, chegaria a 100%. Não chega.",
+      "Decorar \"calor vai do frio para o quente\" sem o \"espontaneamente\". Com trabalho externo, isso acontece — é a geladeira."
+    ]
+  },
+
+  "rendimento": {
+    titulo: "Rendimento: quanto do calor virou trabalho",
+    resumo: "Rendimento é a fração da energia que entrou e virou trabalho útil. É sempre um número entre 0 e 1, sem unidade.",
+    blocos: [
+      {t:"h", v:"A definição"},
+      {t:"formula", v:"η = W / Q₁", leg:"W: trabalho realizado · Q₁: calor recebido da fonte quente"},
+      {t:"p", v:"O denominador é <b>sempre</b> o calor que entrou. Nunca o calor rejeitado, nunca a soma dos dois."},
+      {t:"h", v:"A forma equivalente"},
+      {t:"p", v:"Como a energia se conserva (Q₁ = W + Q₂), dá para escrever o rendimento só com os calores:"},
+      {t:"formula", v:"η = 1 − Q₂/Q₁", leg:"Q₂: calor rejeitado para a fonte fria"},
+      {t:"p", v:"As duas formas dão o mesmo resultado. Use a que o problema facilitar."},
+      {t:"h", v:"Por que nunca chega a 100%"},
+      {t:"p", v:"Para η = 1 seria preciso Q₂ = 0, ou seja, nenhum calor rejeitado. A 2ª lei proíbe. Por isso η está sempre entre 0 e 1."},
+      {t:"destaque", v:"η = 0,4 significa 40%. É a mesma coisa escrita de dois jeitos."},
+      {t:"h", v:"Exemplo resolvido 1 — achando o rendimento"},
+      {t:"p", v:"Uma máquina recebe 800 J e rejeita 600 J. Qual o rendimento?"},
+      {t:"p", v:"Primeiro o trabalho, pela conservação: W = 800 − 600 = 200 J. Depois a razão:"},
+      {t:"formula", v:"η = 200 / 800 = 0,25 = 25%"},
+      {t:"p", v:"Note que 600/800 = 75% é o desperdício, não o rendimento. Se a prova te oferecer 75% como alternativa, é a pegadinha."},
+      {t:"h", v:"Exemplo resolvido 2 — achando o calor"},
+      {t:"p", v:"Uma máquina de 40% de rendimento realiza 2 000 J. Quanto calor recebe?"},
+      {t:"formula", v:"Q₁ = W / η = 2000 / 0,40 = 5 000 J"},
+      {t:"p", v:"Conferindo: 40% de 5 000 é 2 000 (o trabalho) e sobram 3 000 J rejeitados."},
+      {t:"h", v:"Valores reais, para ter noção"},
+      {t:"lista", v:[
+        "Motor a gasolina (ciclo Otto): cerca de 20% a 25%.",
+        "Motor a diesel: cerca de 30% a 35%.",
+        "Usina termoelétrica a vapor: 35% a 40%.",
+        "Motor elétrico: 85% a 95% — mas ele não é máquina térmica, e é por isso que rende tanto."
+      ]}
+    ],
+    erros: [
+      "Dividir pelo calor rejeitado (Q₂) em vez do recebido (Q₁).",
+      "Inverter a fração e obter rendimento maior que 100%.",
+      "Confundir o desperdício com o rendimento: os dois somam 100%.",
+      "Somar o percentual como se fosse energia (2000 + 40% = ?). Percentual é razão."
+    ]
+  },
+
+  "carnot": {
+    titulo: "Ciclo de Carnot: o teto teórico",
+    resumo: "Carnot imaginou a máquina mais eficiente possível entre duas temperaturas. Ela não existe na prática — mas serve de régua para saber o quanto sua máquina real ainda pode melhorar.",
+    blocos: [
+      {t:"h", v:"As quatro etapas"},
+      {t:"p", v:"O ciclo alterna contato com as fontes e isolamento térmico, sempre de forma reversível:"},
+      {t:"lista", v:[
+        "<b>1. Expansão isotérmica</b> — em contato com a fonte quente, recebe Q₁ e realiza trabalho.",
+        "<b>2. Expansão adiabática</b> — isolado, continua expandindo e esfria até a temperatura da fonte fria.",
+        "<b>3. Compressão isotérmica</b> — em contato com a fonte fria, cede Q₂.",
+        "<b>4. Compressão adiabática</b> — isolado, é comprimido e esquenta até voltar à temperatura da fonte quente."
+      ]},
+      {t:"p", v:"São <b>duas isotérmicas e duas adiabáticas</b>, alternadas. No gráfico P × V o ciclo aparece como uma figura fechada."},
+      {t:"h", v:"O rendimento máximo"},
+      {t:"p", v:"Para o ciclo de Carnot o rendimento depende só das temperaturas absolutas das duas fontes:"},
+      {t:"formula", v:"η = 1 − T_fria / T_quente", leg:"Temperaturas obrigatoriamente em kelvin"},
+      {t:"h", v:"Exemplo resolvido"},
+      {t:"p", v:"Fonte quente a 500 K, fonte fria a 300 K:"},
+      {t:"formula", v:"η = 1 − 300/500 = 1 − 0,6 = 0,4 = 40%"},
+      {t:"p", v:"Nenhuma máquina real operando entre essas duas temperaturas pode passar de 40%."},
+      {t:"h", v:"Por que serve de referência"},
+      {t:"p", v:"Suponha que sua máquina real renda 20% nas mesmas temperaturas em que Carnot renderia 40%. Você está na metade do potencial — há muito espaço para melhorar o projeto. Se rendesse 38%, estaria quase no limite teórico e não valeria a pena investir mais."},
+      {t:"destaque", v:"Carnot não é uma meta a alcançar. É o limite que mostra o quanto ainda falta."},
+      {t:"h", v:"Por que é impraticável"},
+      {t:"p", v:"As isotérmicas reversíveis precisariam ser infinitamente lentas e as adiabáticas reversíveis infinitamente rápidas. Não dá para ter as duas coisas ao mesmo tempo numa máquina real. Por isso Carnot é teórica."},
+      {t:"h", v:"Como aumentar o rendimento real"},
+      {t:"p", v:"Pela fórmula, há dois caminhos: aumentar a temperatura da fonte quente ou diminuir a da fonte fria. Na prática, subir a temperatura de entrada é o mais usado — é por isso que motores modernos trabalham em temperaturas cada vez mais altas."}
+    ],
+    erros: [
+      "Usar graus Celsius na fórmula. Se a fonte fria estiver a 0 °C, a conta quebra.",
+      "Calcular 60% em vez de 40% — o 0,6 é a fração rejeitada.",
+      "Inverter a razão e dividir pela temperatura fria no denominador.",
+      "Achar que Carnot é uma máquina que se compra pronta. É um modelo teórico."
+    ]
+  },
+
+  "refrigeradores": {
+    titulo: "Refrigeradores: o caminho inverso",
+    resumo: "A geladeira move calor do frio para o quente. Isso não acontece sozinho — é preciso pagar com trabalho, e é o compressor que faz esse serviço.",
+    blocos: [
+      {t:"h", v:"O que a geladeira faz"},
+      {t:"p", v:"Ela retira calor de dentro (fonte fria) e joga para fora (fonte quente). Aquela grade quente atrás da geladeira é a fonte quente recebendo o calor que estava dentro."},
+      {t:"formula", v:"Q_quente = Q_fria + W", leg:"O calor jogado fora é o que saiu de dentro mais o trabalho gasto"},
+      {t:"destaque", v:"Por isso a parte de trás da geladeira fica mais quente do que o calor que saiu de dentro. O compressor acrescentou energia ao sistema."},
+      {t:"h", v:"O coeficiente de desempenho"},
+      {t:"p", v:"Para o refrigerador, o \"produto\" não é trabalho, é calor removido. Então a conta se inverte:"},
+      {t:"formula", v:"ε = Q_fria / W", leg:"ε (épsilon) é o coeficiente de desempenho"},
+      {t:"p", v:"Exemplo: retira 400 J gastando 100 J de trabalho → ε = 4. Para cada joule pago, ele move 4 joules de calor."},
+      {t:"h", v:"Espere — maior que 1 não viola a 2ª lei?"},
+      {t:"p", v:"Não, e esse é o ponto que confunde. O refrigerador não está convertendo calor em trabalho, está <b>transportando</b> calor. A 2ª lei proíbe η > 1 para máquina térmica; para refrigerador, ε > 1 é normal e esperado."},
+      {t:"h", v:"De onde vem o frio"},
+      {t:"p", v:"Frio não é uma substância que se produz. É apenas ausência de agitação térmica. A geladeira não \"cria frio\": ela remove calor do interior."},
+      {t:"h", v:"Aplicações do mesmo princípio"},
+      {t:"lista", v:[
+        "<b>Geladeira e freezer</b> — removem calor do interior.",
+        "<b>Ar-condicionado</b> — remove calor do ambiente e joga para fora.",
+        "<b>Bomba de calor</b> — usa o mesmo ciclo para aquecer, invertendo o objetivo.",
+        "<b>Desumidificador</b> — condensa a umidade ao resfriar o ar."
+      ]}
+    ],
+    erros: [
+      "Achar que a geladeira produz frio do nada, sem consumir energia.",
+      "Calcular ε = W/Q_fria (invertido) e concluir que a eficiência é baixa.",
+      "Usar Q_quente no numerador em vez de Q_fria.",
+      "Pensar que ε > 1 é impossível — é justamente o normal."
+    ]
+  },
+
+  "temperatura-absoluta": {
+    titulo: "Por que kelvin e não graus Celsius",
+    resumo: "Nas fórmulas da termodinâmica, a temperatura precisa ser proporcional à energia das moléculas. Só a escala absoluta garante isso.",
+    blocos: [
+      {t:"h", v:"A conversão"},
+      {t:"formula", v:"T(K) = T(°C) + 273", leg:"Use 273,15 se precisar de mais precisão"},
+      {t:"p", v:"Exemplos rápidos: 27 °C = 300 K. 0 °C = 273 K. −273 °C = 0 K."},
+      {t:"h", v:"O que há de especial no zero absoluto"},
+      {t:"p", v:"0 K é o ponto em que a agitação térmica é mínima. Não existe temperatura menor, porque não existe agitação menor que zero. Em Celsius, o zero é arbitrário — foi escolhido pelo ponto de fusão da água, não por um limite físico."},
+      {t:"h", v:"Por que a fórmula de Carnot exige kelvin"},
+      {t:"p", v:"O rendimento de Carnot vem de uma razão entre energias, e essas energias são proporcionais à temperatura <b>absoluta</b>. Se você usa Celsius, a proporção se rompe."},
+      {t:"p", v:"Veja o absurdo: com fonte fria a 0 °C e quente a 300 °C, a razão em Celsius daria η = 1 − 0/300 = 100%, o que é impossível. Em kelvin: η = 1 − 273/573 ≈ 52%, que faz sentido."},
+      {t:"destaque", v:"Sempre que a fórmula tiver T em uma razão, converta para kelvin antes de calcular."},
+      {t:"h", v:"Quais fórmulas exigem kelvin"},
+      {t:"lista", v:[
+        "<b>Exigem:</b> P·V = nRT, U = (3/2)nRT, η = 1 − T_f/T_q, qualquer razão de temperaturas.",
+        "<b>Não exigem:</b> Q = mcΔT (aqui aparece ΔT, e a variação é igual nas duas escalas)."
+      ]},
+      {t:"p", v:"Isso é útil: em calor sensível, tanto faz usar °C ou K, porque a diferença entre duas temperaturas é a mesma nas duas escalas."}
+    ],
+    erros: [
+      "Misturar escalas na mesma conta (uma fonte em °C e outra em K).",
+      "Esquecer de somar 273 ao converter para kelvin.",
+      "Usar °C na fórmula de Carnot e obter rendimento negativo ou acima de 100%."
+    ]
+  }
+};
+
+// de qual aula cada questao trata (na ordem do array QUESTIONS)
+const LICAO_POR_QUESTAO = [
+  "maquinas-termicas","sistema","parametros","trabalho","trabalho","trabalho",
+  "energia-interna","energia-interna","primeira-lei","primeira-lei",
+  "transformacoes","transformacoes","transformacoes","segunda-lei",
+  "rendimento","rendimento","rendimento","carnot","carnot","carnot",
+  "refrigeradores","refrigeradores","refrigeradores","maquinas-termicas","maquinas-termicas",
+  "temperatura-absoluta","primeira-lei","primeira-lei"
+];
+QUESTIONS.forEach((q, i) => { q.licao = LICAO_POR_QUESTAO[i] || "primeira-lei"; });
+
+
+
+
+const stage   = document.getElementById('stage');
+const fill    = document.getElementById('fill');
+const count   = document.getElementById('count');
+const timerEl = document.getElementById('timer');
+const logEl   = document.getElementById('log');
+const LETTERS = ['a','b','c','d','e'];
+
+const LIMITE_SEG = 50 * 60;      // 50 minutos de prova
+const K_LOG    = 'simulado_fisica_log_v1';     // historico de eventos
+const K_SESSAO = 'simulado_fisica_sessao_v1';  // marcador de tentativa em andamento
+
+let QUIZ = [];        // versao com alternativas embaralhadas (a que aparece na tela)
+let idx = 0;
+let answers = [];
+let estado = 'intro'; // intro | quiz | done
+let fimEm = 0, inicioEm = 0, tickId = null;
+let pendente = null;  // alternativa selecionada aguardando confirmacao (-1 = pular)
+let tentativa = 0;
+
+/* ---------------- armazenamento seguro ---------------- */
+const mem = {};
+function lsGet(k, def){
+  try { const v = localStorage.getItem(k); return v === null ? def : JSON.parse(v); }
+  catch(e){ return k in mem ? mem[k] : def; }
+}
+function lsSet(k, v){
+  try { localStorage.setItem(k, JSON.stringify(v)); }
+  catch(e){ mem[k] = v; }
+}
+function lsDel(k){
+  try { localStorage.removeItem(k); } catch(e){ delete mem[k]; }
+}
+
+/* ---------------- registro de tentativas ---------------- */
+function logGet(){ const l = lsGet(K_LOG, []); return Array.isArray(l) ? l : []; }
+function logAdd(tipo, nota, extra){
+  const l = logGet();
+  l.push(Object.assign({t: Date.now(), tipo, nota: nota || '', tentativa}, extra || {}));
+  while (l.length > 60) l.shift();
+  lsSet(K_LOG, l);
+  renderLog();
+}
+
+function horaCurta(ts){
+  const d = new Date(ts);
+  return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+}
+function quando(ts){
+  const diff = Math.round((Date.now() - ts) / 60000);
+  if (diff < 1) return 'agora';
+  if (diff < 60) return 'há ' + diff + ' min';
+  const d = Math.round(diff / 60);
+  if (d < 24) return 'há ' + d + ' h';
+  return 'há ' + Math.round(d / 24) + ' d';
+}
+
+function resumoLog(){
+  const l = logGet();
+  const inicios   = l.filter(e => e.tipo === 'iniciou').length;
+  const reinicios = l.filter(e => e.tipo === 'reiniciou').length;
+  return {
+    inicios,
+    tentativas:  inicios + reinicios,          // toda vez que a prova recomeça, conta
+    reinicios,
+    interrupcoes:l.filter(e => e.tipo === 'interrompeu').length,
+    conclusoes:  l.filter(e => e.tipo === 'concluiu' || e.tipo === 'tempo').length,
+    ultimo:      l.length ? l[l.length - 1].t : 0
+  };
+}
+
+const ROTULO = {
+  iniciou:    '▶ Iniciou',
+  reiniciou:  '↻ Reiniciou',
+  interrompeu:'⏸ Saiu',
+  concluiu:   '✓ Concluiu',
+  tempo:      '⏱ Tempo esgotado'
+};
+
+function renderLog(){
+  const r = resumoLog();
+  const badges = document.getElementById('logBadges');
+  const note   = document.getElementById('logNote');
+  const list   = document.getElementById('logList');
+  const foot   = document.getElementById('logFoot');
+  if (!badges) return;
+
+  const b = [];
+  b.push(`<span class="badge ${r.tentativas?'':'zero'}">Tentativas: ${r.tentativas}</span>`);
+  b.push(`<span class="badge ${r.reinicios?'warn':'zero'}">Reinícios: ${r.reinicios}</span>`);
+  b.push(`<span class="badge ${r.interrupcoes?'bad':'zero'}">Saídas no meio: ${r.interrupcoes}</span>`);
+  b.push(`<span class="badge ${r.conclusoes?'good':'zero'}">Concluídas: ${r.conclusoes}</span>`);
+  if (r.ultimo) b.push(`<span class="badge zero">última: ${quando(r.ultimo)}</span>`);
+  badges.innerHTML = b.join('');
+
+  const total = r.reinicios + r.interrupcoes;
+  if (total > 0){
+    note.hidden = false;
+    note.innerHTML = `Este simulado já foi <b>reiniciado ${r.reinicios}×</b> e <b>interrompido ${r.interrupcoes}×</b> ` +
+      `(sair ou recarregar a página no meio conta como interrupção). O registro fica salvo neste navegador.`;
+  } else {
+    note.hidden = true;
+  }
+
+  const l = logGet().slice().reverse();
+  list.innerHTML = l.map(e => `
+    <li>
+      <span class="log-time">${horaCurta(e.t)}</span>
+      <span class="log-tipo ${e.tipo}">${ROTULO[e.tipo] || e.tipo}</span>
+      <span class="log-nota">${e.nota || ''}</span>
+    </li>`).join('');
+  foot.hidden = !l.length;
+}
+
+/* ---------------- sessao em andamento ---------------- */
+function marcarSessao(){
+  lsSet(K_SESSAO, {
+    inicio: inicioEm, tentativa,
+    idx: idx + 1,
+    respondidas: answers.length,
+    total: QUESTIONS.length,
+    naTela: Date.now()
+  });
+}
+function limparSessao(){ lsDel(K_SESSAO); }
+
+// ao abrir a pagina: se havia tentativa em andamento, isso conta como interrupcao
+function registrarSaidaAnterior(){
+  const s = lsGet(K_SESSAO, null);
+  if (!s) return false;
+  tentativa = s.tentativa || 1;
+  logAdd('interrompeu',
+    `tentativa ${s.tentativa} parada na questão ${s.idx}/${s.total} (${s.respondidas} respondida(s))`,
+    {t: s.naTela || s.inicio});
+  limparSessao();
+  return true;
+}
+
+/* ---------------- embaralhamento equilibrado ---------------- */
+function shuffleArr(a){
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--){
+    const k = Math.floor(Math.random() * (i + 1));
+    [r[i], r[k]] = [r[k], r[i]];
+  }
+  return r;
+}
+
+function montarQuiz(){
+  const n = QUESTIONS.length;
+  const cota = Math.floor(n / 5);
+  const sobra = n % 5;
+  const letras = shuffleArr([0,1,2,3,4]).slice(0, sobra);
+  let pool = [];
+  for (let l = 0; l < 5; l++){
+    const qtd = cota + (letras.includes(l) ? 1 : 0);
+    for (let k = 0; k < qtd; k++) pool.push(l);
+  }
+  pool = shuffleArr(pool);
+
+  return QUESTIONS.map((q, qi) => {
+    const correta = q.alternativas.findIndex(a => a.ok);
+    const erradas = shuffleArr(q.alternativas.map((_, k) => k).filter(k => k !== correta));
+    const alvo = pool[qi];
+    const ordem = [];
+    let pe = 0;
+    for (let pos = 0; pos < q.alternativas.length; pos++){
+      ordem.push(pos === alvo ? correta : erradas[pe++]);
+    }
+    return {
+      tema: q.tema,
+      enunciado: q.enunciado,
+      estrutura: q.estrutura,
+      conceito: q.conceito,
+      licao: q.licao,                       // aula do assunto (sobrevive ao sorteio)
+      alternativas: ordem.map(k => q.alternativas[k])
+    };
+  });
+}
+
+/* ---------------- cronometro ---------------- */
+function fmt(seg){
+  seg = Math.max(0, Math.round(seg));
+  return String(Math.floor(seg / 60)).padStart(2,'0') + ':' + String(seg % 60).padStart(2,'0');
+}
+function restanteSeg(){ return (fimEm - Date.now()) / 1000; }
+
+function tick(){
+  if (estado !== 'quiz') return;
+  const seg = restanteSeg();
+  timerEl.textContent = fmt(seg);
+  timerEl.classList.toggle('warn',   seg <= 600 && seg > 300);
+  timerEl.classList.toggle('danger', seg <= 300);
+  if (seg <= 0) encerrarPorTempo();
+}
+function iniciarTimer(){
+  inicioEm = Date.now();
+  fimEm = inicioEm + LIMITE_SEG * 1000;
+  timerEl.classList.remove('hidden','warn','danger');
+  timerEl.textContent = fmt(LIMITE_SEG);
+  clearInterval(tickId);
+  tickId = setInterval(tick, 250);
+  tick();
+}
+function pararTimer(){ clearInterval(tickId); tickId = null; timerEl.classList.add('hidden'); }
+
+/* ---------------- telas ---------------- */
+function progress(){
+  const pct = (idx / QUESTIONS.length) * 100;
+  fill.style.width = pct + '%';
+  count.innerHTML = '<b>' + Math.min(idx + 1, QUESTIONS.length) + '</b> / ' + QUESTIONS.length;
+}
+
+function telaInicial(){
+  estado = 'intro';
+  pararTimer();
+  pendente = null;
+  fill.style.width = '0%';
+  count.innerHTML = '<b>' + QUESTIONS.length + '</b> questões';
+  renderLog();
+
+  const r = resumoLog();
+  const aviso = (r.reinicios + r.interrupcoes) > 0
+    ? `<p class="log-note" style="margin-top:16px">Atenção: este simulado já foi reiniciado <b>${r.reinicios}×</b> e interrompido <b>${r.interrupcoes}×</b>. Esse histórico aparece no topo durante toda a prova.</p>`
+    : '';
+
+  stage.innerHTML = `
+    <section class="card">
+      <span class="chip">Antes de começar</span>
+      <p class="q">Simulado de Física — <strong>${QUESTIONS.length} questões</strong> de Termodinâmica, <strong>50 minutos</strong> de prova.</p>
+      <ul class="start-rules">
+        <li>O cronômetro começa em <b>Iniciar simulado</b> e não pausa.</li>
+        <li>Cada resposta pede <b>confirmação</b> antes de revelar o gabarito.</li>
+        <li>Se você sair ou recarregar no meio, isso é <b>registrado</b> no painel de tentativas lá em cima.</li>
+        <li>As alternativas são sorteadas a cada tentativa — a letra correta muda de lugar.</li>
+        <li>Ao chegar em 00:00, o simulado é encerrado e corrigido com o que você já respondeu.</li>
+      </ul>
+      ${aviso}
+      <div class="actions">
+        <span class="hint">Enter também inicia</span>
+        <button class="btn ghost" id="semTimer" type="button">Treinar sem tempo</button>
+        <button class="btn" id="iniciar" type="button">Iniciar simulado</button>
+      </div>
+    </section>`;
+  document.getElementById('iniciar').addEventListener('click', () => comecar(true));
+  document.getElementById('semTimer').addEventListener('click', () => comecar(false));
+}
+
+function comecar(comTempo, motivo){
+  QUIZ = montarQuiz();
+  idx = 0;
+  answers = [];
+  pendente = null;
+  estado = 'quiz';
+  tentativa = resumoLog().tentativas + 1;
+  if (comTempo) iniciarTimer(); else { inicioEm = Date.now(); pararTimer(); }
+
+  logAdd(motivo === 'reiniciou' ? 'reiniciou' : 'iniciou',
+         motivo === 'reiniciou'
+           ? `tentativa ${tentativa} — recomeçou do zero${comTempo ? ' com 50 min' : ' sem tempo'}`
+           : `tentativa ${tentativa} — ${comTempo ? '50 minutos' : 'sem tempo'}`);
+  marcarSessao();
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUIZ[idx];
+  progress();
+  pendente = null;
+
+  const opts = q.alternativas.map((a, i) => `
+      <button class="opt" data-i="${i}" type="button">
+        <span class="key">${LETTERS[i]}</span>
+        <span class="txt">${a.t}</span>
+      </button>`).join('');
+
+  stage.innerHTML = `
+    <section class="card">
+      <span class="chip">${q.tema}</span>
+      <p class="q">${q.enunciado}</p>
+      ${q.estrutura ? `<div class="formula"><span class="lbl">estrutura</span>${q.estrutura}</div>` : ''}
+      <div class="opts" id="opts">${opts}</div>
+      <div id="confirmBox"></div>
+      <div id="fb"></div>
+      <div class="actions">
+        <span class="hint" id="hint">Escolha uma alternativa (teclas 1–5)</span>
+        <button class="btn ghost" id="restart" type="button">Reiniciar</button>
+        <button class="btn ghost" id="skip" type="button">Pular</button>
+        <button class="btn" id="next" type="button" disabled>Próxima</button>
+      </div>
+    </section>`;
+
+  document.getElementById('opts').addEventListener('click', e => {
+    const b = e.target.closest('.opt');
+    if (b && !b.classList.contains('locked')) selecionar(parseInt(b.dataset.i, 10));
+  });
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('skip').addEventListener('click', pedirPular);
+  document.getElementById('restart').addEventListener('click', pedirReinicio);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---- etapa 1: selecionar (nao revela nada) ---- */
+function selecionar(i){
+  const q = QUIZ[idx];
+  const fb = document.getElementById('fb');
+  if (estado !== 'quiz' || (fb && fb.dataset.done)) return;
+  if (i < 0 || i >= q.alternativas.length) return;
+
+  pendente = i;
+
+  document.querySelectorAll('.opt').forEach(el => {
+    el.classList.toggle('sel', parseInt(el.dataset.i, 10) === i);
+  });
+
+  const box = document.getElementById('confirmBox');
+  box.innerHTML = `
+    <div class="confirm">
+      <p class="confirm-q">
+        Confirmar esta resposta?
+        <span class="pick"><b>${LETTERS[i]})</b> ${q.alternativas[i].t}</span>
+      </p>
+      <div class="confirm-btns">
+        <button class="btn ghost" id="trocar" type="button">Trocar</button>
+        <button class="btn" id="confirmar" type="button">Confirmar resposta</button>
+      </div>
+    </div>`;
+  document.getElementById('confirmar').addEventListener('click', confirmar);
+  document.getElementById('trocar').addEventListener('click', limparSelecao);
+  document.getElementById('hint').textContent = 'Confirme para ver o gabarito (Enter confirma)';
+  document.getElementById('confirmar').focus({preventScroll:true});
+}
+
+function limparSelecao(){
+  pendente = null;
+  document.querySelectorAll('.opt').forEach(el => el.classList.remove('sel'));
+  const box = document.getElementById('confirmBox');
+  if (box) box.innerHTML = '';
+  const hint = document.getElementById('hint');
+  if (hint) hint.textContent = 'Escolha uma alternativa (teclas 1–5)';
+}
+
+function confirmar(){
+  if (pendente === null) return;
+  const escolha = pendente;
+  document.getElementById('confirmBox').innerHTML = '';
+  revelar(escolha);
+}
+
+/* ---- pular tambem passa por confirmacao ---- */
+function pedirPular(){
+  const fb = document.getElementById('fb');
+  if (estado !== 'quiz' || (fb && fb.dataset.done)) return;
+  pendente = -1;
+  document.querySelectorAll('.opt').forEach(el => el.classList.remove('sel'));
+  const box = document.getElementById('confirmBox');
+  box.innerHTML = `
+    <div class="confirm">
+      <p class="confirm-q">
+        Pular esta questão? Ela entra como <b>não respondida</b> no resultado.
+      </p>
+      <div class="confirm-btns">
+        <button class="btn ghost" id="trocar" type="button">Voltar</button>
+        <button class="btn danger-btn" id="confirmar" type="button">Pular mesmo assim</button>
+      </div>
+    </div>`;
+  document.getElementById('confirmar').addEventListener('click', confirmar);
+  document.getElementById('trocar').addEventListener('click', limparSelecao);
+  document.getElementById('confirmar').focus({preventScroll:true});
+}
+
+/* ---- reinicio com confirmacao e registro ---- */
+function pedirReinicio(){
+  if (estado !== 'quiz') return;
+  boxReinicio();
+}
+
+function boxReinicio(){
+  const box = document.getElementById('confirmBox');
+  const resp = answers.length;
+  box.innerHTML = `
+    <div class="confirm" style="border-color:var(--no-line);background:var(--no-soft)">
+      <p class="confirm-q">
+        Reiniciar o simulado? Você está na <b>questão ${idx + 1} de ${QUESTIONS.length}</b> com
+        <b>${resp} resposta(s)</b> registrada(s). Tudo é apagado e o reinício fica marcado no
+        painel de registro do topo.
+      </p>
+      <div class="confirm-btns">
+        <button class="btn ghost" id="trocar" type="button">Cancelar</button>
+        <button class="btn danger-btn" id="confirmar" type="button">Sim, reiniciar</button>
+      </div>
+    </div>`;
+  document.getElementById('confirmar').addEventListener('click', () => {
+    comecar(true, 'reiniciou');
+  });
+  document.getElementById('trocar').addEventListener('click', () => {
+    if (pendente === null) limparSelecao(); else selecionar(pendente);
+  });
+  document.getElementById('confirmar').focus({preventScroll:true});
+}
+
+/* ---- etapa 2: revelar gabarito ---- */
+function revelar(chosen){
+  if (estado !== 'quiz') return;
+  const q = QUIZ[idx];
+  const fb = document.getElementById('fb');
+  if (fb.dataset.done) return;
+  fb.dataset.done = '1';
+
+  const ok = chosen >= 0 && q.alternativas[chosen].ok;
+  answers.push({i: idx, chosen, ok, tema: q.tema});
+  pendente = null;
+  marcarSessao();
+
+  document.querySelectorAll('.opt').forEach(el => {
+    const i = parseInt(el.dataset.i, 10);
+    const a = q.alternativas[i];
+    el.classList.remove('sel');
+    el.classList.add('locked');
+    if (a.ok){
+      el.classList.add('correct');
+      el.insertAdjacentHTML('beforeend', '<span class="mark">✓</span>');
+    } else if (i === chosen){
+      el.classList.add('wrong');
+      el.insertAdjacentHTML('beforeend', '<span class="mark">✕</span>');
+    } else {
+      el.classList.add('dim');
+    }
+  });
+
+  const why = q.alternativas.map((a, i) => {
+    const cls = a.ok ? 'good' : 'bad';
+    const picked = i === chosen ? ' picked' : '';
+    return `<li class="${cls}${picked}"><b class="lbl">${LETTERS[i]}</b>${a.porque}</li>`;
+  }).join('');
+
+  const verdict = chosen === -1
+    ? `<div class="verdict no">⏭ Você pulou esta questão</div>`
+    : ok
+      ? `<div class="verdict ok">✓ Resposta correta</div>`
+      : `<div class="verdict no">✕ Resposta incorreta — a correta é a letra ${LETTERS[q.alternativas.findIndex(a => a.ok)]}</div>`;
+
+  const lic = LICOES[q.licao];
+  const btnAula = lic ? `
+    <button class="lesson-btn" id="abrirAula" type="button">
+      <span class="ico">📘</span>
+      <span class="lbl">Aprender o assunto do zero
+        <small>${lic.titulo}</small></span>
+      <span class="arrow">→</span>
+    </button>` : '';
+
+  fb.innerHTML = `
+    <div class="fb">
+      ${verdict}
+      <p class="concept">${q.conceito}</p>
+      <ul class="why">${why}</ul>
+      ${btnAula}
+    </div>`;
+
+  const abrir = document.getElementById('abrirAula');
+  if (abrir) abrir.addEventListener('click', () => abrirLicao(q.licao));
+
+  const nextBtn = document.getElementById('next');
+  nextBtn.disabled = false;
+  nextBtn.textContent = (idx === QUESTIONS.length - 1) ? 'Ver resultado' : 'Próxima';
+  document.getElementById('skip').style.display = 'none';
+  document.getElementById('hint').textContent = ok ? 'Boa. Enter para continuar.' : 'Leia as explicações e siga com Enter.';
+  nextBtn.focus({preventScroll:true});
+}
+
+function next(){
+  const fb = document.getElementById('fb');
+  if (!fb || !fb.dataset.done) return;
+  idx++;
+  if (idx >= QUESTIONS.length) return results();
+  marcarSessao();
+  renderQuestion();
+}
+
+function encerrarPorTempo(){
+  pararTimer();
+  results(true);
+}
+
+function results(porTempo){
+  estado = 'done';
+  pararTimer();
+  limparSessao();
+
+  const segUsados = porTempo ? LIMITE_SEG : Math.min(LIMITE_SEG, Math.round((Date.now() - inicioEm) / 1000));
+  fill.style.width = '100%';
+
+  const right = answers.filter(a => a.ok).length;
+  const total = QUESTIONS.length;
+  const pct = Math.round((right / total) * 100);
+  const semResposta = total - answers.length;
+
+  logAdd(porTempo ? 'tempo' : 'concluiu',
+         `tentativa ${tentativa} — ${right}/${total} (${pct}%) em ${fmt(segUsados)}`);
+
+  const byTheme = {};
+  answers.forEach(a => {
+    byTheme[a.tema] = byTheme[a.tema] || {t:0, ok:0};
+    byTheme[a.tema].t++;
+    if (a.ok) byTheme[a.tema].ok++;
+  });
+
+  const rows = Object.entries(byTheme).map(([tema, v]) => {
+    const p = Math.round((v.ok / v.t) * 100);
+    const cls = p >= 80 ? 'ok' : p >= 50 ? 'mid' : 'no';
+    return `<tr><td>${tema}</td><td class="num">${v.ok}/${v.t}</td>
+            <td class="num"><span class="pill ${cls}">${p}%</span></td></tr>`;
+  }).join('');
+
+  const errors = answers.filter(a => !a.ok);
+  const rev = errors.length
+    ? `<ul class="rev-list">${errors.map(a => {
+        const q = QUIZ[a.i];
+        const corr = q.alternativas.find(x => x.ok);
+        return `<li><b>Questão ${a.i + 1} · ${q.tema}</b>
+                  ${a.chosen === -1 ? 'Você pulou. ' : ''}Correta (${LETTERS[q.alternativas.findIndex(x => x.ok)]}): ${corr.t}</li>`;
+      }).join('')}</ul>`
+    : `<p class="sub" style="margin-top:18px">Nenhum erro. Nesse nível, revise só os detalhes: sinal do trabalho e conversão para kelvin em Carnot.</p>`;
+
+  const msg = pct >= 85 ? 'Muito bom — você domina as leis da Termodinâmica.'
+            : pct >= 65 ? 'Bom caminho. Os erros estão concentrados em poucos temas: releia a tabela.'
+            : pct >= 45 ? 'Base em construção. Refaça as questões erradas com a explicação ao lado.'
+            : 'Vale voltar à aula: 1ª lei, sinais de Q e W, e a diferença entre as quatro transformações.';
+
+  const rr = resumoLog();
+  count.innerHTML = '<b>' + total + '</b> / ' + total;
+
+  stage.innerHTML = `
+    <section class="card">
+      <span class="chip">Resultado</span>
+      ${porTempo ? `<div class="banner">⏱ Tempo esgotado — o simulado foi encerrado e corrigido com as respostas já registradas.</div>` : ''}
+      <div class="score">
+        <div class="ring" style="--p:${pct}"><span>${pct}%</span></div>
+        <div class="score-txt">
+          <h2>${right} de ${total} corretas</h2>
+          <p>${msg}</p>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span>Tentativa: <b>${tentativa}ª</b></span>
+        <span>Tempo: <b>${fmt(segUsados)}</b>${porTempo ? ' (limite)' : ' de 50:00'}</span>
+        <span>Em branco: <b>${semResposta}</b></span>
+        <span>Média por questão: <b>${answers.length >= 3 ? fmt(segUsados / answers.length) : '—'}</b></span>
+        <span>Reinícios + saídas: <b>${rr.reinicios + rr.interrupcoes}</b></span>
+      </div>
+      <table>
+        <thead><tr><th>Tema</th><th class="num">Acertos</th><th class="num">%</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <h3 style="font-size:15px;margin:22px 0 0">Revisar antes da prova</h3>
+      ${rev}
+      <div class="actions">
+        <span class="hint">Cada tentativa sorteia novas posições.</span>
+        <button class="btn ghost" id="inicio" type="button">Tela inicial</button>
+        <button class="btn" id="again" type="button">Refazer o simulado</button>
+      </div>
+    </section>`;
+
+  document.getElementById('again').addEventListener('click', () => comecar(true, 'reiniciou'));
+  document.getElementById('inicio').addEventListener('click', telaInicial);
+  renderLog();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+
+/* ---------------- aula do assunto (modal) ---------------- */
+let scrollAntes = 0;
+
+function renderLicao(id){
+  const l = LICOES[id];
+  if (!l) return '';
+
+  const corpo = l.blocos.map(b => {
+    if (b.t === 'h')   return `<h3>${b.v}</h3>`;
+    if (b.t === 'p')   return `<p>${b.v}</p>`;
+    if (b.t === 'formula') return `<div class="lesson-form">${b.v}${b.leg ? `<span class="leg">${b.leg}</span>` : ''}</div>`;
+    if (b.t === 'destaque') return `<div class="lesson-hi">${b.v}</div>`;
+    if (b.t === 'lista') return `<ul>${b.v.map(x => `<li>${x}</li>`).join('')}</ul>`;
+    return '';
+  }).join('');
+
+  const erros = (l.erros && l.erros.length) ? `
+    <div class="lesson-erros">
+      <p class="tit">Onde todo mundo erra</p>
+      <ul>${l.erros.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>` : '';
+
+  return `
+    <div class="lesson-head">
+      <div style="flex:1;min-width:0">
+        <p class="eyebrow">Aula · Termodinâmica</p>
+        <h2>${l.titulo}</h2>
+      </div>
+      <button class="lesson-close" id="fecharAula" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div class="lesson-body">
+      <p class="lesson-resumo">${l.resumo}</p>
+      ${corpo}
+      ${erros}
+    </div>
+    <div class="lesson-foot">
+      <button class="btn ghost" id="fecharAula2" type="button">Voltar para a questão</button>
+      <button class="btn" id="entendi" type="button">Entendi, continuar</button>
+    </div>`;
+}
+
+function abrirLicao(id){
+  const modal = document.getElementById('modal');
+  const box   = document.getElementById('lesson');
+  if (!modal || !LICOES[id]) return;
+  scrollAntes = window.scrollY;
+  box.innerHTML = renderLicao(id);
+  modal.classList.add('open');
+  modal.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  document.getElementById('fecharAula').addEventListener('click', fecharLicao);
+  document.getElementById('fecharAula2').addEventListener('click', fecharLicao);
+  document.getElementById('entendi').addEventListener('click', fecharLicao);
+}
+
+function fecharLicao(){
+  const modal = document.getElementById('modal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('lesson').innerHTML = '';
+  window.scrollTo({top: scrollAntes, behavior: 'auto'});
+  const n = document.getElementById('next');
+  if (n) n.focus({preventScroll:true});
+}
+
+document.addEventListener('click', e => {
+  if (e.target && e.target.id === 'modal') fecharLicao();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){
+    const m = document.getElementById('modal');
+    if (m && m.classList.contains('open')){ e.preventDefault(); e.stopPropagation(); fecharLicao(); }
+  }
+}, true);
+
+/* ---------------- painel de registro ---------------- */
+document.getElementById('logToggle').addEventListener('click', () => {
+  const list = document.getElementById('logList');
+  const foot = document.getElementById('logFoot');
+  const abrir = list.hidden;
+  list.hidden = !abrir;
+  foot.hidden = !abrir || !logGet().length;
+  document.getElementById('logToggle').textContent = abrir ? 'Ocultar' : 'Histórico';
+});
+
+document.getElementById('logClear').addEventListener('click', () => {
+  lsSet(K_LOG, []);
+  renderLog();
+  const list = document.getElementById('logList');
+  list.hidden = true;
+  document.getElementById('logFoot').hidden = true;
+  document.getElementById('logToggle').textContent = 'Histórico';
+});
+
+/* ---------------- teclado ---------------- */
+document.addEventListener('keydown', e => {
+  const modalAberto = document.getElementById('modal') && document.getElementById('modal').classList.contains('open');
+  if (modalAberto) return;              // aula aberta: teclado do quiz fica inativo
+  if (estado === 'intro'){
+    if (e.key === 'Enter'){ e.preventDefault(); comecar(true); }
+    return;
+  }
+  if (estado !== 'quiz') return;
+  const fb = document.getElementById('fb');
+  if (!fb) return;
+
+  if (fb.dataset.done){
+    if (e.key === 'Enter'){ e.preventDefault(); next(); }
+    return;
+  }
+  if (/^[1-5]$/.test(e.key)){
+    const i = parseInt(e.key, 10) - 1;
+    if (i < QUIZ[idx].alternativas.length){ e.preventDefault(); selecionar(i); }
+    return;
+  }
+  if (e.key === 'Enter' && pendente !== null){ e.preventDefault(); confirmar(); }
+  if (e.key === 'Escape' && pendente !== null){ e.preventDefault(); limparSelecao(); }
+});
+
+/* ---------------- ao sair no meio da tentativa ---------------- */
+window.addEventListener('pagehide', () => { if (estado === 'quiz') marcarSessao(); });
+window.addEventListener('beforeunload', () => { if (estado === 'quiz') marcarSessao(); });
+
+/* ---------------- boot ---------------- */
+registrarSaidaAnterior();
+renderLog();
+telaInicial();
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+﻿SIMULADO DE FISICA - MAQUINAS TERMICAS E TERMODINAMICA
+2o ano do Ensino Medio - 28 questoes - 50 minutos
+====================================================
+
+>>> JEITO MAIS FACIL <<<
+Clique 2 vezes em:  ABRIR-SIMULADO.bat
+O simulado abre no Chrome/Edge automaticamente.
+
+Se aparecer aviso azul do Windows ("O Windows protegeu o PC"),
+clique em "Mais informacoes" e depois em "Executar assim mesmo".
+
+
+>>> O QUE TEM DENTRO <<<
+- 28 questoes de multipla escolha, com gabarito comentado
+- Cronometro de 50 minutos
+- Confirmacao antes de revelar a resposta
+- Registro de tentativas, reinicios e saidas no meio
+- 12 AULAS completas: toda resposta tem um botao
+  "Aprender o assunto do zero" que abre a explicacao
+  daquele tema, com formulas, exemplos e os erros classicos
+
+
+>>> AS 12 AULAS <<<
+1.  O que e uma maquina termica
+2.  Sistema, vizinhanca e fronteira
+3.  Os tres parametros de estado (P, V, T)
+4.  Trabalho de um gas: de onde vem W = P.dV
+5.  Energia interna: a agitacao das moleculas
+6.  1a Lei da Termodinamica
+7.  As quatro transformacoes gasosas
+8.  2a Lei: por que 100% e impossivel
+9.  Rendimento
+10. Ciclo de Carnot
+11. Refrigeradores
+12. Por que kelvin e nao Celsius
+
+
+>>> CONTEUDO <<<
+Tudo foi montado a partir da transcricao da aula de
+Fisica de 46 minutos (arquivo "aula fisica.ogg").
+Os assuntos sao exatamente os que o professor passou.
+
+
+>>> NAO PRECISA DE INTERNET <<<
+Funciona offline. O historico fica no navegador do computador.
+
+
+>>> NAO ABRA COM <<<
+Internet Explorer, Bloco de Notas, Word ou Excel.
+Use o .bat ou clique com o botao direito > Abrir com > Chrome.
+
+
+Problemas? O .bat precisa estar na MESMA PASTA do simulado.html.
