@@ -1,5 +1,7 @@
 # Instruções de publicação — Simulado de Física
 
+> **Estado atual:** publicado e verificado (commit `26aa80d`). Este documento serve para as próximas atualizações.
+
 Documento para outra IA (ou qualquer pessoa) assumir a atualização deste simulado.
 Leia até o fim antes de tocar em qualquer arquivo.
 
@@ -9,14 +11,16 @@ Leia até o fim antes de tocar em qualquer arquivo.
 
 | Item | Estado |
 |---|---|
-| Arquivo de trabalho (novo, com figuras) | `saida/simulado-com-figuras.html` — **123.049 bytes** |
+| Arquivo de trabalho (novo, com figuras) | `saida/simulado-com-figuras.html` — 123.049 bytes em disco (**121.085** após normalizar CRLF) |
 | Arquivo de referência (antigo, sem figuras) | `simulado.html` — 115.218 bytes — **NÃO ALTERAR** |
-| O que o site publica hoje | 113.228 bytes, **0 SVG** — **DESATUALIZADO** |
+| O que o site publica hoje | **já atualizado** — 121.085 bytes, 4 SVG, commit `26aa80d` |
 | Link público | https://maximojota-hue.github.io/simulado-fisica/ |
 | Repositório | https://github.com/maximojota-hue/simulado-fisica |
 | Branch | `main` |
 
-**Resumo:** o simulado novo (com os 4 diagramas SVG) está pronto e testado, mas **ainda não foi publicado**. O site continua mostrando a versão sem figuras. Sua tarefa é substituir.
+**Resumo:** a versão com os 4 diagramas SVG **já está publicada e verificada ao vivo** (commit `26aa80d`).
+O site serve exatamente o conteúdo de `saida/simulado-com-figuras.html`. As seções abaixo são o
+procedimento para as **próximas** atualizações.
 
 ---
 
@@ -123,14 +127,14 @@ Não confie no commit — confira o que o servidor está entregando.
 curl -sL https://maximojota-hue.github.io/simulado-fisica/ | grep -c "const SVG_"
 # esperado: 4
 
-# tamanho deve subir de ~113 KB para ~123 KB
+# tamanho esperado: ~121085 bytes (o disco mostra 123049 por causa do CRLF)
 curl -sL https://maximojota-hue.github.io/simulado-fisica/ -o /tmp/x.html -w "%{size_download}\n"
 
 # o título
 curl -sL https://maximojota-hue.github.io/simulado-fisica/ | grep -o "<title>[^<]*</title>"
 ```
 
-Se o número de `const SVG_` ainda for **0**, o Pages não reconstruiu ainda:
+Se o número de `const SVG_` ainda for **0**, o Pages não reconstruiu ainda (medido: leva ~50 s):
 aguarde um minuto, rode `gh api repos/maximojota-hue/simulado-fisica/pages/builds` e
 peça ao dono para recarregar com **Ctrl+Shift+R** (cache do navegador).
 
@@ -187,7 +191,7 @@ git revert --no-edit HEAD && git push origin main
 git log --oneline -10
 ```
 
-O commit anterior funcional é `882da50` (versão sem figuras, 115 KB). Serve de
+O commit anterior é `882da50` (versão sem figuras). O atual, com figuras, é `26aa80d`. Serve de
 ponto de retorno se a versão nova apresentar problema em algum aparelho.
 
 ---
