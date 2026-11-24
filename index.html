@@ -263,6 +263,19 @@
     padding:14px 16px;margin:14px 0 4px;
     white-space:pre;overflow-x:auto;color:#242736;
   }
+
+  /* ---------- figura (diagrama SVG da questao/aula) ---------- */
+  .figura{
+    margin:16px 0 4px;padding:14px 12px 10px;
+    background:#fbfcff;border:1px solid var(--line);border-radius:12px;
+    text-align:center;
+  }
+  .figura svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .figura .cap{
+    display:block;margin-top:9px;font-size:12.5px;line-height:1.5;
+    color:var(--muted);text-align:center;
+  }
+  .lesson-body .figura{margin:0 0 16px}
   .formula .lbl{display:block;font-family:inherit;font-size:11.5px;letter-spacing:.08em;
     text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 
@@ -394,6 +407,112 @@
 </div>
 
 <script>
+/* ============================================================
+   FIGURAS — diagramas em SVG embutido (funcionam offline)
+   Cores presas ao tema para ler bem em qualquer fundo.
+   ============================================================ */
+
+// isobarica: W = P.dV e a area do retangulo sob a linha de pressao constante
+const SVG_PV_ISOBARICA = `
+<div class="figura">
+<svg viewBox="0 0 320 220" role="img" aria-label="Diagrama pressao por volume de uma transformacao isobarica, com a area do trabalho destacada">
+  <rect x="80" y="70" width="150" height="90" fill="#c7d2fe" opacity="0.55"/>
+  <line x1="55" y1="20" x2="55" y2="185" stroke="#9aa1b4" stroke-width="2"/>
+  <line x1="55" y1="185" x2="300" y2="185" stroke="#9aa1b4" stroke-width="2"/>
+  <polygon points="55,14 51,24 59,24" fill="#9aa1b4"/>
+  <polygon points="306,185 296,181 296,189" fill="#9aa1b4"/>
+  <line x1="80" y1="70" x2="230" y2="70" stroke="#4f46e5" stroke-width="3"/>
+  <circle cx="80" cy="70" r="4.5" fill="#4f46e5"/>
+  <circle cx="230" cy="70" r="4.5" fill="#4f46e5"/>
+  <polygon points="165,62 177,70 165,78" fill="#4f46e5"/>
+  <line x1="80" y1="70" x2="80" y2="185" stroke="#9aa1b4" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="230" y1="70" x2="230" y2="185" stroke="#9aa1b4" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="38" y="26" fill="#4b5060" font-size="13" font-style="italic">P</text>
+  <text x="298" y="205" fill="#4b5060" font-size="13" font-style="italic">V</text>
+  <text x="74" y="200" fill="#6b7280" font-size="11">V&#8321;</text>
+  <text x="224" y="200" fill="#6b7280" font-size="11">V&#8322;</text>
+  <text x="130" y="122" fill="#3730a3" font-size="13" font-weight="700">W = P &#183; &#916;V</text>
+  <text x="235" y="66" fill="#4f46e5" font-size="11">P constante</text>
+</svg>
+<span class="cap">A pressao fica constante (linha reta horizontal). O trabalho e a <b>area do retangulo</b> sob a linha: base &#916;V, altura P.</span>
+</div>`;
+
+// expansao: volume aumenta (seta para a direita) -> W positivo
+const SVG_PV_EXPANSAO = `
+<div class="figura">
+<svg viewBox="0 0 320 220" role="img" aria-label="Diagrama pressao por volume de uma expansao, com a area sob a curva destacada">
+  <path d="M80 60 L230 150 L230 185 L80 185 Z" fill="#bbf7d0" opacity="0.6"/>
+  <line x1="55" y1="20" x2="55" y2="185" stroke="#9aa1b4" stroke-width="2"/>
+  <line x1="55" y1="185" x2="300" y2="185" stroke="#9aa1b4" stroke-width="2"/>
+  <polygon points="55,14 51,24 59,24" fill="#9aa1b4"/>
+  <polygon points="306,185 296,181 296,189" fill="#9aa1b4"/>
+  <path d="M80 60 Q150 95 230 150" fill="none" stroke="#15803d" stroke-width="3"/>
+  <circle cx="80" cy="60" r="4.5" fill="#15803d"/>
+  <circle cx="230" cy="150" r="4.5" fill="#15803d"/>
+  <polygon points="168,98 180,108 165,113" fill="#15803d"/>
+  <text x="38" y="26" fill="#4b5060" font-size="13" font-style="italic">P</text>
+  <text x="298" y="205" fill="#4b5060" font-size="13" font-style="italic">V</text>
+  <text x="66" y="50" fill="#6b7280" font-size="11">inicio</text>
+  <text x="236" y="152" fill="#6b7280" font-size="11">fim</text>
+  <text x="110" y="172" fill="#166534" font-size="13" font-weight="700">W &gt; 0</text>
+  <text x="120" y="210" fill="#15803d" font-size="11">volume aumenta &#8594;</text>
+</svg>
+<span class="cap">Na <b>expansao</b> o volume aumenta (anda para a direita): o gas empurra o pistao, entao o trabalho do gas e <b>positivo</b>.</span>
+</div>`;
+
+// compressao: volume diminui (seta para a esquerda) -> W negativo
+const SVG_PV_COMPRESSAO = `
+<div class="figura">
+<svg viewBox="0 0 320 220" role="img" aria-label="Diagrama pressao por volume de uma compressao">
+  <path d="M80 60 L230 150 L230 185 L80 185 Z" fill="#fecaca" opacity="0.55"/>
+  <line x1="55" y1="20" x2="55" y2="185" stroke="#9aa1b4" stroke-width="2"/>
+  <line x1="55" y1="185" x2="300" y2="185" stroke="#9aa1b4" stroke-width="2"/>
+  <polygon points="55,14 51,24 59,24" fill="#9aa1b4"/>
+  <polygon points="306,185 296,181 296,189" fill="#9aa1b4"/>
+  <path d="M80 60 Q150 95 230 150" fill="none" stroke="#b91c1c" stroke-width="3"/>
+  <circle cx="80" cy="60" r="4.5" fill="#b91c1c"/>
+  <circle cx="230" cy="150" r="4.5" fill="#b91c1c"/>
+  <polygon points="140,92 155,97 142,107" fill="#b91c1c"/>
+  <text x="38" y="26" fill="#4b5060" font-size="13" font-style="italic">P</text>
+  <text x="298" y="205" fill="#4b5060" font-size="13" font-style="italic">V</text>
+  <text x="54" y="50" fill="#6b7280" font-size="11">fim</text>
+  <text x="236" y="152" fill="#6b7280" font-size="11">inicio</text>
+  <text x="110" y="172" fill="#991b1b" font-size="13" font-weight="700">W &lt; 0</text>
+  <text x="112" y="210" fill="#b91c1c" font-size="11">&#8592; volume diminui</text>
+</svg>
+<span class="cap">Na <b>compressao</b> o volume diminui (anda para a esquerda): algo empurra o gas para dentro, entao o trabalho do gas e <b>negativo</b>.</span>
+</div>`;
+
+// ciclo de Carnot: 2 isotermicas + 2 adiabaticas, ciclo fechado
+const SVG_CARNOT = `
+<div class="figura">
+<svg viewBox="0 0 340 240" role="img" aria-label="Diagrama pressao por volume do ciclo de Carnot: duas isotermicas e duas adiabaticas formando um ciclo fechado">
+  <line x1="50" y1="18" x2="50" y2="200" stroke="#9aa1b4" stroke-width="2"/>
+  <line x1="50" y1="200" x2="320" y2="200" stroke="#9aa1b4" stroke-width="2"/>
+  <polygon points="50,12 46,22 54,22" fill="#9aa1b4"/>
+  <polygon points="326,200 316,196 316,204" fill="#9aa1b4"/>
+  <path d="M90 55 Q140 60 185 80" fill="none" stroke="#b91c1c" stroke-width="3"/>
+  <path d="M185 80 Q250 110 280 150" fill="none" stroke="#4f46e5" stroke-width="3" stroke-dasharray="6 4"/>
+  <path d="M280 150 Q230 150 165 140" fill="none" stroke="#2563eb" stroke-width="3"/>
+  <path d="M165 140 Q110 110 90 55" fill="none" stroke="#4f46e5" stroke-width="3" stroke-dasharray="6 4"/>
+  <circle cx="90" cy="55" r="4.5" fill="#1a1c23"/>
+  <circle cx="185" cy="80" r="4.5" fill="#1a1c23"/>
+  <circle cx="280" cy="150" r="4.5" fill="#1a1c23"/>
+  <circle cx="165" cy="140" r="4.5" fill="#1a1c23"/>
+  <text x="78" y="50" fill="#4b5060" font-size="12" font-weight="700">1</text>
+  <text x="190" y="78" fill="#4b5060" font-size="12" font-weight="700">2</text>
+  <text x="285" y="152" fill="#4b5060" font-size="12" font-weight="700">3</text>
+  <text x="150" y="137" fill="#4b5060" font-size="12" font-weight="700">4</text>
+  <text x="34" y="24" fill="#4b5060" font-size="13" font-style="italic">P</text>
+  <text x="318" y="220" fill="#4b5060" font-size="13" font-style="italic">V</text>
+  <text x="95" y="42" fill="#b91c1c" font-size="11">1&#8594;2 isotermica (quente)</text>
+  <text x="188" y="118" fill="#4338ca" font-size="11">2&#8594;3 adiabatica</text>
+  <text x="120" y="162" fill="#2563eb" font-size="11">3&#8594;4 isotermica (fria)</text>
+  <text x="60" y="95" fill="#4338ca" font-size="11">4&#8594;1 adiabatica</text>
+</svg>
+<span class="cap">Ciclo fechado com <b>duas isotermicas</b> (linhas cheias: contato com as fontes) e <b>duas adiabaticas</b> (tracejadas: isoladas). A area de dentro e o trabalho util.</span>
+</div>`;
+
 const QUESTIONS = [
   {
     tema: "Máquinas térmicas",
@@ -449,6 +568,7 @@ const QUESTIONS = [
   {
     tema: "Trabalho do gás",
     enunciado: "A expressão do trabalho realizado por um gás em uma transformação a pressão constante é:",
+    figura: SVG_PV_ISOBARICA,
     estrutura: "W = P · ΔV      (P em Pa, ΔV em m³ → W em joule)",
     conceito: "Em aula a fórmula foi <b>deduzida</b>, não decorada: W = F·h, e como P = F/A, temos F = P·A. Logo W = P·A·h. E A·h é exatamente a variação de volume do cilindro. Resultado: W = P·ΔV.",
     alternativas: [
@@ -467,6 +587,7 @@ const QUESTIONS = [
   {
     tema: "Trabalho do gás",
     enunciado: "Quando o gás <strong>se expande</strong> e empurra o pistão para fora, o trabalho realizado <strong>pelo gás</strong> é:",
+    figura: SVG_PV_EXPANSAO,
     conceito: "Convenção da aula: o trabalho é positivo quando o gás é quem produz o movimento (empurra o pistão para fora, aumentando o volume). É positivo porque a força do gás está no mesmo sentido do deslocamento.",
     alternativas: [
       {t:"Negativo, porque o volume aumentou.", ok:false,
@@ -484,6 +605,7 @@ const QUESTIONS = [
   {
     tema: "Trabalho do gás",
     enunciado: "Durante a compressão, algo empurra o pistão para dentro e o volume do gás diminui. O trabalho realizado <strong>pelo gás</strong> nesse processo é:",
+    figura: SVG_PV_COMPRESSAO,
     conceito: "Compressão → volume diminui → ΔV negativo → W = P·ΔV negativo. Fisicamente, o gás está sendo forçado: ele \"resiste\" empurrando ao contrário, então quem realiza trabalho positivo é o agente externo.",
     alternativas: [
       {t:"Positivo, porque o gás está reagindo à força.", ok:false,
@@ -694,6 +816,7 @@ const QUESTIONS = [
   {
     tema: "Ciclo de Carnot",
     enunciado: "O ciclo de Carnot é formado por quais transformações?",
+    figura: SVG_CARNOT,
     conceito: "Quatro etapas alternadas: expansão isotérmica, expansão adiabática, compressão isotérmica e compressão adiabática. Duas a temperatura constante e duas sem troca de calor — é o ciclo mais eficiente possível entre duas temperaturas.",
     alternativas: [
       {t:"Duas isobáricas e duas isovolumétricas.", ok:false,
@@ -1004,7 +1127,8 @@ const LICOES = {
       ]},
       {t:"destaque", v:"Pense em quem faz o esforço: se o gás empurra, trabalho positivo; se empurram o gás, negativo."},
       {t:"h", v:"E no gráfico P × V?"},
-      {t:"p", v:"O trabalho é a <b>área sob a curva</b> do processo. Numa expansão (curva indo para a direita) a área conta positiva; numa compressão, negativa. Num ciclo fechado, o trabalho líquido é a área interna do ciclo."}
+      {t:"p", v:"O trabalho é a <b>área sob a curva</b> do processo. Numa expansão (curva indo para a direita) a área conta positiva; numa compressão, negativa. Num ciclo fechado, o trabalho líquido é a área interna do ciclo."},
+      {t:"figura", v:SVG_PV_EXPANSAO}
     ],
     erros: [
       "Trocar o sinal: expansão é positivo, compressão é negativo. Não é o contrário.",
@@ -1190,6 +1314,7 @@ const LICOES = {
         "<b>4. Compressão adiabática</b> — isolado, é comprimido e esquenta até voltar à temperatura da fonte quente."
       ]},
       {t:"p", v:"São <b>duas isotérmicas e duas adiabáticas</b>, alternadas. No gráfico P × V o ciclo aparece como uma figura fechada."},
+      {t:"figura", v:SVG_CARNOT},
       {t:"h", v:"O rendimento máximo"},
       {t:"p", v:"Para o ciclo de Carnot o rendimento depende só das temperaturas absolutas das duas fontes:"},
       {t:"formula", v:"η = 1 − T_fria / T_quente", leg:"Temperaturas obrigatoriamente em kelvin"},
@@ -1458,6 +1583,7 @@ function montarQuiz(){
     return {
       tema: q.tema,
       enunciado: q.enunciado,
+      figura: q.figura,                     // diagrama SVG (sobrevive ao sorteio)
       estrutura: q.estrutura,
       conceito: q.conceito,
       licao: q.licao,                       // aula do assunto (sobrevive ao sorteio)
@@ -1566,6 +1692,7 @@ function renderQuestion(){
     <section class="card">
       <span class="chip">${q.tema}</span>
       <p class="q">${q.enunciado}</p>
+      ${q.figura ? q.figura : ''}
       ${q.estrutura ? `<div class="formula"><span class="lbl">estrutura</span>${q.estrutura}</div>` : ''}
       <div class="opts" id="opts">${opts}</div>
       <div id="confirmBox"></div>
@@ -1867,6 +1994,7 @@ function renderLicao(id){
     if (b.t === 'h')   return `<h3>${b.v}</h3>`;
     if (b.t === 'p')   return `<p>${b.v}</p>`;
     if (b.t === 'formula') return `<div class="lesson-form">${b.v}${b.leg ? `<span class="leg">${b.leg}</span>` : ''}</div>`;
+    if (b.t === 'figura') return b.v;
     if (b.t === 'destaque') return `<div class="lesson-hi">${b.v}</div>`;
     if (b.t === 'lista') return `<ul>${b.v.map(x => `<li>${x}</li>`).join('')}</ul>`;
     return '';
