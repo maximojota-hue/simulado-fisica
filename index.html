@@ -171,6 +171,28 @@
     padding:16px 22px;border-top:1px solid var(--line);background:#fbfbfe;
   }
 
+
+  /* ---------- botao para o simulado de prova ---------- */
+  .prova-cta{
+    display:flex;align-items:center;gap:12px;width:100%;
+    margin:0 0 16px;padding:14px 16px;
+    background:linear-gradient(135deg,#0f766e,#0d9488);
+    color:#fff;border:0;border-radius:13px;cursor:pointer;
+    font-family:inherit;text-align:left;
+    box-shadow:0 3px 14px -4px rgba(13,148,136,.55);
+    transition:transform .08s,box-shadow .16s;
+  }
+  .prova-cta:hover{box-shadow:0 5px 20px -4px rgba(13,148,136,.65)}
+  .prova-cta:active{transform:scale(.995)}
+  .prova-cta .ico{
+    flex:0 0 34px;height:34px;border-radius:10px;
+    background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:18px;
+  }
+  .prova-cta .txt{flex:1;min-width:0}
+  .prova-cta .txt b{display:block;font-size:14.5px;font-weight:800;margin-bottom:2px}
+  .prova-cta .txt small{display:block;font-size:12px;opacity:.9;line-height:1.35}
+  .prova-cta .seta{flex:0 0 auto;font-size:17px;opacity:.8}
+
   /* ---------- painel de registro de tentativas ---------- */
   .log{
     background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -396,6 +418,15 @@
       <button class="log-clear" id="logClear" type="button">Apagar histórico</button>
     </div>
   </div>
+
+  <button class="prova-cta" id="irParaProva" type="button">
+    <span class="ico">🎯</span>
+    <span class="txt">
+      <b>Treinar no formato da prova</b>
+      <small>10 questões: 5 termodinâmica + 5 calorimetria, no formato que o professor avisou</small>
+    </span>
+    <span class="seta">→</span>
+  </button>
 
   <main id="stage"></main>
 
@@ -2062,6 +2093,9 @@ document.addEventListener('keydown', e => {
 }, true);
 
 /* ---------------- painel de registro ---------------- */
+const btnProva = document.getElementById('irParaProva');
+  if (btnProva) btnProva.addEventListener('click', () => { window.location.href = 'prova.html'; });
+
 document.getElementById('logToggle').addEventListener('click', () => {
   const list = document.getElementById('logList');
   const foot = document.getElementById('logFoot');

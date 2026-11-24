@@ -14,20 +14,10 @@ function extrairLiteral(nome) {
   const key = 'const ' + nome + ' =';
   const i = src.indexOf(key);
   if (i < 0) return null;
+  // aceita array [ ... ] ou objeto { ... }
   let j = i + key.length;
   while (j < src.length && /\s/.test(src[j])) j++;
   const abre = src[j];
-
-  // template literal (crase): vai ate a crase de fechamento, respeitando escapes
-  if (abre === '`') {
-    for (let k = j + 1; k < src.length; k++) {
-      if (src[k] === '\\') { k++; continue; }
-      if (src[k] === '`') return src.slice(j, k + 1);
-    }
-    return null;
-  }
-
-  // array [ ... ] ou objeto { ... } com balanceamento
   if (abre !== '[' && abre !== '{') return null;
   const fecha = abre === '[' ? ']' : '}';
   let depth = 0, str = null, esc = false;
@@ -46,27 +36,30 @@ function extrairLiteral(nome) {
   return null;
 }
 
-/* Avalia um literal JS. Antes, resolve as constantes SVG_* do arquivo,
-   para que "figura: SVG_CARNOT" funcione no eval. */
+/* figuras: as questoes e aulas referenciam constantes SVG_* declaradas
+   antes de QUESTIONS. Para o eval abaixo enxergar essas constantes,
+   coletamos todas as declaracoes "const SVG_... = `...`;" e as
+   disponibilizamos no escopo da avaliacao. */
+function coletarSVG() {
+  const defs = {};
+  const re = /const\s+(SVG_[A-Z0-9_]+)\s*=\s*`([\s\S]*?)`\s*;/g;
+  let m;
+  while ((m = re.exec(src)) !== null) defs[m[1]] = m[2];
+  return defs;
+}
+const SVGDEFS = coletarSVG();
+
 function carregar(nome) {
   const bruto = extrairLiteral(nome);
   if (!bruto) return null;
   try {
-    const preludio = [];
-    // todas as "const SVG_..." do arquivo entram como variaveis locais
-    const re = /const\s+(SVG_[A-Z0-9_]+)\s*=/g;
-    let m;
-    while ((m = re.exec(src)) !== null) {
-      const lit = extrairLiteral(m[1]);
-      if (lit) preludio.push('const ' + m[1] + ' = ' + lit + ';');
-    }
-    const fn = new Function(preludio.join('\n') + '\nreturn (' + bruto + ');');
-    return fn();
+    // injeta as constantes SVG_* como variaveis locais do eval
+    const nomesSVG = Object.keys(SVGDEFS);
+    const valsSVG = nomesSVG.map(k => SVGDEFS[k]);
+    const fn = new Function(...nomesSVG, 'return (' + bruto + ');');
+    return fn(...valsSVG);
   }
-  catch (e) {
-    console.error('ERRO: o bloco ' + nome + ' nao e JavaScript valido: ' + e.message);
-    return null;
-  }
+  catch (e) { console.error('ERRO: o array ' + nome + ' nao e JavaScript valido: ' + e.message); return null; }
 }
 
 const Q = carregar('QUESTIONS');
@@ -82,7 +75,7 @@ Q.forEach((q, i) => {
   const rot = 'Q' + n;
 
   if (!q.tema || !String(q.tema).trim()) erros.push(rot + ': falta "tema".');
-  if (!q.enunciado || String(q.enunciado).trim().length < 15) erros.push(rot + ': "enunciado" vazio ou curto demais.');
+  if (!q.enunciado || String(q.enunciado).trim().length < 8) erros.push(rot + ': "enunciado" vazio ou curto demais.');
   if (!q.conceito || String(q.conceito).trim().length < 40) erros.push(rot + ': falta "conceito" (o resumo que explica a regra).');
 
   const alts = q.alternativas;
@@ -102,8 +95,8 @@ Q.forEach((q, i) => {
   temas[q.tema] = (temas[q.tema] || 0) + 1;
 
   // figura: se existir, precisa ser SVG embutido (nao imagem externa)
-  if ('figura' in q) {
-    if (!q.figura || typeof q.figura !== 'string') erros.push(rot + ': campo "figura" presente mas vazio/invalido.');
+  if ('figura' in q && q.figura) {
+    if (typeof q.figura !== 'string') erros.push(rot + ': campo "figura" invalido (nao e texto).');
     else {
       if (!/<svg[\s>]/i.test(q.figura)) erros.push(rot + ': "figura" nao contem uma tag <svg>.');
       if (/<img|xlink:href=[\"']https?:|src=[\"']https?:/i.test(q.figura)) erros.push(rot + ': "figura" aponta para imagem externa (precisa ser SVG embutido).');

@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova simulada — Física: Termodinâmica + Calorimetria</title>
+<style>
+  :root{
+    --bg:#f5f6fa;
+    --card:#ffffff;
+    --ink:#1a1c23;
+    --muted:#6b7280;
+    --line:#e3e6ee;
+    --accent:#4f46e5;
+    --accent-soft:#eef0ff;
+    --ok:#15803d;
+    --ok-soft:#e9f8ef;
+    --ok-line:#b7e4c7;
+    --no:#b91c1c;
+    --no-soft:#fdecec;
+    --no-line:#f3bcbc;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:28px 18px 80px}
+
+  header.top{margin-bottom:22px}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  h1{font-size:clamp(22px,3.4vw,30px);line-height:1.2;margin:6px 0 6px;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:14px;margin:0}
+
+  .bar{
+    position:sticky;top:0;z-index:5;
+    background:rgba(245,246,250,.92);
+    backdrop-filter:blur(8px);
+    padding:12px 0 10px;margin:-4px 0 18px;
+    border-bottom:1px solid var(--line);
+  }
+  .bar-inner{max-width:840px;margin:0 auto;padding:0 18px;display:flex;align-items:center;gap:14px}
+  .track{flex:1;height:7px;border-radius:99px;background:#e4e7f0;overflow:hidden}
+  .fill{height:100%;width:0%;background:linear-gradient(90deg,#6366f1,#8b5cf6);transition:width .35s ease}
+  .count{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .count b{color:var(--ink)}
+
+  .timer{
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;
+    padding:4px 10px;border-radius:9px;white-space:nowrap;
+    background:#fff;border:1.5px solid var(--line);color:var(--ink);
+  }
+  .timer::before{content:"⏱ ";font-size:12.5px;opacity:.5;font-weight:400}
+  .timer.warn{border-color:#efd08f;background:#fffaf0;color:#a16207}
+  .timer.danger{border-color:#f3bcbc;background:var(--no-soft);color:var(--no);animation:pulse 1.5s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+  .timer.hidden{display:none}
+
+  .start-rules{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-direction:column;gap:10px}
+  .start-rules li{font-size:14.5px;line-height:1.5;color:#3b4051;padding-left:22px;position:relative}
+  .start-rules li::before{content:"›";position:absolute;left:5px;top:-1px;color:var(--accent);font-weight:800;font-size:17px}
+  .big{font-size:16px;padding:15px 28px;width:100%}
+  .banner{
+    margin:0 0 16px;padding:11px 14px;border-radius:10px;
+    background:var(--no-soft);border:1px solid var(--no-line);color:var(--no);
+    font-size:14px;font-weight:600;
+  }
+  .meta-row{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0 0;font-size:13.5px;color:var(--muted)}
+  .meta-row b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+
+  /* ---------- link de volta ao simulado de treino ---------- */
+  .voltar{
+    display:inline-flex;align-items:center;gap:7px;
+    margin:0 0 14px;padding:7px 13px;border-radius:9px;
+    background:#fff;border:1px solid var(--line);color:#4b5060;
+    font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+    text-decoration:none;
+  }
+  .voltar:hover{border-color:#0d9488;color:#0f766e}
+
+  /* ---------- painel de registro de tentativas ---------- */
+  .log{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:12px 14px;margin:0 0 16px;box-shadow:0 1px 2px rgba(16,24,40,.04);
+  }
+  .log-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .log-title{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .log-badges{display:flex;gap:6px;flex-wrap:wrap;flex:1;min-width:0}
+  .badge{
+    font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px;
+    background:#f0f2f8;color:#4b5060;white-space:nowrap;font-variant-numeric:tabular-nums;
+  }
+  .badge.zero{opacity:.45}
+  .badge.warn{background:#fff6e5;color:#a16207}
+  .badge.bad{background:var(--no-soft);color:var(--no)}
+  .badge.good{background:var(--ok-soft);color:var(--ok)}
+  .log-toggle{
+    font-size:12px;font-weight:600;padding:5px 11px;border-radius:8px;cursor:pointer;
+    background:#fff;border:1px solid var(--line);color:#4b5060;font-family:inherit;
+  }
+  .log-toggle:hover{border-color:#c3c8f5;color:var(--accent)}
+  .log-note{
+    margin:10px 0 0;font-size:13px;line-height:1.45;color:var(--no);
+    background:var(--no-soft);border:1px solid var(--no-line);border-radius:9px;padding:8px 11px;
+  }
+  .log-note b{font-variant-numeric:tabular-nums}
+  .log-list{
+    list-style:none;margin:11px 0 0;padding:0;display:flex;flex-direction:column;
+    gap:0;max-height:190px;overflow-y:auto;
+  }
+  .log-list[hidden]{display:none}
+  .log-list li{
+    display:flex;gap:9px;align-items:baseline;font-size:13px;line-height:1.4;
+    padding:7px 0;border-bottom:1px dashed #edf0f7;color:#3b4051;
+  }
+  .log-list li:last-child{border-bottom:0}
+  .log-time{font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted);flex:0 0 auto}
+  .log-tipo{font-weight:700;flex:0 0 auto}
+  .log-tipo.iniciou{color:var(--accent)}
+  .log-tipo.reiniciou{color:#a16207}
+  .log-tipo.interrompeu{color:var(--no)}
+  .log-tipo.concluiu{color:var(--ok)}
+  .log-tipo.tempo{color:var(--no)}
+  .log-nota{color:var(--muted);font-size:12.5px}
+  .log-foot{display:flex;justify-content:flex-end;margin-top:11px}
+  .log-foot[hidden]{display:none}
+  .log-clear{
+    font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:7px;cursor:pointer;
+    background:none;border:1px solid var(--line);color:var(--muted);font-family:inherit;
+  }
+  .log-clear:hover{border-color:var(--no-line);color:var(--no)}
+
+  /* ---------- confirmacao antes de revelar ---------- */
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+  .opt.sel .key{background:var(--accent);color:#fff}
+  .confirm{
+    margin-top:16px;padding:14px 16px;border-radius:12px;
+    border:1.5px dashed var(--accent);background:#f8f9ff;animation:in .18s ease;
+  }
+  .confirm-q{font-size:14.5px;line-height:1.5;color:#33384a;margin:0 0 12px}
+  .confirm-q b{color:var(--ink)}
+  .confirm-q .pick{
+    display:block;margin-top:6px;font-weight:600;color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;
+  }
+  .confirm-btns{display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap}
+  .confirm-btns .btn{padding:9px 18px;font-size:14.5px}
+  .danger-btn{background:var(--no);border-color:var(--no)}
+  .danger-btn:hover{background:#991b1b}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px 24px 20px;
+    box-shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px -18px rgba(16,24,40,.18);
+  }
+  .chip{
+    display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--accent);background:var(--accent-soft);
+    padding:4px 10px;border-radius:99px;margin-bottom:14px;
+  }
+  .q{font-size:17.5px;line-height:1.6;margin:0 0 6px;font-weight:500}
+  .q strong{font-weight:700}
+
+  .formula{
+    font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+    font-size:15px;line-height:1.45;
+    background:#f8f9fc;border:1px dashed #d6dae7;border-radius:10px;
+    padding:14px 16px;margin:14px 0 4px;
+    white-space:pre;overflow-x:auto;color:#242736;
+  }
+  .formula .lbl{display:block;font-family:inherit;font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+
+  /* ---------- figura (diagrama SVG da questao/aula) ---------- */
+  .figura{
+    margin:16px 0 4px;padding:14px 12px 10px;
+    background:#fbfcff;border:1px solid var(--line);border-radius:12px;
+    text-align:center;
+  }
+  .figura svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .figura .cap{
+    display:block;margin-top:9px;font-size:12.5px;line-height:1.5;
+    color:var(--muted);text-align:center;
+  }
+  .lesson-body .figura{margin:0 0 16px}
+
+  /* ---------- botao "aprender o assunto" ---------- */
+  .lesson-btn{
+    display:flex;align-items:center;gap:9px;width:100%;
+    margin-top:14px;padding:12px 15px;
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+    color:#fff;border:0;border-radius:11px;cursor:pointer;
+    font-family:inherit;font-size:14.5px;font-weight:700;text-align:left;
+    box-shadow:0 2px 10px -3px rgba(79,70,229,.5);
+    transition:transform .08s,box-shadow .15s;
+  }
+  .lesson-btn:hover{box-shadow:0 4px 16px -3px rgba(79,70,229,.6)}
+  .lesson-btn:active{transform:scale(.994)}
+  .lesson-btn .ico{
+    flex:0 0 26px;height:26px;border-radius:8px;
+    background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:14px;
+  }
+  .lesson-btn .lbl{flex:1;min-width:0}
+  .lesson-btn .lbl small{display:block;font-weight:500;opacity:.85;font-size:12px;margin-top:1px}
+  .lesson-btn .arrow{opacity:.7;font-size:16px;flex:0 0 auto}
+
+  /* ---------- modal da aula ---------- */
+  .modal{
+    position:fixed;inset:0;z-index:60;display:none;
+    background:rgba(16,18,28,.55);backdrop-filter:blur(3px);
+    padding:24px 16px;overflow-y:auto;
+  }
+  .modal.open{display:block;animation:fadeIn .16s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .lesson{
+    max-width:720px;margin:0 auto;background:#fff;border-radius:16px;
+    box-shadow:0 24px 60px -20px rgba(0,0,0,.45);overflow:hidden;
+    animation:up .22s cubic-bezier(.2,.8,.3,1);
+  }
+  @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .lesson-head{
+    padding:20px 22px 16px;border-bottom:1px solid var(--line);
+    background:linear-gradient(135deg,#f5f4ff,#faf9ff);
+    display:flex;align-items:flex-start;gap:12px;
+  }
+  .lesson-head .eyebrow{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:800;margin:0 0 5px;
+  }
+  .lesson-head h2{
+    margin:0;font-size:19px;line-height:1.25;letter-spacing:-.01em;flex:1;
+  }
+  .lesson-close{
+    flex:0 0 32px;height:32px;border-radius:9px;border:1px solid #ddd9f5;
+    background:#fff;color:#5b5871;font-size:17px;cursor:pointer;line-height:1;
+    display:grid;place-items:center;font-family:inherit;
+  }
+  .lesson-close:hover{border-color:var(--accent);color:var(--accent)}
+  .lesson-body{padding:20px 22px 24px}
+  .lesson-resumo{
+    font-size:15px;line-height:1.6;color:#33384a;
+    background:#f7f8fc;border-left:3px solid var(--accent);
+    padding:12px 15px;border-radius:0 9px 9px 0;margin:0 0 20px;
+  }
+  .lesson-body h3{
+    font-size:14px;letter-spacing:.02em;text-transform:uppercase;
+    color:var(--accent);margin:24px 0 8px;font-weight:800;
+  }
+  .lesson-body h3:first-of-type{margin-top:0}
+  .lesson-body p{font-size:15px;line-height:1.65;color:#2f3444;margin:0 0 12px}
+  .lesson-body ul{margin:0 0 14px;padding-left:20px}
+  .lesson-body li{font-size:15px;line-height:1.6;color:#2f3444;margin-bottom:7px}
+  .lesson-form{
+    font-family:"Cascadia Mono",Consolas,monospace;font-size:16px;font-weight:600;
+    background:#111827;color:#e5e7eb;border-radius:10px;
+    padding:14px 16px;margin:0 0 14px;text-align:center;overflow-x:auto;
+  }
+  .lesson-form .leg{
+    display:block;font-family:inherit;font-size:11.5px;font-weight:400;
+    color:#9ca3af;margin-top:7px;letter-spacing:.02em;
+  }
+  .lesson-hi{
+    background:#eef0ff;border:1px solid #d7d9f7;border-radius:10px;
+    padding:12px 14px;margin:0 0 14px;font-size:14.5px;line-height:1.55;
+    color:#3b3f57;font-weight:500;
+  }
+  .lesson-hi::before{content:"💡 ";font-weight:400}
+  .lesson-erros{
+    margin:6px 0 0;padding:14px 16px;background:var(--no-soft);
+    border:1px solid var(--no-line);border-radius:10px;
+  }
+  .lesson-erros .tit{
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--no);font-weight:800;margin:0 0 8px;
+  }
+  .lesson-erros ul{margin:0;padding-left:18px}
+  .lesson-erros li{font-size:14px;color:#7f1d1d;margin-bottom:5px;line-height:1.5}
+  .lesson-foot{
+    display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;
+    padding:16px 22px;border-top:1px solid var(--line);background:#fbfbfe;
+  }
+
+  .opts{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-direction:column;gap:10px}
+  .opt{
+    display:flex;gap:12px;align-items:flex-start;
+    border:1.5px solid var(--line);border-radius:12px;
+    padding:13px 15px;cursor:pointer;background:#fff;
+    transition:border-color .15s,background .15s,transform .06s;
+    font-size:15.5px;line-height:1.5;text-align:left;
+  }
+  .opt:hover:not(.locked){border-color:#c3c8f5;background:#fbfbff}
+  .opt:active:not(.locked){transform:scale(.997)}
+  .opt .key{
+    flex:0 0 26px;height:26px;border-radius:8px;background:#f0f2f8;color:#4b5060;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12.5px;font-weight:700;font-family:ui-monospace,monospace;
+  }
+  .opt .txt{flex:1}
+  .opt.locked{cursor:default}
+  .opt.correct{border-color:var(--ok-line);background:var(--ok-soft)}
+  .opt.correct .key{background:#cdeedd;color:var(--ok)}
+  .opt.wrong{border-color:var(--no-line);background:var(--no-soft)}
+  .opt.wrong .key{background:#f8cfcf;color:var(--no)}
+  .opt.dim{opacity:.62}
+  .mark{font-weight:800;margin-left:auto;flex:0 0 auto;font-size:15px}
+  .opt.correct .mark{color:var(--ok)}
+  .opt.wrong .mark{color:var(--no)}
+
+  .fb{
+    margin-top:20px;border-top:1px solid var(--line);padding-top:18px;
+    animation:in .22s ease;
+  }
+  @keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .verdict{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;margin-bottom:10px}
+  .verdict.ok{color:var(--ok)}
+  .verdict.no{color:var(--no)}
+  .concept{font-size:14.5px;color:#33384a;background:#f8f9fc;border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0;padding:10px 14px;margin:0 0 14px}
+  .why{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
+  .why li{font-size:14.5px;line-height:1.55;padding-left:26px;position:relative;color:#3b4051}
+  .why li::before{position:absolute;left:0;top:0;font-weight:800}
+  .why li.good::before{content:"✓";color:var(--ok)}
+  .why li.bad::before{content:"✕";color:var(--no)}
+  .why li b.lbl{display:inline-block;font-family:ui-monospace,monospace;font-size:12.5px;
+    background:#eef0f6;color:#40465a;border-radius:5px;padding:0 5px;margin-right:5px}
+  .why li.picked{background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px 8px 30px;color:var(--ink)}
+  .why li.picked::before{left:10px;top:8px}
+
+  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+  button{font-family:inherit;font-size:15px;font-weight:600;border-radius:11px;cursor:pointer;transition:.15s}
+  .btn{background:var(--accent);color:#fff;border:1px solid var(--accent);padding:11px 22px}
+  .btn:hover{background:#4338ca}
+  .btn:disabled{background:#c9ccd8;border-color:#c9ccd8;cursor:not-allowed}
+  .btn.ghost{background:#fff;color:#3b4051;border:1.5px solid var(--line)}
+  .btn.ghost:hover{border-color:#c3c8f5;color:var(--accent)}
+  .hint{font-size:12.5px;color:var(--muted);margin-right:auto;align-self:center}
+
+  /* resultado */
+  .score{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:6px 0 4px}
+  .ring{
+    --p:0;
+    width:104px;height:104px;border-radius:50%;flex:0 0 auto;
+    background:conic-gradient(var(--accent) calc(var(--p)*1%),#e7e9f2 0);
+    display:grid;place-items:center;
+  }
+  .ring span{width:82px;height:82px;border-radius:50%;background:#fff;display:grid;place-items:center;
+    font-size:23px;font-weight:800;letter-spacing:-.02em}
+  .score-txt h2{margin:0 0 4px;font-size:21px;letter-spacing:-.01em}
+  .score-txt p{margin:0;color:var(--muted);font-size:14.5px}
+  table{width:100%;border-collapse:collapse;margin:20px 0 4px;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+  th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  td.num{font-variant-numeric:tabular-nums;text-align:right;width:70px}
+  .pill{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:99px}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.mid{background:#fff6e5;color:#a16207}
+  .pill.no{background:var(--no-soft);color:var(--no)}
+  .rev-list{margin:18px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+  .rev-list li{font-size:14.5px;background:#fbfbfe;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .rev-list b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+  footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:26px}
+  @media (max-width:520px){
+    .wrap{padding:20px 12px 60px}
+    .card{padding:18px 15px 16px;border-radius:13px}
+    .q{font-size:16.5px}
+    .opt{font-size:15px;padding:12px 12px}
+    .bar-inner{padding:0 12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="count" id="count"><b>1</b> / 26</div>
+    <div class="timer hidden" id="timer">50:00</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="top">
+    <div class="kicker">Física · simulado no formato da prova</div>
+    <h1>Simulado no formato da prova</h1>
+    <p class="sub"><b>10 questões</b> · 5 Termodinâmica + 5 Calorimetria · 3 de teoria, 1 discursiva, 2 de trocas de calor, 1 de calor específico, 3 de 1ª/2ª lei e eficiência.</p>
+  </header>
+
+  <div class="log" id="log">
+    <div class="log-head">
+      <span class="log-title">Registro de tentativas</span>
+      <div class="log-badges" id="logBadges"></div>
+      <button class="log-toggle" id="logToggle" type="button">Histórico</button>
+    </div>
+    <p class="log-note" id="logNote" hidden></p>
+    <ul class="log-list" id="logList" hidden></ul>
+    <div class="log-foot" id="logFoot" hidden>
+      <button class="log-clear" id="logClear" type="button">Apagar histórico</button>
+    </div>
+  </div>
+
+  <a class="voltar" id="voltarTreino" href="index.html">← Voltar ao simulado completo</a>
+
+  <main id="stage"></main>
+
+<div class="modal" id="modal">
+  <div class="lesson" id="lesson"></div>
+</div>
+
+  <footer>Mesmo formato da prova real · funciona offline</footer>
+</div>
+
+<script>
+
+/* ============================================================
+   FIGURAS (SVG embutido, offline)
+   ============================================================ */
+const SVG_PV_ISOBARICA = `
+<div class="figura">
+<svg viewBox="0 0 320 220" role="img" aria-label="Diagrama pressao por volume de uma transformacao isobarica, com a area do trabalho destacada">
+  <rect x="80" y="70" width="150" height="90" fill="#c7d2fe" opacity="0.55"/>
+  <line x1="55" y1="20" x2="55" y2="185" stroke="#9aa1b4" stroke-width="2"/>
+  <line x1="55" y1="185" x2="300" y2="185" stroke="#9aa1b4" stroke-width="2"/>
+  <polygon points="55,14 51,24 59,24" fill="#9aa1b4"/>
+  <polygon points="306,185 296,181 296,189" fill="#9aa1b4"/>
+  <line x1="80" y1="70" x2="230" y2="70" stroke="#4f46e5" stroke-width="3"/>
+  <circle cx="80" cy="70" r="4.5" fill="#4f46e5"/>
+  <circle cx="230" cy="70" r="4.5" fill="#4f46e5"/>
+  <polygon points="165,62 177,70 165,78" fill="#4f46e5"/>
+  <line x1="80" y1="70" x2="80" y2="185" stroke="#9aa1b4" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="230" y1="70" x2="230" y2="185" stroke="#9aa1b4" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="38" y="26" fill="#4b5060" font-size="13" font-style="italic">P</text>
+  <text x="298" y="205" fill="#4b5060" font-size="13" font-style="italic">V</text>
+  <text x="74" y="200" fill="#6b7280" font-size="11">V&#8321;</text>
+  <text x="224" y="200" fill="#6b7280" font-size="11">V&#8322;</text>
+  <text x="130" y="122" fill="#3730a3" font-size="13" font-weight="700">W = P &#183; &#916;V</text>
+  <text x="235" y="66" fill="#4f46e5" font-size="11">P constante</text>
+</svg>
+<span class="cap">A pressao fica constante (linha reta horizontal). O trabalho e a <b>area do retangulo</b> sob a linha: base &#916;V, altura P.</span>
+</div>
+`;
+
+const SVG_CALORES = `
+<div class="figura">
+
+<svg viewBox="0 0 400 190" role="img" aria-label="Grafico temperatura por calor recebido: subida no calor sensivel e patamar no calor latente">
+
+  <line x1="55" y1="20" x2="55" y2="160" stroke="#9aa1b4" stroke-width="2"/>
+
+  <line x1="55" y1="160" x2="370" y2="160" stroke="#9aa1b4" stroke-width="2"/>
+
+  <text x="30" y="26" fill="#4b5060" font-size="13" font-style="italic">T</text>
+
+  <text x="366" y="178" fill="#4b5060" font-size="13" font-style="italic">Q</text>
+
+  <path d="M55 140 L130 90" fill="none" stroke="#4f46e5" stroke-width="3"/>
+
+  <path d="M130 90 L250 90" fill="none" stroke="#b91c1c" stroke-width="3"/>
+
+  <path d="M250 90 L330 40" fill="none" stroke="#4f46e5" stroke-width="3"/>
+
+  <text x="62" y="132" fill="#4338ca" font-size="11" font-weight="700">sensivel</text>
+
+  <text x="150" y="82" fill="#b91c1c" font-size="11" font-weight="700">latente</text>
+
+  <text x="262" y="34" fill="#4338ca" font-size="11" font-weight="700">sensivel</text>
+
+  <text x="138" y="108" fill="#6b7280" font-size="10">mudanca de estado</text>
+
+  <text x="138" y="120" fill="#6b7280" font-size="10">(T nao muda)</text>
+
+</svg>
+
+<span class="cap">Subindo: calor <b>sensivel</b> (muda a temperatura). No patamar: calor <b>latente</b> (muda o estado, T constante).</span>
+
+</div>
+`;
+
+const QUESTIONS = [
+ {
+  "tema": "Termodinâmica · 1ª lei (teoria)",
+  "bloco": "Termodinâmica",
+  "licao": "primeira-lei",
+  "enunciado": "A Primeira Lei da Termodinâmica, aplicada a um gás, é expressa por <b>ΔU = Q − W</b>. O que cada termo representa?",
+  "estrutura": "ΔU = Q − W",
+  "conceito": "A 1ª lei é o balanço de energia do gás: a variação da energia interna (ΔU) é o calor que <b>entra</b> (Q) menos o trabalho que o gás <b>realiza</b> (W). Se recebe calor sem trabalhar, esquenta; se realiza trabalho sem receber calor, esfria.",
+  "alternativas": [
+   {
+    "t": "ΔU é a variação da energia interna, Q é o calor trocado e W o trabalho realizado pelo gás.",
+    "ok": true,
+    "porque": "É a leitura correta dos três termos. Com os sinais certos (calor recebido positivo, trabalho realizado pelo gás positivo), a conta fecha sempre."
+   },
+   {
+    "t": "ΔU é a variação de temperatura, Q é a quantidade de matéria e W o volume do gás.",
+    "ok": false,
+    "porque": "Confunde as grandezas: ΔU é energia interna (joule), Q é calor (joule) e W é trabalho (joule). Temperatura, massa e volume são outros parâmetros."
+   },
+   {
+    "t": "ΔU é o trabalho, Q é a energia interna e W é o calor cedido.",
+    "ok": false,
+    "porque": "Inverte os papéis. Trocar Q por ΔU quebra toda a interpretação do balanço de energia."
+   },
+   {
+    "t": "ΔU é a variação da energia interna, Q é o trabalho e W o calor recebido.",
+    "ok": false,
+    "porque": "Trocou Q com W. Na fórmula da aula, Q é calor e W é trabalho."
+   },
+   {
+    "t": "ΔU é constante em qualquer transformação, e Q e W se anulam sempre.",
+    "ok": false,
+    "porque": "ΔU só é zero na isotérmica e em ciclos fechados. Em geral ele varia quando a temperatura varia."
+   }
+  ]
+ },
+ {
+  "tema": "Termodinâmica · 2ª lei (teoria)",
+  "bloco": "Termodinâmica",
+  "licao": "segunda-lei",
+  "enunciado": "Por que nenhuma máquina térmica pode ter rendimento de 100%, mesmo construída com materiais perfeitos e sem atrito?",
+  "conceito": "A 2ª lei (enunciado de Kelvin-Planck) afirma ser impossível converter <b>integralmente</b> o calor recebido em trabalho numa máquina que opera em ciclos. Sempre sobra uma parte do calor que precisa ser rejeitada para a fonte fria. Eliminar o atrito melhora o rendimento, mas não fura esse limite.",
+  "alternativas": [
+   {
+    "t": "Porque a 2ª lei exige que parte do calor seja rejeitada para a fonte fria; sem isso o ciclo não se completa.",
+    "ok": true,
+    "porque": "É o conteúdo da 2ª lei. O calor rejeitado Q₂ não é defeito de projeto: é exigência da lei. Por isso η < 1 sempre."
+   },
+   {
+    "t": "Porque o atrito sempre consome parte da energia, e nenhum material é perfeito.",
+    "ok": false,
+    "porque": "O atrito reduz o rendimento real, mas a pergunta supõe máquina perfeita. Mesmo sem atrito ela não chegaria a 100%."
+   },
+   {
+    "t": "Porque a energia se perde nas reações de combustão.",
+    "ok": false,
+    "porque": "A energia não se perde: a 1ª lei garante a conservação. O que acontece é que parte sai como calor para a fonte fria."
+   },
+   {
+    "t": "Porque o calor não pode ser convertido em trabalho em nenhuma quantidade.",
+    "ok": false,
+    "porque": "Pode, e é justamente o que a máquina faz — só não <b>integralmente</b>. Se nada se convertesse, não existiria máquina térmica."
+   },
+   {
+    "t": "Porque a temperatura da fonte quente nunca é alta o suficiente.",
+    "ok": false,
+    "porque": "Aumentar a temperatura da fonte quente melhora o rendimento, mas nunca chega a 100%: para isso a fonte fria teria de estar em 0 K."
+   }
+  ]
+ },
+ {
+  "tema": "Termodinâmica · 1ª lei (discursiva)",
+  "bloco": "Termodinâmica",
+  "licao": "primeira-lei",
+  "discursiva": true,
+  "enunciado": "<b>(Discursiva)</b> Um gás recebe 800 J de calor e realiza 300 J de trabalho ao se expandir. Determine a variação da energia interna e responda, justificando: a temperatura do gás aumentou, diminuiu ou permaneceu igual?",
+  "estrutura": "ΔU = Q − W = 800 − 300",
+  "conceito": "Aplique ΔU = Q − W com os sinais corretos: calor recebido positivo (+800 J) e trabalho realizado pelo gás positivo (+300 J). Para justificar a temperatura, lembre que, em gás ideal, a energia interna depende <b>só da temperatura</b> — então o sinal de ΔU dá o sinal de ΔT.",
+  "alternativas": [
+   {
+    "t": "ΔU = +500 J e a temperatura aumentou, porque a energia interna cresceu.",
+    "ok": true,
+    "porque": "ΔU = 800 − 300 = +500 J. Como a energia interna de um gás ideal depende apenas da temperatura, ΔU positivo significa agitação maior, logo temperatura maior."
+   },
+   {
+    "t": "ΔU = +500 J e a temperatura permaneceu igual, porque o gás se expandiu.",
+    "ok": false,
+    "porque": "Acertou o valor, mas errou a conclusão. Expansão afeta o trabalho, não a energia interna. Se ΔU ≠ 0, a temperatura mudou."
+   },
+   {
+    "t": "ΔU = +1100 J e a temperatura aumentou muito.",
+    "ok": false,
+    "porque": "Somou em vez de subtrair. A fórmula é ΔU = Q − W, com o trabalho saindo do balanço."
+   },
+   {
+    "t": "ΔU = −500 J e a temperatura diminuiu.",
+    "ok": false,
+    "porque": "Inverteu o sinal. O calor recebido (800 J) é maior que o trabalho realizado (300 J), então sobra energia no gás: ΔU positivo."
+   },
+   {
+    "t": "ΔU = +500 J e a temperatura diminuiu, porque o volume aumentou.",
+    "ok": false,
+    "porque": "O valor está certo, mas a conclusão não: volume maior não implica temperatura menor. Quem determina a temperatura é ΔU."
+   }
+  ]
+ },
+ {
+  "tema": "Termodinâmica · 1ª lei (cálculo)",
+  "bloco": "Termodinâmica",
+  "licao": "primeira-lei",
+  "enunciado": "Um gás é comprimido recebendo 400 J de trabalho e, nesse processo, cede 150 J de calor para a vizinhança. Qual é a variação da energia interna?",
+  "estrutura": "W = −400 J (compressão)   ·   Q = −150 J (cedeu calor)",
+  "conceito": "Atenção aos sinais. Na convenção da aula (ΔU = Q − W): calor <b>recebido</b> é positivo e calor <b>cedido</b> é negativo; trabalho realizado <b>pelo</b> gás é positivo e trabalho <b>recebido</b> (compressão) é negativo. Aqui os dois sinais se invertem.",
+  "alternativas": [
+   {
+    "t": "+250 J",
+    "ok": true,
+    "porque": "Q = −150 J e W = −400 J. Então ΔU = (−150) − (−400) = −150 + 400 = +250 J. O gás esquentou: recebeu mais trabalho do que cedeu calor."
+   },
+   {
+    "t": "−550 J",
+    "ok": false,
+    "porque": "Somou os módulos com sinal negativo, esquecendo que o trabalho recebido entra invertido na fórmula."
+   },
+   {
+    "t": "−250 J",
+    "ok": false,
+    "porque": "Trocou os sinais: considerou o calor recebido e o trabalho realizado, quando é o contrário (cedeu calor e recebeu trabalho)."
+   },
+   {
+    "t": "+550 J",
+    "ok": false,
+    "porque": "Somou os módulos em vez de subtrair. Com os sinais corretos, ΔU = −150 + 400."
+   },
+   {
+    "t": "+400 J",
+    "ok": false,
+    "porque": "Ignorou o calor cedido: usou só o trabalho recebido."
+   }
+  ],
+  "figura": SVG_PV_ISOBARICA
+ },
+ {
+  "tema": "Termodinâmica · eficiência",
+  "bloco": "Termodinâmica",
+  "licao": "rendimento",
+  "enunciado": "Uma máquina térmica recebe 1 200 J da fonte quente e rejeita 900 J para a fonte fria, a cada ciclo. Qual é o seu rendimento?",
+  "estrutura": "W = Q₁ − Q₂ = 1200 − 900\nη = W / Q₁",
+  "conceito": "Primeiro o trabalho pela conservação de energia: o que entrou menos o que foi rejeitado. Depois o rendimento, que é <b>trabalho dividido pelo calor de entrada</b> — nunca pelo calor rejeitado.",
+  "alternativas": [
+   {
+    "t": "25%",
+    "ok": true,
+    "porque": "W = 1200 − 900 = 300 J. η = 300/1200 = 0,25 = 25%. Conferindo: 1 − 900/1200 = 0,25."
+   },
+   {
+    "t": "75%",
+    "ok": false,
+    "porque": "75% é a fração <b>desperdiçada</b> (900/1200). O rendimento é o que sobra dela: 25%."
+   },
+   {
+    "t": "33%",
+    "ok": false,
+    "porque": "Sairia de 300/900, dividindo o trabalho pelo calor rejeitado. O denominador correto é o calor recebido."
+   },
+   {
+    "t": "300%",
+    "ok": false,
+    "porque": "Rendimento nunca passa de 100%. Valor acima disso indica fórmula invertida."
+   },
+   {
+    "t": "15%",
+    "ok": false,
+    "porque": "Sairia de dividir 300 por 2000 (somando os dois calores). O denominador é só o calor de entrada."
+   }
+  ]
+ },
+ {
+  "tema": "Calorimetria · sensível e latente (teoria)",
+  "bloco": "Calorimetria",
+  "licao": "sensivel-latente",
+  "enunciado": "Sobre calor sensível e calor latente, é correto afirmar que:",
+  "conceito": "São dois calores com efeitos diferentes. <b>Sensível</b> altera a temperatura (Q = m·c·ΔT). <b>Latente</b> altera o estado físico, e durante a mudança a temperatura fica constante (Q = m·L).",
+  "alternativas": [
+   {
+    "t": "O sensível altera a temperatura; o latente altera o estado físico com a temperatura constante.",
+    "ok": true,
+    "porque": "É a distinção central. O sensível mexe no termômetro; o latente fica \"escondido\", mudando o estado sem mexer na temperatura."
+   },
+   {
+    "t": "O sensível altera o estado físico; o latente altera a temperatura.",
+    "ok": false,
+    "porque": "Inverteu as definições. Sensível é o que muda a temperatura."
+   },
+   {
+    "t": "Os dois alteram a temperatura, mas o latente é mais rápido.",
+    "ok": false,
+    "porque": "O latente não altera a temperatura — é justamente isso que o caracteriza."
+   },
+   {
+    "t": "O latente só existe em metais e o sensível só em líquidos.",
+    "ok": false,
+    "porque": "Os dois valem para qualquer substância. Não há restrição por tipo de material."
+   },
+   {
+    "t": "Ambos usam a mesma fórmula, Q = m·c·ΔT.",
+    "ok": false,
+    "porque": "O latente usa Q = m·L, sem c e sem ΔT. Fórmulas diferentes para efeitos diferentes."
+   }
+  ],
+  "figura": SVG_CALORES
+ },
+ {
+  "tema": "Calorimetria · trocas de calor",
+  "bloco": "Calorimetria",
+  "licao": "conta-trocas",
+  "enunciado": "Misturam-se 200 g de água a 80 °C com 600 g de água a 20 °C, em um recipiente isolado. Qual é a temperatura de equilíbrio?",
+  "estrutura": "200·(T − 80) + 600·(T − 20) = 0",
+  "conceito": "Monte Q_recebido + Q_cedido = 0 com ΔT = final − inicial em todos os corpos. A massa fria é três vezes maior, então a temperatura final fica bem mais perto de 20 °C do que de 80 °C — use isso para checar se a resposta faz sentido.",
+  "alternativas": [
+   {
+    "t": "35 °C",
+    "ok": true,
+    "porque": "200(T−80) + 600(T−20) = 0 → 800T = 28000 → T = 35 °C. Faz sentido: mais perto de 20 °C, porque a massa fria é maior."
+   },
+   {
+    "t": "50 °C",
+    "ok": false,
+    "porque": "50 °C é a média simples, que só vale para massas iguais. Com 600 g a 20 °C contra 200 g a 80 °C, a mistura fica mais fria."
+   },
+   {
+    "t": "45 °C",
+    "ok": false,
+    "porque": "Ficaria próxima da média (50 °C), ignorando que a massa fria é três vezes maior."
+   },
+   {
+    "t": "25 °C",
+    "ok": false,
+    "porque": "Puxou demais para o frio. A conta exata dá 35 °C."
+   },
+   {
+    "t": "60 °C",
+    "ok": false,
+    "porque": "Impossível: com 600 g a 20 °C, a mistura não fica perto da água quente."
+   }
+  ]
+ },
+ {
+  "tema": "Calorimetria · trocas de calor",
+  "bloco": "Calorimetria",
+  "licao": "conta-trocas",
+  "enunciado": "Em um calorímetro ideal, 100 g de água a 90 °C são misturados com 400 g de água a 10 °C. A temperatura final de equilíbrio é:",
+  "estrutura": "100·(T − 90) + 400·(T − 10) = 0",
+  "conceito": "Mesma estrutura da questão anterior, com massas na razão 1:4. Quanto maior a massa, mais ela \"puxa\" a temperatura final para o seu lado. Aqui a massa fria é quatro vezes maior.",
+  "alternativas": [
+   {
+    "t": "26 °C",
+    "ok": true,
+    "porque": "100(T−90) + 400(T−10) = 0 → 500T = 13000 → T = 26 °C."
+   },
+   {
+    "t": "50 °C",
+    "ok": false,
+    "porque": "É a média simples, válida só com massas iguais. A massa fria é quatro vezes maior."
+   },
+   {
+    "t": "34 °C",
+    "ok": false,
+    "porque": "Ficou alta demais. Com 400 g a 10 °C, a mistura se aproxima muito de 10 °C."
+   },
+   {
+    "t": "18 °C",
+    "ok": false,
+    "porque": "Puxou demais para o frio. A conta exata dá 26 °C."
+   },
+   {
+    "t": "10 °C",
+    "ok": false,
+    "porque": "Seria como se a água quente não influenciasse nada, o que só ocorreria com massa quente desprezível."
+   }
+  ]
+ },
+ {
+  "tema": "Calorimetria · calor específico",
+  "bloco": "Calorimetria",
+  "licao": "conta-especifico",
+  "enunciado": "Uma amostra de 250 g de um metal recebe 1 500 cal e sua temperatura sobe de 20 °C para 80 °C. Qual é o calor específico do metal?",
+  "estrutura": "c = Q / (m · ΔT) = 1500 / (250 · 60)",
+  "conceito": "Isole o c na fórmula do calor sensível: c = Q/(m·ΔT). A variação é 80 − 20 = 60 °C. O resultado sai em cal/g·°C — a unidade do calor específico, não da capacidade térmica.",
+  "alternativas": [
+   {
+    "t": "0,10 cal/g·°C",
+    "ok": true,
+    "porque": "c = 1500/(250 × 60) = 1500/15000 = 0,10 cal/g·°C. É o valor do aço na tabela da aula."
+   },
+   {
+    "t": "0,50 cal/g·°C",
+    "ok": false,
+    "porque": "Sairia de usar ΔT = 12 °C ou de dividir por 3000. A variação é 60 °C."
+   },
+   {
+    "t": "0,60 cal/g·°C",
+    "ok": false,
+    "porque": "Saiu de 1500/2500: usou a temperatura final (80) em vez da variação (60) no denominador."
+   },
+   {
+    "t": "6,0 cal/g·°C",
+    "ok": false,
+    "porque": "Erro de fator 10. A conta dá 0,10."
+   },
+   {
+    "t": "25 cal/g·°C",
+    "ok": false,
+    "porque": "Saiu de 1500/60, esquecendo de dividir pela massa."
+   }
+  ]
+ },
+ {
+  "tema": "Calorimetria · capacidade térmica",
+  "bloco": "Calorimetria",
+  "licao": "conta-capacidade",
+  "enunciado": "Um corpo de capacidade térmica 25 cal/°C recebe 750 cal. Qual é a variação de temperatura e qual a massa de água que teria a mesma capacidade térmica?",
+  "estrutura": "ΔT = Q / C = 750 / 25        C = m · c  →  m = C / c",
+  "conceito": "Duas etapas numa questão só. Primeiro, capacidade térmica é C = Q/ΔT, então ΔT = Q/C. Depois, como C = m·c, a massa de água equivalente é m = C/c (com c da água = 1 cal/g·°C).",
+  "alternativas": [
+   {
+    "t": "ΔT = 30 °C e a massa de água equivalente é 25 g",
+    "ok": true,
+    "porque": "ΔT = 750/25 = 30 °C. E m = C/c = 25/1 = 25 g de água. Confere com a relação C = m·c."
+   },
+   {
+    "t": "ΔT = 30 °C e a massa de água equivalente é 750 g",
+    "ok": false,
+    "porque": "Acertou o ΔT, mas confundiu calor com capacidade térmica. A massa equivalente vem de C/c = 25 g, não do calor recebido."
+   },
+   {
+    "t": "ΔT = 18 750 °C e a massa de água equivalente é 25 g",
+    "ok": false,
+    "porque": "Multiplicou em vez de dividir: ΔT = Q/C é uma divisão, e 750/25 = 30 °C."
+   },
+   {
+    "t": "ΔT = 3 °C e a massa de água equivalente é 2,5 g",
+    "ok": false,
+    "porque": "Erro de fator 10 nas duas contas. ΔT = 30 °C e m = 25 g."
+   },
+   {
+    "t": "ΔT = 25 °C e a massa de água equivalente é 30 g",
+    "ok": false,
+    "porque": "Trocou os números: dividiu 750 por 30 e usou 30 como massa. As duas grandezas se confundiram."
+   }
+  ]
+ }
+];
+
+/* ============================================================
+   AULAS — as 7 que aparecem nesta prova
+   ============================================================ */
+const LICOES = {
+ "primeira-lei": {
+  "titulo": "1ª Lei da Termodinâmica: o balanço de energia",
+  "resumo": "Nada se cria, nada se perde. A energia que entra no gás como calor, ou sai como trabalho, ou fica guardada como energia interna.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "A equação"
+   },
+   {
+    "t": "formula",
+    "v": "ΔU = Q − W",
+    "leg": "ΔU: variação da energia interna · Q: calor recebido · W: trabalho realizado pelo gás"
+   },
+   {
+    "t": "p",
+    "v": "Leia em voz alta: a variação da energia interna é o calor que <b>entrou</b> menos o trabalho que <b>saiu</b>. É contabilidade pura."
+   },
+   {
+    "t": "h",
+    "v": "Tabela de sinais — decore esta, não a fórmula"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "Calor <b>recebido</b> pelo gás → Q positivo.",
+     "Calor <b>cedido</b> pelo gás → Q negativo.",
+     "Gás <b>se expande</b> (empurra o pistão) → W positivo.",
+     "Gás é <b>comprimido</b> → W negativo.",
+     "Temperatura <b>sobe</b> → ΔU positivo.",
+     "Temperatura <b>desce</b> → ΔU negativo.",
+     "Temperatura constante → ΔU = 0."
+    ]
+   },
+   {
+    "t": "destaque",
+    "v": "Se você acertar os sinais, a conta é soma e subtração. Quase todo erro nessa matéria é erro de sinal."
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido"
+   },
+   {
+    "t": "p",
+    "v": "Um gás recebe 500 J de calor e realiza 200 J de trabalho. Quanto vale ΔU?"
+   },
+   {
+    "t": "formula",
+    "v": "ΔU = 500 − 200 = +300 J"
+   },
+   {
+    "t": "p",
+    "v": "A energia interna aumentou 300 J, então a temperatura subiu. Os 300 J ficaram guardados no gás."
+   },
+   {
+    "t": "h",
+    "v": "Os quatro casos particulares"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>Adiabática</b> (Q = 0): ΔU = −W. Expansão adiabática esfria, compressão adiabática esquenta.",
+     "<b>Isovolumétrica</b> (ΔV = 0, logo W = 0): ΔU = Q. Todo calor vira energia interna.",
+     "<b>Isotérmica</b> (ΔT = 0, logo ΔU = 0): Q = W. Todo calor vira trabalho.",
+     "<b>Ciclo completo</b> (volta ao estado inicial): ΔU = 0, então Q = W no ciclo inteiro."
+    ]
+   }
+  ],
+  "erros": [
+   "Somar Q e W quando a convenção manda subtrair o trabalho realizado pelo gás.",
+   "Achar que Q = 0 significa ΔU = 0. Significa apenas que a energia interna varia só pelo trabalho.",
+   "Esquecer que, num ciclo fechado, ΔU = 0 porque o estado final é igual ao inicial."
+  ]
+ },
+ "segunda-lei": {
+  "titulo": "2ª Lei: por que 100% é impossível",
+  "resumo": "A 1ª lei diz que a energia se conserva. A 2ª lei diz que, mesmo se conservando, ela não pode ser convertida integralmente em trabalho.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "O enunciado de Kelvin-Planck"
+   },
+   {
+    "t": "p",
+    "v": "É impossível construir uma máquina térmica que, operando em ciclos, converta <b>integralmente</b> em trabalho todo o calor que recebe de uma fonte."
+   },
+   {
+    "t": "formula",
+    "v": "η < 100%   sempre",
+    "leg": "Sempre sobra Q₂ rejeitado para a fonte fria"
+   },
+   {
+    "t": "h",
+    "v": "O que isso significa na prática"
+   },
+   {
+    "t": "p",
+    "v": "Não adianta caprichar no projeto, polir o pistão ou eliminar o atrito. Mesmo uma máquina termodinamicamente perfeita precisa jogar calor fora. O calor rejeitado é uma exigência da lei, não um defeito."
+   },
+   {
+    "t": "destaque",
+    "v": "A 1ª lei proíbe criar energia. A 2ª lei proíbe usar toda a energia. São proibições diferentes."
+   },
+   {
+    "t": "h",
+    "v": "O outro enunciado: Clausius"
+   },
+   {
+    "t": "p",
+    "v": "É impossível transferir calor espontaneamente de um corpo frio para um corpo quente. Para fazer isso é preciso <b>fornecer trabalho</b> — é exatamente o que o compressor da geladeira faz."
+   },
+   {
+    "t": "p",
+    "v": "Os dois enunciados são equivalentes: se um fosse violado, o outro também seria."
+   },
+   {
+    "t": "h",
+    "v": "Onde isso aparece no seu dia a dia"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "O celular carregando esquenta: parte da energia da tomada vira calor, não carga.",
+     "O carregador fica morno pelo mesmo motivo.",
+     "O motor do carro precisa de radiador: sem jogar calor fora, ele funde.",
+     "A lâmpada incandescente esquentava mais do que iluminava."
+    ]
+   },
+   {
+    "t": "h",
+    "v": "E a entropia?"
+   },
+   {
+    "t": "p",
+    "v": "A 2ª lei também pode ser escrita assim: a entropia de um sistema isolado nunca diminui. Entropia é uma medida de desordem. O universo caminha para mais desordem, e é por isso que certas transformações têm sentido único."
+   }
+  ],
+  "erros": [
+   "Achar que a 2ª lei fala de conservação de energia — isso é a 1ª.",
+   "Pensar que uma máquina perfeita, sem atrito, chegaria a 100%. Não chega.",
+   "Decorar \"calor vai do frio para o quente\" sem o \"espontaneamente\". Com trabalho externo, isso acontece — é a geladeira."
+  ]
+ },
+ "rendimento": {
+  "titulo": "Rendimento: quanto do calor virou trabalho",
+  "resumo": "Rendimento é a fração da energia que entrou e virou trabalho útil. É sempre um número entre 0 e 1, sem unidade.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "A definição"
+   },
+   {
+    "t": "formula",
+    "v": "η = W / Q₁",
+    "leg": "W: trabalho realizado · Q₁: calor recebido da fonte quente"
+   },
+   {
+    "t": "p",
+    "v": "O denominador é <b>sempre</b> o calor que entrou. Nunca o calor rejeitado, nunca a soma dos dois."
+   },
+   {
+    "t": "h",
+    "v": "A forma equivalente"
+   },
+   {
+    "t": "p",
+    "v": "Como a energia se conserva (Q₁ = W + Q₂), dá para escrever o rendimento só com os calores:"
+   },
+   {
+    "t": "formula",
+    "v": "η = 1 − Q₂/Q₁",
+    "leg": "Q₂: calor rejeitado para a fonte fria"
+   },
+   {
+    "t": "p",
+    "v": "As duas formas dão o mesmo resultado. Use a que o problema facilitar."
+   },
+   {
+    "t": "h",
+    "v": "Por que nunca chega a 100%"
+   },
+   {
+    "t": "p",
+    "v": "Para η = 1 seria preciso Q₂ = 0, ou seja, nenhum calor rejeitado. A 2ª lei proíbe. Por isso η está sempre entre 0 e 1."
+   },
+   {
+    "t": "destaque",
+    "v": "η = 0,4 significa 40%. É a mesma coisa escrita de dois jeitos."
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido 1 — achando o rendimento"
+   },
+   {
+    "t": "p",
+    "v": "Uma máquina recebe 800 J e rejeita 600 J. Qual o rendimento?"
+   },
+   {
+    "t": "p",
+    "v": "Primeiro o trabalho, pela conservação: W = 800 − 600 = 200 J. Depois a razão:"
+   },
+   {
+    "t": "formula",
+    "v": "η = 200 / 800 = 0,25 = 25%"
+   },
+   {
+    "t": "p",
+    "v": "Note que 600/800 = 75% é o desperdício, não o rendimento. Se a prova te oferecer 75% como alternativa, é a pegadinha."
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido 2 — achando o calor"
+   },
+   {
+    "t": "p",
+    "v": "Uma máquina de 40% de rendimento realiza 2 000 J. Quanto calor recebe?"
+   },
+   {
+    "t": "formula",
+    "v": "Q₁ = W / η = 2000 / 0,40 = 5 000 J"
+   },
+   {
+    "t": "p",
+    "v": "Conferindo: 40% de 5 000 é 2 000 (o trabalho) e sobram 3 000 J rejeitados."
+   },
+   {
+    "t": "h",
+    "v": "Valores reais, para ter noção"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "Motor a gasolina (ciclo Otto): cerca de 20% a 25%.",
+     "Motor a diesel: cerca de 30% a 35%.",
+     "Usina termoelétrica a vapor: 35% a 40%.",
+     "Motor elétrico: 85% a 95% — mas ele não é máquina térmica, e é por isso que rende tanto."
+    ]
+   }
+  ],
+  "erros": [
+   "Dividir pelo calor rejeitado (Q₂) em vez do recebido (Q₁).",
+   "Inverter a fração e obter rendimento maior que 100%.",
+   "Confundir o desperdício com o rendimento: os dois somam 100%.",
+   "Somar o percentual como se fosse energia (2000 + 40% = ?). Percentual é razão."
+  ]
+ },
+ "sensivel-latente": {
+  "titulo": "Calor sensível e calor latente",
+  "resumo": "Dois calores, duas fórmulas. Sensível mexe no termômetro. Latente mexe no estado físico — e o termômetro não muda.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "Calor sensível"
+   },
+   {
+    "t": "p",
+    "v": "É o calor que <b>altera a temperatura</b> do corpo. O nome vem de \"sensível\" porque você sente no termômetro. Pode também alterar as dimensões, por dilatação."
+   },
+   {
+    "t": "formula",
+    "v": "Q = m · c · ΔT",
+    "leg": "m: massa · c: calor específico · ΔT: variação de temperatura"
+   },
+   {
+    "t": "h",
+    "v": "Calor latente"
+   },
+   {
+    "t": "p",
+    "v": "É o calor que <b>muda o estado físico</b> sem mudar a temperatura. \"Latente\" quer dizer escondido: o calor entra, mas o termômetro não se mexe."
+   },
+   {
+    "t": "formula",
+    "v": "Q = m · L",
+    "leg": "L: calor latente de fusão ou de vaporização"
+   },
+   {
+    "t": "h",
+    "v": "O macete"
+   },
+   {
+    "t": "destaque",
+    "v": "Sensível = você sente (o termômetro muda). Latente = fica escondido (a temperatura não muda, mas o gelo vira água)."
+   },
+   {
+    "t": "h",
+    "v": "Por que o gelo derretendo não esquenta"
+   },
+   {
+    "t": "p",
+    "v": "Enquanto houver gelo a 0 °C derretendo, todo o calor recebido vai para quebrar o arranjo do sólido. A temperatura fica travada em 0 °C. Ela só começa a subir depois que o último pedaço de gelo virar água."
+   },
+   {
+    "t": "h",
+    "v": "Valores da água (use os da prova se forem dados)"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "Fusão: L = 80 cal/g (derreter gelo a 0 °C)",
+     "Vaporização: L = 540 cal/g (ferver água a 100 °C)"
+    ]
+   },
+   {
+    "t": "p",
+    "v": "Vaporizar custa muito mais que fundir porque é preciso separar as moléculas de vez, não apenas afrouxar o arranjo."
+   }
+  ],
+  "erros": [
+   "Usar Q = m·c·ΔT durante a mudança de estado — ali é Q = m·L.",
+   "Achar que o gelo a 0 °C derretendo esquenta: a temperatura fica constante.",
+   "Trocar o L de fusão (80) pelo de vaporização (540)."
+  ]
+ },
+ "conta-trocas": {
+  "titulo": "Contas de trocas de calor",
+  "resumo": "Monte uma equação só: a soma dos calores é zero. Com massas iguais, a temperatura final é a média.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "A equação"
+   },
+   {
+    "t": "formula",
+    "v": "Q₁ + Q₂ + Q₃ + ... = 0",
+    "leg": "Cada Q = m·c·(T_final − T_inicial)"
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido"
+   },
+   {
+    "t": "p",
+    "v": "100 g de água a 80 °C com 300 g a 20 °C:"
+   },
+   {
+    "t": "formula",
+    "v": "100·(T − 80) + 300·(T − 20) = 0"
+   },
+   {
+    "t": "formula",
+    "v": "100T − 8000 + 300T − 6000 = 0  →  400T = 14 000  →  T = 35 °C"
+   },
+   {
+    "t": "p",
+    "v": "Repare que o resultado (35 °C) fica mais perto de 20 °C, porque a massa fria é maior. Faz sentido."
+   },
+   {
+    "t": "h",
+    "v": "O atalho da média"
+   },
+   {
+    "t": "destaque",
+    "v": "Só vale quando as massas e as substâncias são iguais: T = (T₁ + T₂)/2."
+   },
+   {
+    "t": "p",
+    "v": "Ouro e água misturados, ou massas diferentes, exigem a equação completa."
+   }
+  ],
+  "erros": [
+   "Usar a média simples com massas diferentes.",
+   "Trocar o sinal de quem cede calor.",
+   "Esquecer o calor específico quando as substâncias são diferentes."
+  ]
+ },
+ "conta-especifico": {
+  "titulo": "Contas de calor específico",
+  "resumo": "Isole c na fórmula: c = Q/(m·ΔT). O valor encontrado identifica o material pela tabela.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "Isolando o c"
+   },
+   {
+    "t": "formula",
+    "v": "Q = m · c · ΔT   →   c = Q / (m · ΔT)"
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido"
+   },
+   {
+    "t": "p",
+    "v": "500 g recebem 1 000 cal e a temperatura sobe 10 °C:"
+   },
+   {
+    "t": "formula",
+    "v": "c = 1000 / (500 · 10) = 0,20 cal/g·°C"
+   },
+   {
+    "t": "p",
+    "v": "Consultando a tabela da aula: 0,20 é o valor da <b>areia</b>."
+   },
+   {
+    "t": "h",
+    "v": "Tabela para identificar"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "Água 1,00 · Gelo 0,50 · Alumínio 0,21 · Areia 0,20 · Vidro 0,16 · Aço 0,10 · Ouro 0,03"
+    ]
+   },
+   {
+    "t": "destaque",
+    "v": "Confira a unidade no final: cal/g·°C é calor específico (do material); cal/°C é capacidade térmica (do corpo)."
+   }
+  ],
+  "erros": [
+   "Somar em vez de multiplicar m·ΔT no denominador.",
+   "Confundir o resultado com capacidade térmica.",
+   "Errar a comparação com a tabela por causa da vírgula."
+  ]
+ },
+ "conta-capacidade": {
+  "titulo": "Contas de capacidade térmica",
+  "resumo": "Duas fórmulas, dois caminhos: C = m·c quando você tem massa e material, C = Q/ΔT quando tem calor e variação.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "Os dois caminhos"
+   },
+   {
+    "t": "formula",
+    "v": "C = m · c",
+    "leg": "Se o problema dá a massa e o calor específico"
+   },
+   {
+    "t": "formula",
+    "v": "C = Q / ΔT",
+    "leg": "Se o problema dá o calor recebido e a variação de temperatura"
+   },
+   {
+    "t": "h",
+    "v": "Exemplo 1 — com massa e material"
+   },
+   {
+    "t": "p",
+    "v": "500 g de alumínio (c = 0,21 cal/g·°C):"
+   },
+   {
+    "t": "formula",
+    "v": "C = 500 · 0,21 = 105 cal/°C"
+   },
+   {
+    "t": "h",
+    "v": "Exemplo 2 — com calor e variação"
+   },
+   {
+    "t": "p",
+    "v": "Um corpo de C = 40 cal/°C recebe 800 cal. Qual a variação?"
+   },
+   {
+    "t": "formula",
+    "v": "ΔT = Q / C = 800 / 40 = 20 °C"
+   },
+   {
+    "t": "destaque",
+    "v": "A unidade de C é cal/°C — não tem grama. Se a resposta vier em cal/g·°C, você calculou c em vez de C."
+   }
+  ],
+  "erros": [
+   "Dividir m por c em vez de multiplicar.",
+   "Confundir C (corpo, cal/°C) com c (material, cal/g·°C).",
+   "Inverter a razão em ΔT = Q/C."
+  ]
+ }
+};
+
+const LICAO_POR_QUESTAO = QUESTIONS.map(q => q.licao);
+
+const stage   = document.getElementById('stage');
+const fill    = document.getElementById('fill');
+const count   = document.getElementById('count');
+const timerEl = document.getElementById('timer');
+const logEl   = document.getElementById('log');
+const LETTERS = ['a','b','c','d','e'];
+
+const LIMITE_SEG = 50 * 60;      // 50 minutos de prova
+const K_LOG    = 'simulado_prova_log_v1';     // historico de eventos
+const K_SESSAO = 'simulado_prova_sessao_v1';  // marcador de tentativa em andamento
+
+let QUIZ = [];        // versao com alternativas embaralhadas (a que aparece na tela)
+let idx = 0;
+let answers = [];
+let estado = 'intro'; // intro | quiz | done
+let fimEm = 0, inicioEm = 0, tickId = null;
+let pendente = null;  // alternativa selecionada aguardando confirmacao (-1 = pular)
+let tentativa = 0;
+
+/* ---------------- armazenamento seguro ---------------- */
+const mem = {};
+function lsGet(k, def){
+  try { const v = localStorage.getItem(k); return v === null ? def : JSON.parse(v); }
+  catch(e){ return k in mem ? mem[k] : def; }
+}
+function lsSet(k, v){
+  try { localStorage.setItem(k, JSON.stringify(v)); }
+  catch(e){ mem[k] = v; }
+}
+function lsDel(k){
+  try { localStorage.removeItem(k); } catch(e){ delete mem[k]; }
+}
+
+/* ---------------- registro de tentativas ---------------- */
+function logGet(){ const l = lsGet(K_LOG, []); return Array.isArray(l) ? l : []; }
+function logAdd(tipo, nota, extra){
+  const l = logGet();
+  l.push(Object.assign({t: Date.now(), tipo, nota: nota || '', tentativa}, extra || {}));
+  while (l.length > 60) l.shift();
+  lsSet(K_LOG, l);
+  renderLog();
+}
+
+function horaCurta(ts){
+  const d = new Date(ts);
+  return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+}
+function quando(ts){
+  const diff = Math.round((Date.now() - ts) / 60000);
+  if (diff < 1) return 'agora';
+  if (diff < 60) return 'há ' + diff + ' min';
+  const d = Math.round(diff / 60);
+  if (d < 24) return 'há ' + d + ' h';
+  return 'há ' + Math.round(d / 24) + ' d';
+}
+
+function resumoLog(){
+  const l = logGet();
+  const inicios   = l.filter(e => e.tipo === 'iniciou').length;
+  const reinicios = l.filter(e => e.tipo === 'reiniciou').length;
+  return {
+    inicios,
+    tentativas:  inicios + reinicios,          // toda vez que a prova recomeça, conta
+    reinicios,
+    interrupcoes:l.filter(e => e.tipo === 'interrompeu').length,
+    conclusoes:  l.filter(e => e.tipo === 'concluiu' || e.tipo === 'tempo').length,
+    ultimo:      l.length ? l[l.length - 1].t : 0
+  };
+}
+
+const ROTULO = {
+  iniciou:    '▶ Iniciou',
+  reiniciou:  '↻ Reiniciou',
+  interrompeu:'⏸ Saiu',
+  concluiu:   '✓ Concluiu',
+  tempo:      '⏱ Tempo esgotado'
+};
+
+function renderLog(){
+  const r = resumoLog();
+  const badges = document.getElementById('logBadges');
+  const note   = document.getElementById('logNote');
+  const list   = document.getElementById('logList');
+  const foot   = document.getElementById('logFoot');
+  if (!badges) return;
+
+  const b = [];
+  b.push(`<span class="badge ${r.tentativas?'':'zero'}">Tentativas: ${r.tentativas}</span>`);
+  b.push(`<span class="badge ${r.reinicios?'warn':'zero'}">Reinícios: ${r.reinicios}</span>`);
+  b.push(`<span class="badge ${r.interrupcoes?'bad':'zero'}">Saídas no meio: ${r.interrupcoes}</span>`);
+  b.push(`<span class="badge ${r.conclusoes?'good':'zero'}">Concluídas: ${r.conclusoes}</span>`);
+  if (r.ultimo) b.push(`<span class="badge zero">última: ${quando(r.ultimo)}</span>`);
+  badges.innerHTML = b.join('');
+
+  const total = r.reinicios + r.interrupcoes;
+  if (total > 0){
+    note.hidden = false;
+    note.innerHTML = `Este simulado já foi <b>reiniciado ${r.reinicios}×</b> e <b>interrompido ${r.interrupcoes}×</b> ` +
+      `(sair ou recarregar a página no meio conta como interrupção). O registro fica salvo neste navegador.`;
+  } else {
+    note.hidden = true;
+  }
+
+  const l = logGet().slice().reverse();
+  list.innerHTML = l.map(e => `
+    <li>
+      <span class="log-time">${horaCurta(e.t)}</span>
+      <span class="log-tipo ${e.tipo}">${ROTULO[e.tipo] || e.tipo}</span>
+      <span class="log-nota">${e.nota || ''}</span>
+    </li>`).join('');
+  foot.hidden = !l.length;
+}
+
+/* ---------------- sessao em andamento ---------------- */
+function marcarSessao(){
+  lsSet(K_SESSAO, {
+    inicio: inicioEm, tentativa,
+    idx: idx + 1,
+    respondidas: answers.length,
+    total: QUESTIONS.length,
+    naTela: Date.now()
+  });
+}
+function limparSessao(){ lsDel(K_SESSAO); }
+
+// ao abrir a pagina: se havia tentativa em andamento, isso conta como interrupcao
+function registrarSaidaAnterior(){
+  const s = lsGet(K_SESSAO, null);
+  if (!s) return false;
+  tentativa = s.tentativa || 1;
+  logAdd('interrompeu',
+    `tentativa ${s.tentativa} parada na questão ${s.idx}/${s.total} (${s.respondidas} respondida(s))`,
+    {t: s.naTela || s.inicio});
+  limparSessao();
+  return true;
+}
+
+/* ---------------- embaralhamento equilibrado ---------------- */
+function shuffleArr(a){
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--){
+    const k = Math.floor(Math.random() * (i + 1));
+    [r[i], r[k]] = [r[k], r[i]];
+  }
+  return r;
+}
+
+function montarQuiz(){
+  const n = QUESTIONS.length;
+  const cota = Math.floor(n / 5);
+  const sobra = n % 5;
+  const letras = shuffleArr([0,1,2,3,4]).slice(0, sobra);
+  let pool = [];
+  for (let l = 0; l < 5; l++){
+    const qtd = cota + (letras.includes(l) ? 1 : 0);
+    for (let k = 0; k < qtd; k++) pool.push(l);
+  }
+  pool = shuffleArr(pool);
+
+  return QUESTIONS.map((q, qi) => {
+    const correta = q.alternativas.findIndex(a => a.ok);
+    const erradas = shuffleArr(q.alternativas.map((_, k) => k).filter(k => k !== correta));
+    const alvo = pool[qi];
+    const ordem = [];
+    let pe = 0;
+    for (let pos = 0; pos < q.alternativas.length; pos++){
+      ordem.push(pos === alvo ? correta : erradas[pe++]);
+    }
+    return {
+      tema: q.tema,
+      enunciado: q.enunciado,
+      figura: q.figura,                     // diagrama SVG (sobrevive ao sorteio)
+      estrutura: q.estrutura,
+      conceito: q.conceito,
+      licao: q.licao,                       // aula do assunto (sobrevive ao sorteio)
+      alternativas: ordem.map(k => q.alternativas[k])
+    };
+  });
+}
+
+/* ---------------- cronometro ---------------- */
+function fmt(seg){
+  seg = Math.max(0, Math.round(seg));
+  return String(Math.floor(seg / 60)).padStart(2,'0') + ':' + String(seg % 60).padStart(2,'0');
+}
+function restanteSeg(){ return (fimEm - Date.now()) / 1000; }
+
+function tick(){
+  if (estado !== 'quiz') return;
+  const seg = restanteSeg();
+  timerEl.textContent = fmt(seg);
+  timerEl.classList.toggle('warn',   seg <= 600 && seg > 300);
+  timerEl.classList.toggle('danger', seg <= 300);
+  if (seg <= 0) encerrarPorTempo();
+}
+function iniciarTimer(){
+  inicioEm = Date.now();
+  fimEm = inicioEm + LIMITE_SEG * 1000;
+  timerEl.classList.remove('hidden','warn','danger');
+  timerEl.textContent = fmt(LIMITE_SEG);
+  clearInterval(tickId);
+  tickId = setInterval(tick, 250);
+  tick();
+}
+function pararTimer(){ clearInterval(tickId); tickId = null; timerEl.classList.add('hidden'); }
+
+/* ---------------- telas ---------------- */
+function progress(){
+  const pct = (idx / QUESTIONS.length) * 100;
+  fill.style.width = pct + '%';
+  count.innerHTML = '<b>' + Math.min(idx + 1, QUESTIONS.length) + '</b> / ' + QUESTIONS.length;
+}
+
+function telaInicial(){
+  estado = 'intro';
+  pararTimer();
+  pendente = null;
+  fill.style.width = '0%';
+  count.innerHTML = '<b>' + QUESTIONS.length + '</b> questões';
+  renderLog();
+
+  const r = resumoLog();
+  const aviso = (r.reinicios + r.interrupcoes) > 0
+    ? `<p class="log-note" style="margin-top:16px">Atenção: este simulado já foi reiniciado <b>${r.reinicios}×</b> e interrompido <b>${r.interrupcoes}×</b>. Esse histórico aparece no topo durante toda a prova.</p>`
+    : '';
+
+  stage.innerHTML = `
+    <section class="card">
+      <span class="chip">Antes de começar</span>
+      <p class="q">Simulado no formato da prova — <strong>${QUESTIONS.length} questões</strong>, <strong>50 minutos</strong>.</p>
+      <ul class="start-rules">
+        <li>O cronômetro começa em <b>Iniciar simulado</b> e não pausa.</li>
+        <li>Cada resposta pede <b>confirmação</b> antes de revelar o gabarito.</li>
+        <li>Se você sair ou recarregar no meio, isso é <b>registrado</b> no painel de tentativas lá em cima.</li>
+        <li>As alternativas são sorteadas a cada tentativa — a letra correta muda de lugar.</li>
+        <li>Ao chegar em 00:00, o simulado é encerrado e corrigido com o que você já respondeu.</li>
+      </ul>
+      ${aviso}
+      <div class="actions">
+        <span class="hint">Enter também inicia</span>
+        <button class="btn ghost" id="semTimer" type="button">Treinar sem tempo</button>
+        <button class="btn" id="iniciar" type="button">Iniciar simulado</button>
+      </div>
+    </section>`;
+  document.getElementById('iniciar').addEventListener('click', () => comecar(true));
+  document.getElementById('semTimer').addEventListener('click', () => comecar(false));
+}
+
+function comecar(comTempo, motivo){
+  QUIZ = montarQuiz();
+  idx = 0;
+  answers = [];
+  pendente = null;
+  estado = 'quiz';
+  tentativa = resumoLog().tentativas + 1;
+  if (comTempo) iniciarTimer(); else { inicioEm = Date.now(); pararTimer(); }
+
+  logAdd(motivo === 'reiniciou' ? 'reiniciou' : 'iniciou',
+         motivo === 'reiniciou'
+           ? `tentativa ${tentativa} — recomeçou do zero${comTempo ? ' com 50 min' : ' sem tempo'}`
+           : `tentativa ${tentativa} — ${comTempo ? '50 minutos' : 'sem tempo'}`);
+  marcarSessao();
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUIZ[idx];
+  progress();
+  pendente = null;
+
+  const opts = q.alternativas.map((a, i) => `
+      <button class="opt" data-i="${i}" type="button">
+        <span class="key">${LETTERS[i]}</span>
+        <span class="txt">${a.t}</span>
+      </button>`).join('');
+
+  stage.innerHTML = `
+    <section class="card">
+      <span class="chip">${q.tema}</span>
+      <p class="q">${q.enunciado}</p>
+      ${q.figura ? q.figura : ''}
+      ${q.estrutura ? `<div class="formula"><span class="lbl">estrutura</span>${q.estrutura}</div>` : ''}
+      <div class="opts" id="opts">${opts}</div>
+      <div id="confirmBox"></div>
+      <div id="fb"></div>
+      <div class="actions">
+        <span class="hint" id="hint">Escolha uma alternativa (teclas 1–5)</span>
+        <button class="btn ghost" id="restart" type="button">Reiniciar</button>
+        <button class="btn ghost" id="skip" type="button">Pular</button>
+        <button class="btn" id="next" type="button" disabled>Próxima</button>
+      </div>
+    </section>`;
+
+  document.getElementById('opts').addEventListener('click', e => {
+    const b = e.target.closest('.opt');
+    if (b && !b.classList.contains('locked')) selecionar(parseInt(b.dataset.i, 10));
+  });
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('skip').addEventListener('click', pedirPular);
+  document.getElementById('restart').addEventListener('click', pedirReinicio);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---- etapa 1: selecionar (nao revela nada) ---- */
+function selecionar(i){
+  const q = QUIZ[idx];
+  const fb = document.getElementById('fb');
+  if (estado !== 'quiz' || (fb && fb.dataset.done)) return;
+  if (i < 0 || i >= q.alternativas.length) return;
+
+  pendente = i;
+
+  document.querySelectorAll('.opt').forEach(el => {
+    el.classList.toggle('sel', parseInt(el.dataset.i, 10) === i);
+  });
+
+  const box = document.getElementById('confirmBox');
+  box.innerHTML = `
+    <div class="confirm">
+      <p class="confirm-q">
+        Confirmar esta resposta?
+        <span class="pick"><b>${LETTERS[i]})</b> ${q.alternativas[i].t}</span>
+      </p>
+      <div class="confirm-btns">
+        <button class="btn ghost" id="trocar" type="button">Trocar</button>
+        <button class="btn" id="confirmar" type="button">Confirmar resposta</button>
+      </div>
+    </div>`;
+  document.getElementById('confirmar').addEventListener('click', confirmar);
+  document.getElementById('trocar').addEventListener('click', limparSelecao);
+  document.getElementById('hint').textContent = 'Confirme para ver o gabarito (Enter confirma)';
+  document.getElementById('confirmar').focus({preventScroll:true});
+}
+
+function limparSelecao(){
+  pendente = null;
+  document.querySelectorAll('.opt').forEach(el => el.classList.remove('sel'));
+  const box = document.getElementById('confirmBox');
+  if (box) box.innerHTML = '';
+  const hint = document.getElementById('hint');
+  if (hint) hint.textContent = 'Escolha uma alternativa (teclas 1–5)';
+}
+
+function confirmar(){
+  if (pendente === null) return;
+  const escolha = pendente;
+  document.getElementById('confirmBox').innerHTML = '';
+  revelar(escolha);
+}
+
+/* ---- pular tambem passa por confirmacao ---- */
+function pedirPular(){
+  const fb = document.getElementById('fb');
+  if (estado !== 'quiz' || (fb && fb.dataset.done)) return;
+  pendente = -1;
+  document.querySelectorAll('.opt').forEach(el => el.classList.remove('sel'));
+  const box = document.getElementById('confirmBox');
+  box.innerHTML = `
+    <div class="confirm">
+      <p class="confirm-q">
+        Pular esta questão? Ela entra como <b>não respondida</b> no resultado.
+      </p>
+      <div class="confirm-btns">
+        <button class="btn ghost" id="trocar" type="button">Voltar</button>
+        <button class="btn danger-btn" id="confirmar" type="button">Pular mesmo assim</button>
+      </div>
+    </div>`;
+  document.getElementById('confirmar').addEventListener('click', confirmar);
+  document.getElementById('trocar').addEventListener('click', limparSelecao);
+  document.getElementById('confirmar').focus({preventScroll:true});
+}
+
+/* ---- reinicio com confirmacao e registro ---- */
+function pedirReinicio(){
+  if (estado !== 'quiz') return;
+  boxReinicio();
+}
+
+function boxReinicio(){
+  const box = document.getElementById('confirmBox');
+  const resp = answers.length;
+  box.innerHTML = `
+    <div class="confirm" style="border-color:var(--no-line);background:var(--no-soft)">
+      <p class="confirm-q">
+        Reiniciar o simulado? Você está na <b>questão ${idx + 1} de ${QUESTIONS.length}</b> com
+        <b>${resp} resposta(s)</b> registrada(s). Tudo é apagado e o reinício fica marcado no
+        painel de registro do topo.
+      </p>
+      <div class="confirm-btns">
+        <button class="btn ghost" id="trocar" type="button">Cancelar</button>
+        <button class="btn danger-btn" id="confirmar" type="button">Sim, reiniciar</button>
+      </div>
+    </div>`;
+  document.getElementById('confirmar').addEventListener('click', () => {
+    comecar(true, 'reiniciou');
+  });
+  document.getElementById('trocar').addEventListener('click', () => {
+    if (pendente === null) limparSelecao(); else selecionar(pendente);
+  });
+  document.getElementById('confirmar').focus({preventScroll:true});
+}
+
+/* ---- etapa 2: revelar gabarito ---- */
+function revelar(chosen){
+  if (estado !== 'quiz') return;
+  const q = QUIZ[idx];
+  const fb = document.getElementById('fb');
+  if (fb.dataset.done) return;
+  fb.dataset.done = '1';
+
+  const ok = chosen >= 0 && q.alternativas[chosen].ok;
+  answers.push({i: idx, chosen, ok, tema: q.tema});
+  pendente = null;
+  marcarSessao();
+
+  document.querySelectorAll('.opt').forEach(el => {
+    const i = parseInt(el.dataset.i, 10);
+    const a = q.alternativas[i];
+    el.classList.remove('sel');
+    el.classList.add('locked');
+    if (a.ok){
+      el.classList.add('correct');
+      el.insertAdjacentHTML('beforeend', '<span class="mark">✓</span>');
+    } else if (i === chosen){
+      el.classList.add('wrong');
+      el.insertAdjacentHTML('beforeend', '<span class="mark">✕</span>');
+    } else {
+      el.classList.add('dim');
+    }
+  });
+
+  const why = q.alternativas.map((a, i) => {
+    const cls = a.ok ? 'good' : 'bad';
+    const picked = i === chosen ? ' picked' : '';
+    return `<li class="${cls}${picked}"><b class="lbl">${LETTERS[i]}</b>${a.porque}</li>`;
+  }).join('');
+
+  const verdict = chosen === -1
+    ? `<div class="verdict no">⏭ Você pulou esta questão</div>`
+    : ok
+      ? `<div class="verdict ok">✓ Resposta correta</div>`
+      : `<div class="verdict no">✕ Resposta incorreta — a correta é a letra ${LETTERS[q.alternativas.findIndex(a => a.ok)]}</div>`;
+
+  const lic = LICOES[q.licao];
+  const btnAula = lic ? `
+    <button class="lesson-btn" id="abrirAula" type="button">
+      <span class="ico">📘</span>
+      <span class="lbl">Aprender o assunto do zero
+        <small>${lic.titulo}</small></span>
+      <span class="arrow">→</span>
+    </button>` : '';
+
+  fb.innerHTML = `
+    <div class="fb">
+      ${verdict}
+      <p class="concept">${q.conceito}</p>
+      <ul class="why">${why}</ul>
+      ${btnAula}
+    </div>`;
+
+  const abrir = document.getElementById('abrirAula');
+  if (abrir) abrir.addEventListener('click', () => abrirLicao(q.licao));
+
+  const nextBtn = document.getElementById('next');
+  nextBtn.disabled = false;
+  nextBtn.textContent = (idx === QUESTIONS.length - 1) ? 'Ver resultado' : 'Próxima';
+  document.getElementById('skip').style.display = 'none';
+  document.getElementById('hint').textContent = ok ? 'Boa. Enter para continuar.' : 'Leia as explicações e siga com Enter.';
+  nextBtn.focus({preventScroll:true});
+}
+
+function next(){
+  const fb = document.getElementById('fb');
+  if (!fb || !fb.dataset.done) return;
+  idx++;
+  if (idx >= QUESTIONS.length) return results();
+  marcarSessao();
+  renderQuestion();
+}
+
+function encerrarPorTempo(){
+  pararTimer();
+  results(true);
+}
+
+function results(porTempo){
+  estado = 'done';
+  pararTimer();
+  limparSessao();
+
+  const segUsados = porTempo ? LIMITE_SEG : Math.min(LIMITE_SEG, Math.round((Date.now() - inicioEm) / 1000));
+  fill.style.width = '100%';
+
+  const right = answers.filter(a => a.ok).length;
+  const total = QUESTIONS.length;
+  const pct = Math.round((right / total) * 100);
+  const semResposta = total - answers.length;
+
+  logAdd(porTempo ? 'tempo' : 'concluiu',
+         `tentativa ${tentativa} — ${right}/${total} (${pct}%) em ${fmt(segUsados)}`);
+
+  const byTheme = {};
+  answers.forEach(a => {
+    byTheme[a.tema] = byTheme[a.tema] || {t:0, ok:0};
+    byTheme[a.tema].t++;
+    if (a.ok) byTheme[a.tema].ok++;
+  });
+
+  const rows = Object.entries(byTheme).map(([tema, v]) => {
+    const p = Math.round((v.ok / v.t) * 100);
+    const cls = p >= 80 ? 'ok' : p >= 50 ? 'mid' : 'no';
+    return `<tr><td>${tema}</td><td class="num">${v.ok}/${v.t}</td>
+            <td class="num"><span class="pill ${cls}">${p}%</span></td></tr>`;
+  }).join('');
+
+  const errors = answers.filter(a => !a.ok);
+  const rev = errors.length
+    ? `<ul class="rev-list">${errors.map(a => {
+        const q = QUIZ[a.i];
+        const corr = q.alternativas.find(x => x.ok);
+        return `<li><b>Questão ${a.i + 1} · ${q.tema}</b>
+                  ${a.chosen === -1 ? 'Você pulou. ' : ''}Correta (${LETTERS[q.alternativas.findIndex(x => x.ok)]}): ${corr.t}</li>`;
+      }).join('')}</ul>`
+    : `<p class="sub" style="margin-top:18px">Nenhum erro. Nesse nível, vale revisar só os detalhes de nomenclatura de radicais (sec-, terc-, iso-) antes da prova.</p>`;
+
+  const msg = pct >= 85 ? 'Muito bom — você domina a classificação de cadeias.'
+            : pct >= 65 ? 'Bom caminho. Os erros estão concentrados em poucos temas: releia a tabela.'
+            : pct >= 45 ? 'Base em construção. Refaça as questões erradas com a explicação ao lado.'
+            : 'Vale voltar à teoria: tetravalência, classificação de carbonos e os três critérios de cadeia.';
+
+  const rr = resumoLog();
+  count.innerHTML = '<b>' + total + '</b> / ' + total;
+
+  stage.innerHTML = `
+    <section class="card">
+      <span class="chip">Resultado</span>
+      ${porTempo ? `<div class="banner">⏱ Tempo esgotado — o simulado foi encerrado e corrigido com as respostas já registradas.</div>` : ''}
+      <div class="score">
+        <div class="ring" style="--p:${pct}"><span>${pct}%</span></div>
+        <div class="score-txt">
+          <h2>${right} de ${total} corretas</h2>
+          <p>${msg}</p>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span>Tentativa: <b>${tentativa}ª</b></span>
+        <span>Tempo: <b>${fmt(segUsados)}</b>${porTempo ? ' (limite)' : ' de 50:00'}</span>
+        <span>Em branco: <b>${semResposta}</b></span>
+        <span>Média por questão: <b>${answers.length >= 3 ? fmt(segUsados / answers.length) : '—'}</b></span>
+        <span>Reinícios + saídas: <b>${rr.reinicios + rr.interrupcoes}</b></span>
+      </div>
+      <table>
+        <thead><tr><th>Tema</th><th class="num">Acertos</th><th class="num">%</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <h3 style="font-size:15px;margin:22px 0 0">Revisar antes da prova</h3>
+      ${rev}
+      <div class="actions">
+        <span class="hint">Cada tentativa sorteia novas posições.</span>
+        <button class="btn ghost" id="inicio" type="button">Tela inicial</button>
+        <button class="btn" id="again" type="button">Refazer o simulado</button>
+      </div>
+    </section>`;
+
+  document.getElementById('again').addEventListener('click', () => comecar(true, 'reiniciou'));
+  document.getElementById('inicio').addEventListener('click', telaInicial);
+  renderLog();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------------- painel de registro ---------------- */
+document.getElementById('logToggle').addEventListener('click', () => {
+  const list = document.getElementById('logList');
+  const foot = document.getElementById('logFoot');
+  const abrir = list.hidden;
+  list.hidden = !abrir;
+  foot.hidden = !abrir || !logGet().length;
+  document.getElementById('logToggle').textContent = abrir ? 'Ocultar' : 'Histórico';
+});
+
+document.getElementById('logClear').addEventListener('click', () => {
+  lsSet(K_LOG, []);
+  renderLog();
+  const list = document.getElementById('logList');
+  list.hidden = true;
+  document.getElementById('logFoot').hidden = true;
+  document.getElementById('logToggle').textContent = 'Histórico';
+});
+
+/* ---------------- aula do assunto (modal) ---------------- */
+let scrollAntes = 0;
+
+function renderLicao(id){
+  const l = LICOES[id];
+  if (!l) return '';
+
+  const corpo = l.blocos.map(b => {
+    if (b.t === 'h')   return `<h3>${b.v}</h3>`;
+    if (b.t === 'p')   return `<p>${b.v}</p>`;
+    if (b.t === 'formula') return `<div class="lesson-form">${b.v}${b.leg ? `<span class="leg">${b.leg}</span>` : ''}</div>`;
+    if (b.t === 'figura') return b.v;
+    if (b.t === 'destaque') return `<div class="lesson-hi">${b.v}</div>`;
+    if (b.t === 'lista') return `<ul>${b.v.map(x => `<li>${x}</li>`).join('')}</ul>`;
+    return '';
+  }).join('');
+
+  const erros = (l.erros && l.erros.length) ? `
+    <div class="lesson-erros">
+      <p class="tit">Onde todo mundo erra</p>
+      <ul>${l.erros.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>` : '';
+
+  return `
+    <div class="lesson-head">
+      <div style="flex:1;min-width:0">
+        <p class="eyebrow">Aula · Calorimetria</p>
+        <h2>${l.titulo}</h2>
+      </div>
+      <button class="lesson-close" id="fecharAula" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div class="lesson-body">
+      <p class="lesson-resumo">${l.resumo}</p>
+      ${corpo}
+      ${erros}
+    </div>
+    <div class="lesson-foot">
+      <button class="btn ghost" id="fecharAula2" type="button">Voltar para a questão</button>
+      <button class="btn" id="entendi" type="button">Entendi, continuar</button>
+    </div>`;
+}
+
+function abrirLicao(id){
+  const modal = document.getElementById('modal');
+  const box   = document.getElementById('lesson');
+  if (!modal || !LICOES[id]) return;
+  scrollAntes = window.scrollY;
+  box.innerHTML = renderLicao(id);
+  modal.classList.add('open');
+  modal.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  document.getElementById('fecharAula').addEventListener('click', fecharLicao);
+  document.getElementById('fecharAula2').addEventListener('click', fecharLicao);
+  document.getElementById('entendi').addEventListener('click', fecharLicao);
+}
+
+function fecharLicao(){
+  const modal = document.getElementById('modal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('lesson').innerHTML = '';
+  window.scrollTo({top: scrollAntes, behavior: 'auto'});
+  const n = document.getElementById('next');
+  if (n) n.focus({preventScroll:true});
+}
+
+document.addEventListener('click', e => {
+  if (e.target && e.target.id === 'modal') fecharLicao();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){
+    const m = document.getElementById('modal');
+    if (m && m.classList.contains('open')){ e.preventDefault(); e.stopPropagation(); fecharLicao(); }
+  }
+}, true);
+
+/* ---------------- teclado ---------------- */
+document.addEventListener('keydown', e => {
+  const modalAberto = document.getElementById('modal') && document.getElementById('modal').classList.contains('open');
+  if (modalAberto) return;              // aula aberta: teclado do quiz fica inativo
+  if (estado === 'intro'){
+    if (e.key === 'Enter'){ e.preventDefault(); comecar(true); }
+    return;
+  }
+  if (estado !== 'quiz') return;
+  const fb = document.getElementById('fb');
+  if (!fb) return;
+
+  if (fb.dataset.done){
+    if (e.key === 'Enter'){ e.preventDefault(); next(); }
+    return;
+  }
+  if (/^[1-5]$/.test(e.key)){
+    const i = parseInt(e.key, 10) - 1;
+    if (i < QUIZ[idx].alternativas.length){ e.preventDefault(); selecionar(i); }
+    return;
+  }
+  if (e.key === 'Enter' && pendente !== null){ e.preventDefault(); confirmar(); }
+  if (e.key === 'Escape' && pendente !== null){ e.preventDefault(); limparSelecao(); }
+});
+
+/* ---------------- ao sair no meio da tentativa ---------------- */
+window.addEventListener('pagehide', () => { if (estado === 'quiz') marcarSessao(); });
+window.addEventListener('beforeunload', () => { if (estado === 'quiz') marcarSessao(); });
+
+/* ---------------- boot ---------------- */
+registrarSaidaAnterior();
+renderLog();
+telaInicial();
+</script>
+</body>
+</html>
