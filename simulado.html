@@ -395,495 +395,1603 @@
 
 <script>
 const QUESTIONS = [
-  {
-    tema: "Máquinas térmicas",
-    enunciado: "O que é uma máquina térmica?",
-    conceito: "A máquina térmica recebe energia em forma de <b>calor</b> de uma fonte quente e devolve apenas <b>parte</b> dela como trabalho mecânico. O resto é rejeitado para uma fonte fria — por isso o advérbio \"parcialmente\" é o coração da definição.",
-    alternativas: [
-      {t:"Todo dispositivo que converte energia mecânica integralmente em calor.", ok:false,
-       porque:"Isso descreve o atrito, não uma máquina térmica. A máquina térmica faz o caminho inverso: calor → trabalho."},
-      {t:"Um dispositivo que converte parcialmente energia térmica em trabalho mecânico.", ok:true,
-       porque:"É a definição trabalhada em aula: locomotiva a vapor, motor de combustão, usina. O \"parcialmente\" é o que a 2ª lei garante."},
-      {t:"Um dispositivo que produz calor a partir de trabalho, como um aquecedor.", ok:false,
-       porque:"Aquecedor não é máquina térmica no sentido estudado; ele é o objetivo inverso. Refrigerador e bomba de calor é que realizam trabalho para mover calor."},
-      {t:"Qualquer máquina que funcione com eletricidade.", ok:false,
-       porque:"Usinas nucleares, sim, mas um motor elétrico converte energia elétrica em mecânica diretamente, sem passar por calor como etapa obrigatória."},
-      {t:"Um sistema que transforma calor em trabalho com rendimento de 100%.", ok:false,
-       porque:"Rendimento 100% é impossível — violaria o enunciado de Kelvin-Planck da 2ª lei."}
-    ]
-  },
-  {
-    tema: "Sistema termodinâmico",
-    enunciado: "Um <strong>sistema termodinâmico</strong>, na definição usada na aula, é:",
-    conceito: "O sistema é a região delimitada que você escolheu analisar — o gás dentro do pistão, por exemplo. Tudo que está fora é a vizinhança. A fronteira (parede do cilindro, êmbolo) é o que separa os dois.",
-    alternativas: [
-      {t:"Uma região do espaço delimitada por paredes ou membranas, separada da vizinhança, escolhida para análise.", ok:true,
-       porque:"Exatamente: o gás dentro do pistão é o sistema; o cilindro e o êmbolo são a fronteira; o resto do laboratório é a vizinhança."},
-      {t:"Todo o universo, considerado como um conjunto único.", ok:false,
-       porque:"Universo = sistema + vizinhança. Se você tratar tudo como sistema, não sobra vizinhança para trocar calor e trabalho."},
-      {t:"Apenas a parte do recipiente que contém o combustível.", ok:false,
-       porque:"O combustível é a fonte de energia; o sistema é a <b>substância de trabalho</b> (o gás ou vapor) que sofre as transformações."},
-      {t:"O conjunto de todas as moléculas que já trocaram calor entre si.", ok:false,
-       porque:"Isso não é uma definição de sistema, e sim uma descrição de interação. O sistema é definido pela fronteira que você escolhe."},
-      {t:"Um sistema que obrigatoriamente troca calor com o ambiente.", ok:false,
-       porque:"Não obrigatoriamente: um sistema adiabático é justamente o que <b>não</b> troca calor (a garrafa térmica)."}
-    ]
-  },
-  {
-    tema: "Parâmetros de estado",
-    enunciado: "Para analisar um gás ideal, a Termodinâmica usa três parâmetros de estado. Quais são?",
-    conceito: "Um gás é um caos de moléculas, impossível de acompanhar uma a uma. Em vez disso medimos três grandezas macroscópicas: <b>pressão, volume e temperatura</b>. Elas definem o estado do gás e aparecem em toda a matéria.",
-    alternativas: [
-      {t:"Massa, densidade e calor específico.", ok:false,
-       porque:"São propriedades do material, não variáveis de estado do gás. Elas não mudam a cada instante do ciclo."},
-      {t:"Pressão, volume e temperatura.", ok:true,
-       porque:"São os três parâmetros pedidos em aula: P, V e T. Com eles você descreve qualquer estado e acompanha o ciclo no gráfico P × V."},
-      {t:"Força, área e altura do pistão.", ok:false,
-       porque:"Essas grandezas aparecem na <b>dedução</b> do trabalho (P = F/A e A·h = ΔV), mas são intermediárias — não são os parâmetros de estado."},
-      {t:"Energia interna, entropia e entalpia.", ok:false,
-       porque:"São grandezas derivadas, úteis no cálculo, mas não são os parâmetros que definem o estado no modelo do gás ideal."},
-      {t:"Velocidade, massa e número de moléculas.", ok:false,
-       porque:"São grandezas microscópicas. A Termodinâmica trabalha com as macroscópicas justamente para não precisar delas."}
-    ]
-  },
-  {
-    tema: "Trabalho do gás",
-    enunciado: "A expressão do trabalho realizado por um gás em uma transformação a pressão constante é:",
-    estrutura: "W = P · ΔV      (P em Pa, ΔV em m³ → W em joule)",
-    conceito: "Em aula a fórmula foi <b>deduzida</b>, não decorada: W = F·h, e como P = F/A, temos F = P·A. Logo W = P·A·h. E A·h é exatamente a variação de volume do cilindro. Resultado: W = P·ΔV.",
-    alternativas: [
-      {t:"W = P · ΔV", ok:true,
-       porque:"Dedução da aula: W = F·h → F = P·A → W = P·A·h → A·h = ΔV → W = P·ΔV. Só vale diretamente quando a pressão é constante."},
-      {t:"W = ΔV / P", ok:false,
-       porque:"Inverte a relação. Dividir volume por pressão não resulta em joule; a análise dimensional já denuncia o erro."},
-      {t:"W = P / ΔV", ok:false,
-       porque:"Também inverte. Além disso, em transformação isovolumétrica (ΔV = 0) essa expressão explodiria, quando o trabalho deveria ser zero."},
-      {t:"W = Q + ΔU", ok:false,
-       porque:"Mistura a 1ª lei com a fórmula do trabalho. Da 1ª lei vem ΔU = Q − W, ou seja, W = Q − ΔU."},
-      {t:"W = m · c · ΔT", ok:false,
-       porque:"Essa é a fórmula do calor sensível (Q = mcΔT), não do trabalho."}
-    ]
-  },
-  {
-    tema: "Trabalho do gás",
-    enunciado: "Quando o gás <strong>se expande</strong> e empurra o pistão para fora, o trabalho realizado <strong>pelo gás</strong> é:",
-    conceito: "Convenção da aula: o trabalho é positivo quando o gás é quem produz o movimento (empurra o pistão para fora, aumentando o volume). É positivo porque a força do gás está no mesmo sentido do deslocamento.",
-    alternativas: [
-      {t:"Negativo, porque o volume aumentou.", ok:false,
-       porque:"Aumento de volume com o gás empurrando é exatamente o caso de trabalho positivo. Negativo é quando o volume diminui."},
-      {t:"Zero, porque a temperatura não variou.", ok:false,
-       porque:"Trabalho depende de variação de <b>volume</b>, não de temperatura. Existe expansão isotérmica com trabalho diferente de zero."},
-      {t:"Positivo, pois o gás empurra o pistão no sentido do movimento.", ok:true,
-       porque:"Força e deslocamento no mesmo sentido → trabalho positivo. É o gás realizando trabalho sobre o meio."},
-      {t:"Positivo apenas se a transformação for adiabática.", ok:false,
-       porque:"O sinal do trabalho não depende de ser adiabática. Depende só de o volume aumentar (positivo) ou diminuir (negativo)."},
-      {t:"Impossível determinar sem conhecer a pressão.", ok:false,
-       porque:"O sinal é dado pela variação de volume. A pressão influencia o <b>valor</b> do trabalho, não o sinal."}
-    ]
-  },
-  {
-    tema: "Trabalho do gás",
-    enunciado: "Durante a compressão, algo empurra o pistão para dentro e o volume do gás diminui. O trabalho realizado <strong>pelo gás</strong> nesse processo é:",
-    conceito: "Compressão → volume diminui → ΔV negativo → W = P·ΔV negativo. Fisicamente, o gás está sendo forçado: ele \"resiste\" empurrando ao contrário, então quem realiza trabalho positivo é o agente externo.",
-    alternativas: [
-      {t:"Positivo, porque o gás está reagindo à força.", ok:false,
-       porque:"Reagir não é realizar. O deslocamento é para dentro, e a força do gás aponta para fora: sentidos opostos → trabalho do gás negativo."},
-      {t:"Negativo, porque o volume diminui e o gás é empurrado.", ok:true,
-       porque:"ΔV < 0, logo W = P·ΔV < 0. É o caso do pistão voltando, como no ciclo do trem a vapor quando o vapor esfria."},
-      {t:"Zero, porque o gás não se move por vontade própria.", ok:false,
-       porque:"Trabalho é força vezes deslocamento efetivo. Houve deslocamento, então há trabalho — só com sinal negativo."},
-      {t:"Igual ao da expansão, pois o módulo do deslocamento é o mesmo.", ok:false,
-       porque:"O <b>módulo</b> pode até coincidir num ciclo simétrico, mas o sinal é oposto. Eles se cancelam no ciclo completo."},
-      {t:"Só pode ser calculado se a transformação for isotérmica.", ok:false,
-       porque:"A fórmula W = P·ΔV vale para pressão constante. Em outros processos o cálculo muda, mas o sinal continua dado pela variação de volume."}
-    ]
-  },
-  {
-    tema: "Energia interna",
-    enunciado: "A energia interna de um gás ideal depende <strong>exclusivamente</strong> de qual parâmetro?",
-    estrutura: "ΔU = 0  ⟺  ΔT = 0",
-    conceito: "Energia interna é a soma das energias cinéticas das moléculas — ou seja, o grau de agitação. Quem mede agitação é a temperatura. Logo, só a temperatura altera a energia interna de um gás ideal.",
-    alternativas: [
-      {t:"Da pressão do gás.", ok:false,
-       porque:"A pressão pode mudar com a temperatura constante (numa isotérmica, P e V variam juntos). Se só a pressão mudasse a energia interna, a isotérmica teria ΔU ≠ 0 — e não tem."},
-      {t:"Do volume ocupado.", ok:false,
-       porque:"Numa isovolumétrica o volume é constante e a energia interna varia (o gás esquenta). Então não é o volume."},
-      {t:"Da temperatura, que mede o grau de agitação das moléculas.", ok:true,
-       porque:"Exatamente: mais agitação → mais energia cinética média → maior energia interna. É por isso que ΔT = 0 implica ΔU = 0."},
-      {t:"Da quantidade de calor recebida, sempre.", ok:false,
-       porque:"Calor <b>altera</b> a energia interna, mas não é o que ela \"depende\". Na isotérmica entra calor e ΔU continua zero."},
-      {t:"Do trabalho realizado, sempre.", ok:false,
-       porque:"Trabalho também altera a energia interna, mas o valor dela num estado depende só da temperatura naquele estado."}
-    ]
-  },
-  {
-    tema: "Energia interna",
-    enunciado: "Em uma transformação <strong>isotérmica</strong> de um gás ideal, a variação da energia interna é:",
-    conceito: "Isotérmica = temperatura constante. Se a temperatura não muda, o grau de agitação não muda, então a energia interna não muda: <b>ΔU = 0</b>. Combinando com a 1ª lei, sobra Q = W.",
-    alternativas: [
-      {t:"Zero, porque a temperatura é constante.", ok:true,
-       porque:"ΔT = 0 → ΔU = 0. Consequência importante: na isotérmica todo o calor recebido se converte em trabalho (Q = W)."},
-      {t:"Positiva, porque o gás recebe calor.", ok:false,
-       porque:"O gás recebe calor, sim, mas usa tudo em trabalho. Não sobra nada para aumentar a energia interna."},
-      {t:"Negativa, porque o gás se expande.", ok:false,
-       porque:"Expansão afeta o trabalho, não a energia interna. O que zeraria ΔU é a variação de temperatura."},
-      {t:"Igual ao calor recebido.", ok:false,
-       porque:"Na isotérmica ΔU = 0, e é o <b>trabalho</b> que se iguala ao calor (Q = W), não a energia interna."},
-      {t:"Impossível determinar sem o volume.", ok:false,
-       porque:"Não precisa do volume: a informação \"isotérmica\" já fixa ΔT = 0 e, portanto, ΔU = 0."}
-    ]
-  },
-  {
-    tema: "1ª lei da Termodinâmica",
-    enunciado: "A Primeira Lei da Termodinâmica, na forma usada na aula, é expressa por:",
-    estrutura: "ΔU = Q − W",
-    conceito: "É o balanço de energia do gás: a variação da energia interna é o calor que <b>entra</b> menos o trabalho que <b>sai</b>. Nada se cria, nada se perde — a energia apenas muda de forma.",
-    alternativas: [
-      {t:"Q = ΔU + W", ok:false,
-       porque:"É a mesma equação rearranjada — está correta algebricamente, mas a forma adotada em aula é ΔU = Q − W. Se a pergunta pede a expressão da aula, essa é a reescrita, não o formato usado."},
-      {t:"ΔU = Q − W", ok:true,
-       porque:"Forma da aula: energia interna varia pelo calor que entra menos o trabalho que o gás realiza. É a conservação de energia aplicada ao gás."},
-      {t:"ΔU = W − Q", ok:false,
-       porque:"Inverte os sinais. Com essa forma, um gás que recebe calor sem trabalhar teria energia interna diminuindo — absurdo."},
-      {t:"ΔU = Q + W com W sempre positivo", ok:false,
-       porque:"O trabalho tem sinal: positivo quando o gás expande, negativo quando é comprimido. Tratá-lo sempre positivo quebra o balanço."},
-      {t:"Q = W, sempre", ok:false,
-       porque:"Q = W só é verdade na isotérmica (ΔU = 0). Em geral, calor também altera a energia interna."}
-    ]
-  },
-  {
-    tema: "1ª lei da Termodinâmica",
-    enunciado: "Em uma transformação <strong>adiabática</strong>, o que acontece na equação ΔU = Q − W?",
-    estrutura: "ΔU = 0 − W   →   ΔU = −W",
-    conceito: "Adiabática vem de <b>garrafa térmica</b>: não há troca de calor com o ambiente, então Q = 0. Toda a variação de energia interna vem do trabalho. Se o gás expande adiabaticamente, ele gasta energia interna e esfria.",
-    alternativas: [
-      {t:"O trabalho se anula, pois não há calor.", ok:false,
-       porque:"Quem se anula é o <b>calor</b>, não o trabalho. Sem troca de calor, o trabalho é a única forma de variar a energia interna."},
-      {t:"O calor se anula, ficando ΔU = −W.", ok:true,
-       porque:"Q = 0, logo ΔU = −W. Por isso a expansão adiabática resfria o gás: ele realiza trabalho às custas da própria energia interna."},
-      {t:"A energia interna se anula.", ok:false,
-       porque:"A energia interna não zera — ela <b>varia</b>. Zerar ΔU exigiria ΔT = 0, o que não é o caso."},
-      {t:"Nada se anula, só muda o sinal do calor.", ok:false,
-       porque:"Não há calor para mudar de sinal: por definição Q = 0 na adiabática."},
-      {t:"Temperatura e volume ficam constantes.", ok:false,
-       porque:"Na adiabática tanto a temperatura quanto o volume variam (o gás expande e esfria). Constantes são casos de outras transformações."}
-    ]
-  },
-  {
-    tema: "Transformações gasosas",
-    enunciado: "Em uma transformação <strong>isovolumétrica</strong>, o que se anula na equação da 1ª lei?",
-    conceito: "Isovolumétrica = volume constante. Sem variação de volume (ΔV = 0), o pistão não se desloca, então o gás não realiza nem recebe trabalho: <b>W = 0</b>. Assim, ΔU = Q — todo calor vira variação de energia interna.",
-    alternativas: [
-      {t:"O trabalho, pois não há variação de volume.", ok:true,
-       porque:"ΔV = 0 → W = P·ΔV = 0. Por isso aquecer um gás em recipiente fechado rígido aumenta a pressão e a temperatura, sem realizar trabalho."},
-      {t:"O calor, pois o recipiente é fechado.", ok:false,
-       porque:"Fechado não significa isolado termicamente. Um recipiente rígido pode perfeitamente receber calor e esquentar."},
-      {t:"A energia interna, pois o gás não se move.", ok:false,
-       porque:"A energia interna varia justamente porque o calor recebido não tem para onde ir além de agitar as moléculas."},
-      {t:"A pressão, pois o volume é constante.", ok:false,
-       porque:"Ao contrário: em volume constante, a pressão é a grandeza que mais varia quando a temperatura muda."},
-      {t:"Nada se anula; a equação permanece completa.", ok:false,
-       porque:"Se nada se anulasse, qual seria então a marca da isovolumétrica? A ausência de deslocamento é justamente o que zera o trabalho."}
-    ]
-  },
-  {
-    tema: "Transformações gasosas",
-    enunciado: "Uma garrafa térmica é o exemplo clássico de qual transformação?",
-    conceito: "A garrafa térmica é projetada para impedir troca de calor com o ambiente. Em Termodinâmica, o processo sem troca de calor recebe o nome de <b>adiabático</b>.",
-    alternativas: [
-      {t:"Isotérmica, porque mantém a temperatura do café.", ok:false,
-       porque:"Ela mantém a temperatura justamente porque <b>não</b> deixa o calor escapar — o nome do processo é adiabático. Isotérmica é processo em que a temperatura do sistema varia junto com o meio para se manter constante."},
-      {t:"Isobárica, porque a pressão atmosférica é constante.", ok:false,
-       porque:"A pressão é de fato constante, mas o critério decisivo da garrafa térmica é o isolamento térmico, não a pressão."},
-      {t:"Adiabática, porque não há troca de calor com o ambiente.", ok:true,
-       porque:"Exato: Q = 0. É a analogia usada em aula para lembrar do processo adiabático."},
-      {t:"Isovolumétrica, porque o volume é fixo.", ok:false,
-       porque:"O volume é fixo, mas isso descreveria uma isovolumétrica; o que caracteriza a garrafa térmica é o isolamento térmico."},
-      {t:"Cíclica, porque o café volta à temperatura inicial.", ok:false,
-       porque:"O café não descreve ciclo nenhum — ele só permanece quente. Ciclo é o que a máquina térmica faz."}
-    ]
-  },
-  {
-    tema: "Transformações gasosas",
-    enunciado: "Numa transformação <strong>isobárica</strong>, qual é a vantagem de cálculo que ela oferece?",
-    conceito: "Isobárica = pressão constante. Como a pressão não muda, ela pode sair da integral e a fórmula simples <b>W = P·ΔV</b> vale sem complicação. Nas outras transformações a pressão varia e o cálculo exige o gráfico ou integração.",
-    alternativas: [
-      {t:"O trabalho pode ser calculado diretamente por W = P·ΔV.", ok:true,
-       porque:"Com P constante, a fórmula deduzida em aula se aplica direto. É também por isso que no gráfico P × V o trabalho é a área sob a linha horizontal."},
-      {t:"O trabalho é sempre nulo.", ok:false,
-       porque:"Trabalho nulo é da isovolumétrica. Na isobárica o gás expande e realiza trabalho normalmente."},
-      {t:"O calor é sempre nulo.", ok:false,
-       porque:"Calor nulo é da adiabática. Na isobárica há troca de calor — é o caso mais comum dos processos reais."},
-      {t:"A energia interna permanece constante.", ok:false,
-       porque:"ΔU constante só na isotérmica. Na isobárica o gás geralmente muda de temperatura."},
-      {t:"A temperatura permanece constante.", ok:false,
-       porque:"Na isobárica, se o volume muda, a temperatura muda obrigatoriamente (P·V/T constante)."}
-    ]
-  },
-  {
-    tema: "2ª lei da Termodinâmica",
-    enunciado: "O enunciado de Kelvin-Planck para a Segunda Lei da Termodinâmica afirma que:",
-    conceito: "É impossível uma máquina térmica operando em ciclos converter <b>integralmente</b> o calor recebido em trabalho. Sempre sobra calor rejeitado para a fonte fria. É por isso que nenhum rendimento chega a 100% — nem em máquina ideal.",
-    alternativas: [
-      {t:"O calor sempre flui do corpo frio para o quente espontaneamente.", ok:false,
-       porque:"Isso é o enunciado de <b>Clausius</b>, e ainda por cima invertido: espontaneamente o calor vai do quente para o frio."},
-      {t:"É impossível converter integralmente calor em trabalho em uma máquina que opera em ciclos.", ok:true,
-       porque:"Essa é a forma de Kelvin-Planck trabalhada na aula. Sempre há calor rejeitado para a fonte fria, então η < 1 sempre."},
-      {t:"A energia total do universo diminui a cada transformação.", ok:false,
-       porque:"A conservação da energia é a <b>1ª lei</b>: a energia total se mantém. A 2ª lei trata da qualidade/direção da transformação, não da quantidade total."},
-      {t:"Toda máquina térmica real tem rendimento maior que a de Carnot.", ok:false,
-       porque:"Ao contrário: a de Carnot é o limite máximo. Nenhuma máquina real supera o rendimento de Carnot entre as mesmas temperaturas."},
-      {t:"O rendimento de uma máquina térmica pode chegar a 100% se não houver atrito.", ok:false,
-       porque:"Eliminar atrito melhora o rendimento, mas não fura a 2ª lei. O limite de Carnot continua valendo mesmo com máquina perfeita."}
-    ]
-  },
-  {
-    tema: "Rendimento",
-    enunciado: "O rendimento de uma máquina térmica é definido por:",
-    estrutura: "η = W / Q₁\n\nW = trabalho realizado · Q₁ = calor recebido da fonte quente",
-    conceito: "Rendimento é a fração da energia que entrou e virou trabalho útil. Compara o que <b>saída</b> (trabalho) com o que <b>entrou</b> (calor da fonte quente). Por ser razão entre energias, é um número puro, sem unidade.",
-    alternativas: [
-      {t:"η = W / Q₁, o trabalho dividido pelo calor recebido da fonte quente.", ok:true,
-       porque:"É a definição. Se uma máquina recebe 1000 J e entrega 300 J de trabalho, η = 0,30 = 30%."},
-      {t:"η = Q₁ / W, o calor dividido pelo trabalho.", ok:false,
-       porque:"Inverte a fração. Como W < Q₁ sempre, isso daria η > 1 — ou seja, mais de 100% de rendimento, o que é impossível."},
-      {t:"η = Q₂ / Q₁, o calor rejeitado dividido pelo recebido.", ok:false,
-       porque:"Essa razão mede a <b>fração desperdiçada</b>. O rendimento é o complemento: η = 1 − Q₂/Q₁."},
-      {t:"η = W · Q₁, o produto entre trabalho e calor.", ok:false,
-       porque:"Produto de duas energias daria joule ao quadrado — não é adimensional. Rendimento é razão, não produto."},
-      {t:"η = Q₁ − Q₂, a diferença entre os calores.", ok:false,
-       porque:"Essa diferença é o próprio trabalho (W = Q₁ − Q₂), não o rendimento."}
-    ]
-  },
-  {
-    tema: "Rendimento",
-    enunciado: "Uma máquina térmica recebe 800 J da fonte quente e rejeita 600 J para a fonte fria a cada ciclo. Qual é o seu rendimento?",
-    estrutura: "W = Q₁ − Q₂ = 800 − 600 = 200 J\nη = W / Q₁ = 200 / 800",
-    conceito: "Primeiro ache o trabalho pela conservação de energia: o que entrou menos o que foi desperdiçado. Depois divida pelo calor de entrada. Nunca divida por Q₂ — o denominador é sempre a energia que entrou.",
-    alternativas: [
-      {t:"25%", ok:true,
-       porque:"W = 800 − 600 = 200 J. η = 200/800 = 0,25 = 25%. Confere com a outra forma: 1 − 600/800 = 1 − 0,75 = 0,25."},
-      {t:"75%", ok:false,
-       porque:"75% é a fração <b>desperdiçada</b> (600/800). O rendimento é o que sobra: 25%."},
-      {t:"33%", ok:false,
-       porque:"Sairia de 200/600, dividindo o trabalho pelo calor rejeitado. O denominador correto é o calor recebido (800 J)."},
-      {t:"200%", ok:false,
-       porque:"Rendimento nunca passa de 100%. Valor acima disso indica erro de fórmula ou de unidade."},
-      {t:"50%", ok:false,
-       porque:"Seria o caso de rejeitar 400 J. Aqui a máquina rejeita 600 J dos 800 J, ou seja, é pouco eficiente."}
-    ]
-  },
-  {
-    tema: "Rendimento",
-    enunciado: "Uma máquina térmica tem rendimento de 40% e realiza 2 000 J de trabalho por ciclo. Quanto calor ela recebe da fonte quente?",
-    estrutura: "η = W / Q₁  →  0,40 = 2000 / Q₁",
-    conceito: "Isolando Q₁: Q₁ = W / η. Sempre que o problema dá rendimento e trabalho, o calor de entrada vem de uma divisão simples. Se pedir o calor rejeitado, faça Q₂ = Q₁ − W.",
-    alternativas: [
-      {t:"800 J", ok:false,
-       porque:"Isso é 40% de 2000 — o cálculo ao contrário. O rendimento diz que 2000 J é 40% do total, não que o total seja 40% do trabalho."},
-      {t:"5 000 J", ok:true,
-       porque:"Q₁ = 2000/0,40 = 5 000 J. Conferindo: 40% de 5 000 = 2 000 J de trabalho, e 3 000 J vão para a fonte fria."},
-      {t:"2 400 J", ok:false,
-       porque:"Sairia de 2000 + 400, somando o percentual como se fosse energia. Percentual não se soma ao joule."},
-      {t:"1 200 J", ok:false,
-       porque:"Sairia de 2000 × 0,60. Não há motivo para usar o complemento do rendimento no calor de entrada."},
-      {t:"3 000 J", ok:false,
-       porque:"3 000 J é o calor <b>rejeitado</b> (5000 − 2000), não o recebido."}
-    ]
-  },
-  {
-    tema: "Ciclo de Carnot",
-    enunciado: "O ciclo de Carnot é formado por quais transformações?",
-    conceito: "Quatro etapas alternadas: expansão isotérmica, expansão adiabática, compressão isotérmica e compressão adiabática. Duas a temperatura constante e duas sem troca de calor — é o ciclo mais eficiente possível entre duas temperaturas.",
-    alternativas: [
-      {t:"Duas isobáricas e duas isovolumétricas.", ok:false,
-       porque:"Esse é o ciclo de Otto (motor a gasolina), não o de Carnot."},
-      {t:"Duas isotérmicas e duas adiabáticas.", ok:true,
-       porque:"Expansão e compressão isotérmicas (contato com as fontes) alternadas com expansão e compressão adiabáticas (isoladas). É o que aparece no gráfico P × V em forma de ciclo fechado."},
-      {t:"Quatro isotérmicas.", ok:false,
-       porque:"Sem as adiabáticas, não haveria como mudar de temperatura entre uma fonte e outra — o ciclo não fecharia."},
-      {t:"Duas adiabáticas e duas isobáricas.", ok:false,
-       porque:"Mistura as etapas. As trocas de calor com as fontes, no ciclo de Carnot, são isotérmicas."},
-      {t:"Uma isotérmica e três adiabáticas.", ok:false,
-       porque:"Seria assimétrico e não corresponderia ao ciclo reversível idealizado por Carnot."}
-    ]
-  },
-  {
-    tema: "Ciclo de Carnot",
-    enunciado: "O rendimento máximo de uma máquina de Carnot que opera entre 500 K (fonte quente) e 300 K (fonte fria) é:",
-    estrutura: "η = 1 − T_fria / T_quente = 1 − 300/500",
-    conceito: "Para Carnot o rendimento depende só das temperaturas absolutas. Aqui: 1 − 0,6 = 0,4. Atenção: as temperaturas <b>precisam</b> estar em Kelvin; usar Celsius na fórmula é o erro mais comum.",
-    alternativas: [
-      {t:"40%", ok:true,
-       porque:"η = 1 − 300/500 = 1 − 0,6 = 0,4 = 40%. Nenhuma máquina real entre essas duas temperaturas pode superar isso."},
-      {t:"60%", ok:false,
-       porque:"60% é a fração rejeitada (300/500). O rendimento é o complemento."},
-      {t:"20%", ok:false,
-       porque:"Sairia de (500−300)/500 dividido por 2, ou de alguma manipulação indevida. A conta correta é 1 − 300/500."},
-      {t:"67%", ok:false,
-       porque:"Sairia de 200/300, invertendo o denominador. O denominador é a temperatura da fonte quente."},
-      {t:"100%", ok:false,
-       porque:"Só seria possível com fonte fria a 0 K, o que é inatingível (3ª lei). Na prática, é sempre menor que 100%."}
-    ]
-  },
-  {
-    tema: "Ciclo de Carnot",
-    enunciado: "Por que a máquina de Carnot é usada como <strong>referência</strong> para avaliar máquinas reais?",
-    conceito: "Carnot define o teto teórico: entre duas temperaturas, nenhuma máquina pode render mais que ele. Se sua máquina rende 20% e o Carnot entre as mesmas temperaturas renderia 70%, ela está muito abaixo do possível — é esse o diagnóstico que o professor mostrou em aula.",
-    alternativas: [
-      {t:"Porque é uma máquina que existe comercialmente e é barata de fabricar.", ok:false,
-       porque:"A máquina de Carnot é <b>teórica</b>: exige processos infinitamente lentos (isotérmicas reversíveis) e infinitamente rápidos (adiabáticas), o que é impraticável."},
-      {t:"Porque define o rendimento máximo possível entre duas temperaturas; nenhuma máquina real a supera.", ok:true,
-       porque:"É o teto teórico. Serve de régua: comparar o rendimento real com o de Carnot mostra quanto ainda se pode melhorar o projeto."},
-      {t:"Porque seu rendimento é de 100%, servindo de meta ideal.", ok:false,
-       porque:"Nem Carnot chega a 100%. Ele é o máximo <b>possível</b> para aquelas temperaturas, e esse máximo é sempre menor que 100%."},
-      {t:"Porque dispensa fonte fria, simplificando o projeto.", ok:false,
-       porque:"Todo ciclo de Carnot depende das duas fontes. Sem fonte fria não há rejeição de calor, e a 2ª lei proíbe."},
-      {t:"Porque funciona sem receber calor.", ok:false,
-       porque:"Ao contrário: ele recebe calor na expansão isotérmica. É uma máquina térmica como qualquer outra, só que ideal."}
-    ]
-  },
-  {
-    tema: "Refrigeradores",
-    enunciado: "Um refrigerador funciona:",
-    conceito: "Ele faz o caminho contrário ao natural: retira calor da fonte fria (dentro da geladeira) e o descarrega na fonte quente (atrás da geladeira, aquela grade quente). Como isso não acontece espontaneamente, é preciso <b>fornecer trabalho</b> — é o compressor.",
-    alternativas: [
-      {t:"Retirando calor da fonte fria e entregando-o à fonte quente, às custas de trabalho recebido.", ok:true,
-       porque:"Exatamente. O calor vai do frio para o quente, mas só porque um trabalho externo (compressor) é realizado. É o processo inverso da máquina térmica."},
-      {t:"Convertendo calor da fonte quente em trabalho, como qualquer máquina térmica.", ok:false,
-       porque:"Essa é a máquina térmica. O refrigerador opera no sentido inverso: consome trabalho para mover calor."},
-      {t:"Retirando calor da fonte fria sem consumir energia.", ok:false,
-       porque:"Violaria a 2ª lei. Transferir calor do frio para o quente espontaneamente é impossível — é justamente por isso que a geladeira tem motor."},
-      {t:"Produzindo frio a partir do nada, criando energia negativa.", ok:false,
-       porque:"Frio não é uma substância, é ausência de agitação térmica. O refrigerador apenas <b>transporta</b> calor de um lugar para outro."},
-      {t:"Aumentando o rendimento acima de 100% por meio do congelamento.", ok:false,
-       porque:"Nenhum dispositivo supera 100% de rendimento. Na geladeira mede-se o coeficiente de desempenho, que não é rendimento no sentido da máquina térmica."}
-    ]
-  },
-  {
-    tema: "Refrigeradores",
-    enunciado: "A eficiência (coeficiente de desempenho) de um refrigerador é calculada por:",
-    estrutura: "ε = Q_fria / W\n\nQ_fria = calor retirado do interior · W = trabalho do compressor",
-    conceito: "O objetivo do refrigerador não é produzir trabalho, é <b>retirar calor</b> do ambiente frio. Por isso a conta se inverte em relação ao rendimento: o que se quer (calor removido) vai no numerador, e o que se gasta (trabalho) vai no denominador.",
-    alternativas: [
-      {t:"ε = W / Q_fria", ok:false,
-       porque:"Inverte a razão. Como o trabalho é menor que o calor removido, isso daria eficiência menor que 1 — e a geladeira teria desempenho pior que o de uma máquina comum."},
-      {t:"ε = Q_fria / W", ok:true,
-       porque:"É o objetivo dividido pelo custo. Uma geladeira que retira 400 J do interior gastando 100 J de trabalho tem ε = 4."},
-      {t:"ε = Q_quente / Q_fria", ok:false,
-       porque:"Essa razão não inclui o trabalho, que é justamente o custo do processo. Não mede desempenho."},
-      {t:"ε = 1 − Q_fria/Q_quente", ok:false,
-       porque:"Essa é a forma do rendimento de uma máquina térmica de Carnot, não do refrigerador."},
-      {t:"ε = W · Q_fria", ok:false,
-       porque:"Produto de energias não é adimensional e não representa eficiência."}
-    ]
-  },
-  {
-    tema: "Refrigeradores",
-    enunciado: "Uma geladeira retira 400 J de calor do seu interior consumindo 100 J de trabalho do compressor. Qual é o seu coeficiente de desempenho?",
-    estrutura: "ε = Q_fria / W = 400 / 100",
-    conceito: "Basta dividir o calor removido pelo trabalho gasto. Note que esse número <b>pode</b> ser maior que 1 — e isso não viola a 2ª lei, porque ele não mede conversão de calor em trabalho, mas transporte de calor.",
-    alternativas: [
-      {t:"0,25", ok:false,
-       porque:"Sairia de 100/400, invertendo a razão. O trabalho é o custo, então vai no denominador."},
-      {t:"4", ok:true,
-       porque:"ε = 400/100 = 4. Significa que, para cada joule de trabalho, a geladeira move 4 joules de calor do interior para fora."},
-      {t:"5", ok:false,
-       porque:"Sairia de (400+100)/100, somando o trabalho ao calor removido. O calor descarregado na fonte quente é 500 J, mas a eficiência usa só o calor da fonte fria."},
-      {t:"75%", ok:false,
-       porque:"Sairia de 300/400, usando uma diferença que não existe no problema. E eficiência de refrigerador não é percentual."},
-      {t:"Impossível calcular sem a temperatura.", ok:false,
-       porque:"Com Q_fria e W já é possível. A temperatura só seria necessária para o caso teórico de Carnot."}
-    ]
-  },
-  {
-    tema: "Aplicação real",
-    enunciado: "Numa locomotiva a vapor, qual é a sequência correta de transformações de energia?",
-    conceito: "É o exemplo central da aula: queima do carvão libera calor → aquece a água e produz vapor → o vapor se expande e empurra o pistão → o pistão, ligado às bielas, gira a roda. Calor → trabalho mecânico → movimento.",
-    alternativas: [
-      {t:"Energia elétrica → energia luminosa → movimento.", ok:false,
-       porque:"Não há eletricidade no circuito da locomotiva a vapor. Trens elétricos são outro tipo de máquina."},
-      {t:"Energia química do carvão → calor → expansão do vapor → movimento do pistão e das rodas.", ok:true,
-       porque:"Essa é a sequência completa. O carvão é a fonte quente; o vapor é a substância de trabalho; o pistão converte expansão em rotação."},
-      {t:"Calor → energia nuclear → movimento.", ok:false,
-       porque:"Inverte a ordem e introduz um processo que não existe na locomotiva. Usinas nucleares também geram calor, mas por fissão."},
-      {t:"Movimento → calor → energia química.", ok:false,
-       porque:"Essa é a ordem inversa (frenagem regenerativa, por exemplo). Na locomotiva o objetivo é calor → movimento."},
-      {t:"Energia solar → calor → vapor.", ok:false,
-       porque:"A fonte é a queima de carvão, não a radiação solar."}
-    ]
-  },
-  {
-    tema: "Aplicação real",
-    enunciado: "Por que as máquinas térmicas exigem grande quantidade de combustível para produzir trabalho útil?",
-    conceito: "Como o rendimento real é baixo (motores a gasolina em torno de 20%, diesel cerca de 30%), a maior parte do calor vai embora pela fonte fria. Foi por isso que em aula a energia térmica foi chamada de \"o lixo das energias\": abundante, mas difícil de aproveitar.",
-    alternativas: [
-      {t:"Porque o combustível tem baixo poder calorífico e não queima.", ok:false,
-       porque:"O combustível queima muito bem. O problema não é a quantidade de energia liberada, e sim a fração que se consegue converter em trabalho."},
-      {t:"Porque grande parte do calor é rejeitada para a fonte fria, e o rendimento real é baixo.", ok:true,
-       porque:"É a consequência direta da 2ª lei. Se o rendimento é 30%, 70% do calor vai para o ambiente — daí a necessidade de muito combustível."},
-      {t:"Porque as máquinas térmicas violam a conservação de energia.", ok:false,
-       porque:"Nenhuma máquina viola a 1ª lei. A energia é conservada; o que se perde é <b>qualidade</b>, não quantidade."},
-      {t:"Porque o vapor não consegue empurrar pistões.", ok:false,
-       porque:"Consegue — é exatamente assim que a locomotiva funciona. O limite está na termodinâmica, não na mecânica do pistão."},
-      {t:"Porque o atrito consome toda a energia.", ok:false,
-       porque:"O atrito contribui, mas é pequeno comparado à rejeição de calor pela fonte fria, que é obrigatória pela 2ª lei."}
-    ]
-  },
-  {
-    tema: "Temperatura absoluta",
-    enunciado: "Ao usar a fórmula do rendimento de Carnot, as temperaturas devem ser expressas em:",
-    estrutura: "η = 1 − T_fria / T_quente     (T em kelvin)",
-    conceito: "A fórmula de Carnot exige escala <b>absoluta</b>, porque ela vem de uma razão entre energias proporcionais à temperatura absoluta. Em Celsius, uma fonte a 0 °C daria divisão por zero ou rendimento negativo — resultados sem sentido.",
-    alternativas: [
-      {t:"Celsius, porque é a escala usada no Brasil.", ok:false,
-       porque:"Em Celsius a razão deixa de fazer sentido físico: 0 °C não é ausência de agitação, então a proporcionalidade quebra."},
-      {t:"Fahrenheit, porque tem mais precisão.", ok:false,
-       porque:"Fahrenheit também não é absoluta (tem valores negativos). Precisão não resolve o problema conceitual."},
-      {t:"Kelvin, a escala absoluta.", ok:true,
-       porque:"Só em kelvin a temperatura é proporcional à energia cinética média das moléculas. Converta sempre: T(K) = T(°C) + 273."},
-      {t:"Qualquer escala, desde que as duas estejam na mesma.", ok:false,
-       porque:"É um erro comum, mas a razão T_fria/T_quente só é válida em escala absoluta. Em Celsius o resultado numérico sai errado."},
-      {t:"Joule, convertendo a temperatura em energia.", ok:false,
-       porque:"Joule mede energia, não temperatura. A conversão entre as duas envolve a constante de Boltzmann, fora do escopo aqui."}
-    ]
-  },
-  {
-    tema: "1ª lei aplicada",
-    enunciado: "Um gás recebe 500 J de calor e, ao mesmo tempo, realiza 200 J de trabalho. Qual é a variação da sua energia interna?",
-    estrutura: "ΔU = Q − W = 500 − 200",
-    conceito: "Aplique a 1ª lei com os sinais corretos: calor <b>recebido</b> é positivo, trabalho <b>realizado pelo gás</b> também entra positivo na fórmula (subtraindo). Sobra 300 J que ficam no gás como aumento de agitação — e a temperatura sobe.",
-    alternativas: [
-      {t:"300 J, e a temperatura do gás aumenta.", ok:true,
-       porque:"ΔU = 500 − 200 = 300 J. Como ΔU > 0, a agitação das moléculas aumentou, logo a temperatura subiu."},
-      {t:"700 J, somando calor e trabalho.", ok:false,
-       porque:"Somar seria usar ΔU = Q + W. Pela convenção da aula, o trabalho realizado pelo gás <b>sai</b> do balanço e é subtraído."},
-      {t:"−300 J, pois o gás realizou trabalho.", ok:false,
-       porque:"O sinal negativo apareceria se o trabalho fosse maior que o calor recebido. Aqui 500 > 200, então ΔU é positivo."},
-      {t:"200 J, pois é o trabalho realizado.", ok:false,
-       porque:"200 J é o trabalho, não a variação de energia interna. Confundir os dois é o erro mais comum nesse tipo de questão."},
-      {t:"Zero, pois o gás voltou ao estado inicial.", ok:false,
-       porque:"Não se trata de um ciclo completo. Num ciclo fechado ΔU = 0; aqui é uma transformação parcial."}
-    ]
-  },
-  {
-    tema: "1ª lei aplicada",
-    enunciado: "Um gás é comprimido recebendo 400 J de trabalho, sem trocar calor com o ambiente. O que acontece com sua temperatura?",
-    estrutura: "Adiabática: Q = 0  →  ΔU = −W\nW = −400 J (compressão)  →  ΔU = +400 J",
-    conceito: "Compressão adiabática é o caso clássico de aquecimento: o trabalho entra, não há calor para escapar, então tudo vira energia interna. É o que acontece no cilindro do motor a diesel, que inflama o combustível só pela compressão.",
-    alternativas: [
-      {t:"Diminui, porque o gás foi comprimido.", ok:false,
-       porque:"Intuição invertida. Na compressão adiabática o gás <b>esquenta</b> — é a expansão adiabática que resfria."},
-      {t:"Aumenta, porque o trabalho recebido eleva a energia interna.", ok:true,
-       porque:"ΔU = +400 J, então a agitação cresce e a temperatura sobe. Por isso o diesel pega fogo sem vela de ignição."},
-      {t:"Permanece constante, porque não houve troca de calor.", ok:false,
-       porque:"Q = 0 não significa ΔU = 0. Significa que a energia interna varia apenas pelo trabalho."},
-      {t:"Diminui, porque o volume diminui.", ok:false,
-       porque:"Volume menor não implica temperatura menor. Aqui os dois efeitos vão em sentidos opostos: V cai, T sobe."},
-      {t:"Não é possível saber sem conhecer o volume final.", ok:false,
-       porque:"A informação \"sem trocar calor\" já basta: Q = 0 e W é conhecido, então ΔU está determinado."}
-    ]
-  }
+ {
+  "tema": "Máquinas térmicas",
+  "enunciado": "O que é uma máquina térmica?",
+  "conceito": "A máquina térmica recebe energia em forma de <b>calor</b> de uma fonte quente e devolve apenas <b>parte</b> dela como trabalho mecânico. O resto é rejeitado para uma fonte fria — por isso o advérbio \"parcialmente\" é o coração da definição.",
+  "alternativas": [
+   {
+    "t": "Todo dispositivo que converte energia mecânica integralmente em calor.",
+    "ok": false,
+    "porque": "Isso descreve o atrito, não uma máquina térmica. A máquina térmica faz o caminho inverso: calor → trabalho."
+   },
+   {
+    "t": "Um dispositivo que converte parcialmente energia térmica em trabalho mecânico.",
+    "ok": true,
+    "porque": "É a definição trabalhada em aula: locomotiva a vapor, motor de combustão, usina. O \"parcialmente\" é o que a 2ª lei garante."
+   },
+   {
+    "t": "Um dispositivo que produz calor a partir de trabalho, como um aquecedor.",
+    "ok": false,
+    "porque": "Aquecedor não é máquina térmica no sentido estudado; ele é o objetivo inverso. Refrigerador e bomba de calor é que realizam trabalho para mover calor."
+   },
+   {
+    "t": "Qualquer máquina que funcione com eletricidade.",
+    "ok": false,
+    "porque": "Eletricidade não define máquina térmica: um motor elétrico converte energia elétrica em mecânica diretamente, sem passar por calor. Máquina térmica é a que converte <b>calor</b> em trabalho."
+   },
+   {
+    "t": "Um sistema que transforma calor em trabalho com rendimento de 100%.",
+    "ok": false,
+    "porque": "Rendimento 100% é impossível — violaria o enunciado de Kelvin-Planck da 2ª lei."
+   }
+  ],
+  "licao": "maquinas-termicas"
+ },
+ {
+  "tema": "Sistema termodinâmico",
+  "enunciado": "Um <strong>sistema termodinâmico</strong>, na definição usada na aula, é:",
+  "conceito": "O sistema é a região delimitada que você escolheu analisar — o gás dentro do pistão, por exemplo. Tudo que está fora é a vizinhança. A fronteira (parede do cilindro, êmbolo) é o que separa os dois.",
+  "alternativas": [
+   {
+    "t": "Uma região do espaço delimitada por paredes ou membranas, separada da vizinhança, escolhida para análise.",
+    "ok": true,
+    "porque": "Exatamente: o gás dentro do pistão é o sistema; o cilindro e o êmbolo são a fronteira; o resto do laboratório é a vizinhança."
+   },
+   {
+    "t": "Todo o universo, considerado como um conjunto único.",
+    "ok": false,
+    "porque": "Universo = sistema + vizinhança. Se você tratar tudo como sistema, não sobra vizinhança para trocar calor e trabalho."
+   },
+   {
+    "t": "Apenas a parte do recipiente que contém o combustível.",
+    "ok": false,
+    "porque": "O combustível é a fonte de energia; o sistema é a <b>substância de trabalho</b> (o gás ou vapor) que sofre as transformações."
+   },
+   {
+    "t": "O conjunto de todas as moléculas que já trocaram calor entre si.",
+    "ok": false,
+    "porque": "Isso não é uma definição de sistema, e sim uma descrição de interação. O sistema é definido pela fronteira que você escolhe."
+   },
+   {
+    "t": "Um sistema que obrigatoriamente troca calor com o ambiente.",
+    "ok": false,
+    "porque": "Não obrigatoriamente: um sistema adiabático é justamente o que <b>não</b> troca calor (a garrafa térmica)."
+   }
+  ],
+  "licao": "sistema"
+ },
+ {
+  "tema": "Sistema termodinâmico",
+  "licao": "sistema",
+  "enunciado": "Dois corpos a temperaturas diferentes são colocados em contato térmico. O que acontece com o calor?",
+  "conceito": "Calor é energia em trânsito e, <b>espontaneamente</b>, vai sempre do corpo de maior temperatura para o de menor, até as temperaturas se igualarem (<b>equilíbrio térmico</b>). É a ideia da lei zero, lembrada em aula com o exemplo de quem \"dá calor\" a quem está mais frio. 🧠 Bizu: o calor desce a ladeira da temperatura, sozinho.",
+  "alternativas": [
+   {
+    "t": "Flui do corpo mais quente para o mais frio, até as temperaturas se igualarem (equilíbrio térmico).",
+    "ok": true,
+    "porque": "É o sentido natural: de maior para menor temperatura. Quando as temperaturas ficam iguais, o fluxo de calor para."
+   },
+   {
+    "t": "Flui do corpo mais frio para o mais quente, até as temperaturas se igualarem.",
+    "ok": false,
+    "porque": "Sentido invertido. Esse caminho só acontece com trabalho externo, como na geladeira; sozinho, o calor nunca sobe a ladeira."
+   },
+   {
+    "t": "Não flui calor nenhum: cada corpo mantém a sua temperatura.",
+    "ok": false,
+    "porque": "É justamente a diferença de temperatura que faz o calor fluir. Só sem diferença (equilíbrio) o fluxo cessa."
+   },
+   {
+    "t": "Flui do corpo de maior massa para o de menor massa, qualquer que seja a temperatura.",
+    "ok": false,
+    "porque": "A massa não decide o sentido do calor. Quem decide é a temperatura: um corpo pequeno e quente cede calor a um grande e frio."
+   },
+   {
+    "t": "Flui apenas se os dois corpos tiverem o mesmo volume.",
+    "ok": false,
+    "porque": "O volume não entra na condição. Basta haver contato térmico e diferença de temperatura."
+   }
+  ]
+ },
+ {
+  "tema": "Parâmetros de estado",
+  "enunciado": "Para analisar um gás ideal, a Termodinâmica usa três parâmetros de estado. Quais são?",
+  "conceito": "Um gás é um caos de moléculas, impossível de acompanhar uma a uma. Em vez disso medimos três grandezas macroscópicas: <b>pressão, volume e temperatura</b>. Elas definem o estado do gás e aparecem em toda a matéria.",
+  "alternativas": [
+   {
+    "t": "Massa, densidade e calor específico.",
+    "ok": false,
+    "porque": "São propriedades do material, não variáveis de estado do gás. Elas não mudam a cada instante do ciclo."
+   },
+   {
+    "t": "Pressão, volume e temperatura.",
+    "ok": true,
+    "porque": "São os três parâmetros pedidos em aula: P, V e T. Com eles você descreve qualquer estado e acompanha o ciclo no gráfico P × V."
+   },
+   {
+    "t": "Força, área e altura do pistão.",
+    "ok": false,
+    "porque": "Essas grandezas aparecem na <b>dedução</b> do trabalho (P = F/A e A·h = ΔV), mas são intermediárias — não são os parâmetros de estado."
+   },
+   {
+    "t": "Energia interna, entropia e entalpia.",
+    "ok": false,
+    "porque": "São grandezas derivadas, úteis no cálculo, mas não são os parâmetros que definem o estado no modelo do gás ideal."
+   },
+   {
+    "t": "Velocidade, massa e número de moléculas.",
+    "ok": false,
+    "porque": "São grandezas microscópicas. A Termodinâmica trabalha com as macroscópicas justamente para não precisar delas."
+   }
+  ],
+  "licao": "parametros"
+ },
+ {
+  "tema": "Trabalho do gás",
+  "enunciado": "A expressão do trabalho realizado por um gás em uma transformação a pressão constante é:",
+  "estrutura": "W = P · ΔV      (P em Pa, ΔV em m³ → W em joule)",
+  "conceito": "Em aula a fórmula foi <b>deduzida</b>, não decorada: W = F·h, e como P = F/A, temos F = P·A. Logo W = P·A·h. E A·h é exatamente a variação de volume do cilindro. Resultado: W = P·ΔV.",
+  "alternativas": [
+   {
+    "t": "W = P · ΔV",
+    "ok": true,
+    "porque": "Dedução da aula: W = F·h → F = P·A → W = P·A·h → A·h = ΔV → W = P·ΔV. Só vale diretamente quando a pressão é constante."
+   },
+   {
+    "t": "W = ΔV / P",
+    "ok": false,
+    "porque": "Inverte a relação. Dividir volume por pressão não resulta em joule; a análise dimensional já denuncia o erro."
+   },
+   {
+    "t": "W = P / ΔV",
+    "ok": false,
+    "porque": "Também inverte. Além disso, em transformação isovolumétrica (ΔV = 0) essa expressão explodiria, quando o trabalho deveria ser zero."
+   },
+   {
+    "t": "W = Q + ΔU",
+    "ok": false,
+    "porque": "Mistura a 1ª lei com a fórmula do trabalho. Da 1ª lei vem ΔU = Q − W, ou seja, W = Q − ΔU."
+   },
+   {
+    "t": "W = m · c · ΔT",
+    "ok": false,
+    "porque": "Essa é a fórmula do calor sensível (Q = mcΔT), não do trabalho."
+   }
+  ],
+  "licao": "trabalho"
+ },
+ {
+  "tema": "Trabalho do gás",
+  "enunciado": "Quando o gás <strong>se expande</strong> e empurra o pistão para fora, o trabalho realizado <strong>pelo gás</strong> é:",
+  "conceito": "Convenção da aula: o trabalho é positivo quando o gás é quem produz o movimento (empurra o pistão para fora, aumentando o volume). É positivo porque a força do gás está no mesmo sentido do deslocamento.",
+  "alternativas": [
+   {
+    "t": "Negativo, porque o volume aumentou.",
+    "ok": false,
+    "porque": "Aumento de volume com o gás empurrando é exatamente o caso de trabalho positivo. Negativo é quando o volume diminui."
+   },
+   {
+    "t": "Zero, porque a temperatura não variou.",
+    "ok": false,
+    "porque": "Trabalho depende de variação de <b>volume</b>, não de temperatura. Existe expansão isotérmica com trabalho diferente de zero."
+   },
+   {
+    "t": "Positivo, pois o gás empurra o pistão no sentido do movimento.",
+    "ok": true,
+    "porque": "Força e deslocamento no mesmo sentido → trabalho positivo. É o gás realizando trabalho sobre o meio."
+   },
+   {
+    "t": "Positivo apenas se a transformação for adiabática.",
+    "ok": false,
+    "porque": "O sinal do trabalho não depende de ser adiabática. Depende só de o volume aumentar (positivo) ou diminuir (negativo)."
+   },
+   {
+    "t": "Impossível determinar sem conhecer a pressão.",
+    "ok": false,
+    "porque": "O sinal é dado pela variação de volume. A pressão influencia o <b>valor</b> do trabalho, não o sinal."
+   }
+  ],
+  "licao": "trabalho"
+ },
+ {
+  "tema": "Trabalho do gás",
+  "enunciado": "Durante a compressão, algo empurra o pistão para dentro e o volume do gás diminui. O trabalho realizado <strong>pelo gás</strong> nesse processo é:",
+  "conceito": "Compressão → volume diminui → ΔV negativo → W = P·ΔV negativo. Fisicamente, o gás está sendo forçado: ele \"resiste\" empurrando ao contrário, então quem realiza trabalho positivo é o agente externo.",
+  "alternativas": [
+   {
+    "t": "Positivo, porque o gás está reagindo à força.",
+    "ok": false,
+    "porque": "Reagir não é realizar. O deslocamento é para dentro, e a força do gás aponta para fora: sentidos opostos → trabalho do gás negativo."
+   },
+   {
+    "t": "Negativo, porque o volume diminui e o gás é empurrado.",
+    "ok": true,
+    "porque": "ΔV < 0, logo W = P·ΔV < 0. É o caso do pistão voltando, como no ciclo do trem a vapor quando o vapor esfria."
+   },
+   {
+    "t": "Zero, porque o gás não se move por vontade própria.",
+    "ok": false,
+    "porque": "Trabalho é força vezes deslocamento efetivo. Houve deslocamento, então há trabalho — só com sinal negativo."
+   },
+   {
+    "t": "Igual ao da expansão, pois o módulo do deslocamento é o mesmo.",
+    "ok": false,
+    "porque": "O sinal é oposto ao da expansão (negativo, em vez de positivo). Além disso, os módulos só coincidem se a pressão for a mesma; num ciclo, o trabalho líquido não é zero, é a área do ciclo."
+   },
+   {
+    "t": "Só pode ser calculado se a transformação for isotérmica.",
+    "ok": false,
+    "porque": "A fórmula W = P·ΔV vale para pressão constante. Em outros processos o cálculo muda, mas o sinal continua dado pela variação de volume."
+   }
+  ],
+  "licao": "trabalho"
+ },
+ {
+  "tema": "Trabalho do gás",
+  "licao": "trabalho",
+  "enunciado": "Por que um gás aquecido dentro de um cilindro consegue empurrar o pistão?",
+  "conceito": "Temperatura mede o grau de agitação das moléculas. Aquecendo, elas se movem mais rápido e <b>colidem com mais força</b> contra o pistão: a pressão aumenta e o êmbolo é empurrado, realizando trabalho. 🧠 Bizu: gás quente = moléculas agitadas = mais empurrão.",
+  "alternativas": [
+   {
+    "t": "Porque as moléculas ficam mais agitadas e batem com mais força no pistão.",
+    "ok": true,
+    "porque": "É a explicação da aula: mais temperatura, mais agitação, mais força de colisão sobre o pistão."
+   },
+   {
+    "t": "Porque as moléculas aumentam de tamanho ao serem aquecidas.",
+    "ok": false,
+    "porque": "As moléculas não crescem. O que aumenta é a velocidade média delas."
+   },
+   {
+    "t": "Porque o gás quente fica mais pesado e cai sobre o pistão.",
+    "ok": false,
+    "porque": "O peso do gás é desprezível aqui. A força vem das colisões, e o pistão é empurrado para fora, não para baixo."
+   },
+   {
+    "t": "Porque o calor é um fluido que escorre para dentro do cilindro e ocupa espaço.",
+    "ok": false,
+    "porque": "Calor não é substância: é energia em trânsito. Ele só faz as moléculas se agitarem mais."
+   },
+   {
+    "t": "Porque a energia interna do gás diminui quando ele é aquecido.",
+    "ok": false,
+    "porque": "Ao contrário: aquecer aumenta a agitação, logo a energia interna sobe."
+   }
+  ]
+ },
+ {
+  "tema": "Trabalho do gás",
+  "licao": "trabalho",
+  "enunciado": "Um gás, a pressão constante de 2 × 10⁵ Pa, expande de 1,0 m³ para 1,5 m³. Qual o trabalho realizado pelo gás?",
+  "conceito": "Pressão constante: use <b>W = P · ΔV</b>, com ΔV = V final − V inicial = 0,5 m³. Então W = 2 × 10⁵ × 0,5 = 1,0 × 10⁵ J, positivo porque houve expansão. 🧠 Bizu: o que entra na conta é a <i>variação</i> do volume, não o volume final.",
+  "alternativas": [
+   {
+    "t": "1,0 × 10⁵ J",
+    "ok": true,
+    "porque": "W = P·ΔV = 2×10⁵ × (1,5 − 1,0) = 1,0×10⁵ J. Positivo, pois o gás se expandiu."
+   },
+   {
+    "t": "3,0 × 10⁵ J",
+    "ok": false,
+    "porque": "Sairia de P × V final (2×10⁵ × 1,5). A fórmula pede a variação de volume, não o volume final."
+   },
+   {
+    "t": "2,0 × 10⁵ J",
+    "ok": false,
+    "porque": "Sairia de P × V inicial (2×10⁵ × 1,0). Também não é a variação: ΔV = 0,5 m³."
+   },
+   {
+    "t": "4,0 × 10⁵ J",
+    "ok": false,
+    "porque": "Sairia de dividir P por ΔV. A fórmula é um produto, P·ΔV, e a análise dimensional (Pa·m³ = J) confirma."
+   },
+   {
+    "t": "−1,0 × 10⁵ J",
+    "ok": false,
+    "porque": "O valor está certo, mas o sinal não: expansão (ΔV > 0) dá trabalho positivo."
+   }
+  ]
+ },
+ {
+  "tema": "Trabalho do gás",
+  "licao": "trabalho",
+  "enunciado": "Num gráfico P × V, o trabalho líquido realizado pelo gás em um ciclo fechado é representado:",
+  "conceito": "No gráfico P × V o trabalho é a <b>área</b> sob a curva. Em um ciclo fechado, o trabalho líquido é a <b>área interna</b> da figura formada. 🧠 Bizu: ciclo no gráfico = área de dentro = trabalho que a máquina entrega.",
+  "alternativas": [
+   {
+    "t": "Pela área interna delimitada pelo ciclo.",
+    "ok": true,
+    "porque": "O trabalho da ida (expansão) menos o da volta (compressão) é exatamente a área dentro do ciclo."
+   },
+   {
+    "t": "Pelo comprimento da linha que forma o ciclo.",
+    "ok": false,
+    "porque": "O comprimento da curva não tem significado físico aqui. Quem mede o trabalho é a área."
+   },
+   {
+    "t": "Pela diferença entre a maior e a menor pressão do ciclo.",
+    "ok": false,
+    "porque": "Só a pressão não basta: o trabalho depende também da variação de volume (P·ΔV)."
+   },
+   {
+    "t": "Pelo valor da temperatura média durante o ciclo.",
+    "ok": false,
+    "porque": "Temperatura não mede trabalho. Ela se relaciona com a energia interna, não com a área do gráfico."
+   },
+   {
+    "t": "É sempre zero, porque o gás volta ao estado inicial.",
+    "ok": false,
+    "porque": "No ciclo, ΔU = 0 (volta ao estado inicial), mas o trabalho líquido não é zero: é ele que a máquina entrega (W = Q₁ − Q₂)."
+   }
+  ]
+ },
+ {
+  "tema": "Energia interna",
+  "enunciado": "A energia interna de um gás ideal depende <strong>exclusivamente</strong> de qual parâmetro?",
+  "estrutura": "ΔU = 0  ⟺  ΔT = 0",
+  "conceito": "Energia interna é a soma das energias cinéticas das moléculas — ou seja, o grau de agitação. Quem mede agitação é a temperatura. Logo, só a temperatura altera a energia interna de um gás ideal.",
+  "alternativas": [
+   {
+    "t": "Da pressão do gás.",
+    "ok": false,
+    "porque": "A pressão pode mudar com a temperatura constante (numa isotérmica, P e V variam juntos). Se só a pressão mudasse a energia interna, a isotérmica teria ΔU ≠ 0 — e não tem."
+   },
+   {
+    "t": "Do volume ocupado.",
+    "ok": false,
+    "porque": "Numa isovolumétrica o volume é constante e a energia interna varia (o gás esquenta). Então não é o volume."
+   },
+   {
+    "t": "Da temperatura, que mede o grau de agitação das moléculas.",
+    "ok": true,
+    "porque": "Exatamente: mais agitação → mais energia cinética média → maior energia interna. É por isso que ΔT = 0 implica ΔU = 0."
+   },
+   {
+    "t": "Da quantidade de calor recebida, sempre.",
+    "ok": false,
+    "porque": "Calor <b>altera</b> a energia interna, mas não é o que ela \"depende\". Na isotérmica entra calor e ΔU continua zero."
+   },
+   {
+    "t": "Do trabalho realizado, sempre.",
+    "ok": false,
+    "porque": "Trabalho também altera a energia interna, mas o valor dela num estado depende só da temperatura naquele estado."
+   }
+  ],
+  "licao": "energia-interna"
+ },
+ {
+  "tema": "Energia interna",
+  "enunciado": "Em uma transformação <strong>isotérmica</strong> de um gás ideal, a variação da energia interna é:",
+  "conceito": "Isotérmica = temperatura constante. Se a temperatura não muda, o grau de agitação não muda, então a energia interna não muda: <b>ΔU = 0</b>. Combinando com a 1ª lei, sobra Q = W.",
+  "alternativas": [
+   {
+    "t": "Zero, porque a temperatura é constante.",
+    "ok": true,
+    "porque": "ΔT = 0 → ΔU = 0. Consequência importante: na isotérmica todo o calor recebido se converte em trabalho (Q = W)."
+   },
+   {
+    "t": "Positiva, porque o gás recebe calor.",
+    "ok": false,
+    "porque": "O gás recebe calor, sim, mas usa tudo em trabalho. Não sobra nada para aumentar a energia interna."
+   },
+   {
+    "t": "Negativa, porque o gás se expande.",
+    "ok": false,
+    "porque": "Expansão afeta o trabalho, não a energia interna. O que zeraria ΔU é a variação de temperatura."
+   },
+   {
+    "t": "Igual ao calor recebido.",
+    "ok": false,
+    "porque": "Na isotérmica ΔU = 0, e é o <b>trabalho</b> que se iguala ao calor (Q = W), não a energia interna."
+   },
+   {
+    "t": "Impossível determinar sem o volume.",
+    "ok": false,
+    "porque": "Não precisa do volume: a informação \"isotérmica\" já fixa ΔT = 0 e, portanto, ΔU = 0."
+   }
+  ],
+  "licao": "energia-interna"
+ },
+ {
+  "tema": "Energia interna",
+  "licao": "energia-interna",
+  "enunciado": "A temperatura de um gás ideal cai de 400 K para 300 K. Sua energia interna:",
+  "conceito": "A energia interna depende só da temperatura. Se T diminui, a agitação diminui e <b>ΔU é negativo</b>; se T aumenta, ΔU é positivo; se T não muda, ΔU = 0. 🧠 Bizu: ΔU anda junto com ΔT.",
+  "alternativas": [
+   {
+    "t": "Diminui, porque ΔT é negativo e as moléculas ficam menos agitadas.",
+    "ok": true,
+    "porque": "U depende só de T. Se a temperatura cai, a agitação cai e ΔU < 0."
+   },
+   {
+    "t": "Aumenta, porque o gás cedeu calor ao ambiente.",
+    "ok": false,
+    "porque": "Ceder calor pode ser a causa do resfriamento, mas o efeito sobre a energia interna é diminuir."
+   },
+   {
+    "t": "Permanece constante, pois o volume não foi informado.",
+    "ok": false,
+    "porque": "Para um gás ideal o volume não entra: basta a temperatura, e ela mudou."
+   },
+   {
+    "t": "Torna-se zero, porque a temperatura diminuiu.",
+    "ok": false,
+    "porque": "A energia interna não zera. O que é negativo é a sua variação, ΔU."
+   },
+   {
+    "t": "Só dá para saber o sinal conhecendo o trabalho realizado.",
+    "ok": false,
+    "porque": "O sinal de ΔU sai direto do sinal de ΔT. O trabalho não é necessário para isso."
+   }
+  ]
+ },
+ {
+  "tema": "Energia interna",
+  "licao": "energia-interna",
+  "enunciado": "Um gás ideal monoatômico (n = 2 mol) é aquecido de 300 K para 400 K. Com ΔU = (3/2)·n·R·ΔT e R ≈ 8,3 J/(mol·K), a variação da energia interna é, aproximadamente:",
+  "conceito": "Para o gás monoatômico (os gases nobres citados em aula): ΔU = (3/2)·n·R·ΔT = 1,5 × 2 × 8,3 × 100 ≈ 2 490 J. Positivo, porque a temperatura subiu. 🧠 Bizu: não esqueça o fator 3/2.",
+  "alternativas": [
+   {
+    "t": "≈ 2 490 J",
+    "ok": true,
+    "porque": "ΔU = 1,5 × 2 × 8,3 × 100 ≈ 2 490 J. Positivo, pois ΔT > 0."
+   },
+   {
+    "t": "≈ 1 660 J",
+    "ok": false,
+    "porque": "É n·R·ΔT, sem o fator 3/2. A fórmula do gás monoatômico tem (3/2)."
+   },
+   {
+    "t": "≈ 830 J",
+    "ok": false,
+    "porque": "É só R·ΔT, esquecendo n e o fator 3/2."
+   },
+   {
+    "t": "≈ −2 490 J",
+    "ok": false,
+    "porque": "O valor está certo, mas o sinal não: a temperatura subiu, então ΔU é positivo."
+   },
+   {
+    "t": "≈ 4 980 J",
+    "ok": false,
+    "porque": "Sairia de usar 3 no lugar de 3/2. O fator correto é 3/2 = 1,5."
+   }
+  ]
+ },
+ {
+  "tema": "1ª lei da Termodinâmica",
+  "enunciado": "A Primeira Lei da Termodinâmica, na forma usada na aula, é expressa por:",
+  "estrutura": "ΔU = Q − W",
+  "conceito": "É o balanço de energia do gás: a variação da energia interna é o calor que <b>entra</b> menos o trabalho que <b>sai</b>. Nada se cria, nada se perde — a energia apenas muda de forma.",
+  "alternativas": [
+   {
+    "t": "Q = ΔU − W",
+    "ok": false,
+    "porque": "Subtrai o trabalho do lado errado: isso equivale a ΔU = Q + W, que soma o trabalho realizado pelo gás. Pela convenção da aula, o gás que recebe calor e realiza trabalho fica com Q − W de energia interna."
+   },
+   {
+    "t": "ΔU = Q − W",
+    "ok": true,
+    "porque": "Forma da aula: energia interna varia pelo calor que entra menos o trabalho que o gás realiza. É a conservação de energia aplicada ao gás."
+   },
+   {
+    "t": "ΔU = W − Q",
+    "ok": false,
+    "porque": "Inverte os sinais. Com essa forma, um gás que recebe calor sem trabalhar teria energia interna diminuindo — absurdo."
+   },
+   {
+    "t": "ΔU = Q + W com W sempre positivo",
+    "ok": false,
+    "porque": "O trabalho tem sinal: positivo quando o gás expande, negativo quando é comprimido. Tratá-lo sempre positivo quebra o balanço."
+   },
+   {
+    "t": "Q = W, sempre",
+    "ok": false,
+    "porque": "Q = W só é verdade na isotérmica (ΔU = 0). Em geral, calor também altera a energia interna."
+   }
+  ],
+  "licao": "primeira-lei"
+ },
+ {
+  "tema": "1ª lei da Termodinâmica",
+  "enunciado": "Em uma transformação <strong>adiabática</strong>, o que acontece na equação ΔU = Q − W?",
+  "estrutura": "ΔU = 0 − W   →   ΔU = −W",
+  "conceito": "Adiabática vem de <b>garrafa térmica</b>: não há troca de calor com o ambiente, então Q = 0. Toda a variação de energia interna vem do trabalho. Se o gás expande adiabaticamente, ele gasta energia interna e esfria.",
+  "alternativas": [
+   {
+    "t": "O trabalho se anula, pois não há calor.",
+    "ok": false,
+    "porque": "Quem se anula é o <b>calor</b>, não o trabalho. Sem troca de calor, o trabalho é a única forma de variar a energia interna."
+   },
+   {
+    "t": "O calor se anula, ficando ΔU = −W.",
+    "ok": true,
+    "porque": "Q = 0, logo ΔU = −W. Por isso a expansão adiabática resfria o gás: ele realiza trabalho às custas da própria energia interna."
+   },
+   {
+    "t": "A energia interna se anula.",
+    "ok": false,
+    "porque": "A energia interna não zera — ela <b>varia</b>. Zerar ΔU exigiria ΔT = 0, o que não é o caso."
+   },
+   {
+    "t": "Nada se anula, só muda o sinal do calor.",
+    "ok": false,
+    "porque": "Não há calor para mudar de sinal: por definição Q = 0 na adiabática."
+   },
+   {
+    "t": "Temperatura e volume ficam constantes.",
+    "ok": false,
+    "porque": "Na adiabática tanto a temperatura quanto o volume variam (o gás expande e esfria). Constantes são casos de outras transformações."
+   }
+  ],
+  "licao": "primeira-lei"
+ },
+ {
+  "tema": "1ª lei da Termodinâmica",
+  "licao": "primeira-lei",
+  "enunciado": "Pela convenção de sinais usada em aula, qual afirmação está correta?",
+  "conceito": "O sinal conta o que acontece <b>com o gás</b>: calor que entra é positivo, calor que sai é negativo; gás que empurra o pistão (expansão) tem trabalho positivo, gás empurrado (compressão) tem trabalho negativo. 🧠 Bizu: entrou = +, saiu = −.",
+  "alternativas": [
+   {
+    "t": "O calor recebido pelo gás é positivo; o calor retirado do gás é negativo.",
+    "ok": true,
+    "porque": "Exato: Q > 0 quando o gás recebe calor e Q < 0 quando perde. Na aula, perguntar \"recebe ou é retirado?\" resolvia o sinal."
+   },
+   {
+    "t": "O calor recebido pelo gás é negativo, pois ele \"entra\" no sistema.",
+    "ok": false,
+    "porque": "Inverte a convenção. Calor que entra aumenta a energia do gás, então conta como positivo."
+   },
+   {
+    "t": "O calor é sempre positivo; só o trabalho muda de sinal.",
+    "ok": false,
+    "porque": "O calor também muda de sinal: é negativo quando o gás cede calor ao ambiente, como numa compressão isotérmica."
+   },
+   {
+    "t": "O calor retirado do gás é positivo, porque o gás perde energia.",
+    "ok": false,
+    "porque": "Perder energia na forma de calor é Q negativo. Positivo é ganhar."
+   },
+   {
+    "t": "O sinal do calor depende só da pressão do gás.",
+    "ok": false,
+    "porque": "O sinal depende do sentido do fluxo (entra ou sai), não do valor da pressão."
+   }
+  ]
+ },
+ {
+  "tema": "1ª lei aplicada",
+  "enunciado": "Um gás recebe 500 J de calor e, ao mesmo tempo, realiza 200 J de trabalho. Qual é a variação da sua energia interna?",
+  "estrutura": "ΔU = Q − W = 500 − 200",
+  "conceito": "Aplique a 1ª lei com os sinais corretos: calor <b>recebido</b> é positivo, trabalho <b>realizado pelo gás</b> também entra positivo na fórmula (subtraindo). Sobra 300 J que ficam no gás como aumento de agitação — e a temperatura sobe.",
+  "alternativas": [
+   {
+    "t": "300 J, e a temperatura do gás aumenta.",
+    "ok": true,
+    "porque": "ΔU = 500 − 200 = 300 J. Como ΔU > 0, a agitação das moléculas aumentou, logo a temperatura subiu."
+   },
+   {
+    "t": "700 J, somando calor e trabalho.",
+    "ok": false,
+    "porque": "Somar seria usar ΔU = Q + W. Pela convenção da aula, o trabalho realizado pelo gás <b>sai</b> do balanço e é subtraído."
+   },
+   {
+    "t": "−300 J, pois o gás realizou trabalho.",
+    "ok": false,
+    "porque": "O sinal negativo apareceria se o trabalho fosse maior que o calor recebido. Aqui 500 > 200, então ΔU é positivo."
+   },
+   {
+    "t": "200 J, pois é o trabalho realizado.",
+    "ok": false,
+    "porque": "200 J é o trabalho, não a variação de energia interna. Confundir os dois é o erro mais comum nesse tipo de questão."
+   },
+   {
+    "t": "Zero, pois o gás voltou ao estado inicial.",
+    "ok": false,
+    "porque": "Não se trata de um ciclo completo. Num ciclo fechado ΔU = 0; aqui é uma transformação parcial."
+   }
+  ],
+  "licao": "primeira-lei"
+ },
+ {
+  "tema": "1ª lei aplicada",
+  "enunciado": "Um gás é comprimido recebendo 400 J de trabalho, sem trocar calor com o ambiente. O que acontece com sua temperatura?",
+  "estrutura": "Adiabática: Q = 0  →  ΔU = −W\nW = −400 J (compressão)  →  ΔU = +400 J",
+  "conceito": "Compressão adiabática é o caso clássico de aquecimento: o trabalho entra, não há calor para escapar, então tudo vira energia interna. É o que acontece no cilindro do motor a diesel, que inflama o combustível só pela compressão.",
+  "alternativas": [
+   {
+    "t": "Diminui, porque o gás foi comprimido.",
+    "ok": false,
+    "porque": "Intuição invertida. Na compressão adiabática o gás <b>esquenta</b> — é a expansão adiabática que resfria."
+   },
+   {
+    "t": "Aumenta, porque o trabalho recebido eleva a energia interna.",
+    "ok": true,
+    "porque": "ΔU = +400 J, então a agitação cresce e a temperatura sobe. Por isso o diesel pega fogo sem vela de ignição."
+   },
+   {
+    "t": "Permanece constante, porque não houve troca de calor.",
+    "ok": false,
+    "porque": "Q = 0 não significa ΔU = 0. Significa que a energia interna varia apenas pelo trabalho."
+   },
+   {
+    "t": "Diminui, porque o volume diminui.",
+    "ok": false,
+    "porque": "Volume menor não implica temperatura menor. Aqui os dois efeitos vão em sentidos opostos: V cai, T sobe."
+   },
+   {
+    "t": "Não é possível saber sem conhecer o volume final.",
+    "ok": false,
+    "porque": "A informação \"sem trocar calor\" já basta: Q = 0 e W é conhecido, então ΔU está determinado."
+   }
+  ],
+  "licao": "primeira-lei"
+ },
+ {
+  "tema": "1ª lei aplicada",
+  "licao": "primeira-lei",
+  "enunciado": "Ao final de um ciclo completo, o gás volta ao estado inicial. Para esse ciclo, é correto afirmar que:",
+  "conceito": "Energia interna é função do estado. Se o estado final é igual ao inicial, <b>ΔU = 0</b>. Pela 1ª lei (ΔU = Q − W), sobra <b>Q = W</b>: o calor líquido recebido vira trabalho líquido. 🧠 Bizu: ciclo fechado = ΔU zero.",
+  "alternativas": [
+   {
+    "t": "ΔU = 0 e, portanto, o calor líquido é igual ao trabalho líquido (Q = W).",
+    "ok": true,
+    "porque": "Estado final igual ao inicial implica ΔU = 0, e a 1ª lei fica Q = W."
+   },
+   {
+    "t": "ΔU > 0, pois o gás recebeu calor durante o ciclo.",
+    "ok": false,
+    "porque": "Receber calor em alguma etapa não basta. No ciclo completo a energia interna volta ao valor inicial."
+   },
+   {
+    "t": "O trabalho líquido é sempre zero, porque o gás volta ao início.",
+    "ok": false,
+    "porque": "O trabalho líquido não é zero numa máquina térmica: é a área do ciclo. O que zera é ΔU."
+   },
+   {
+    "t": "O calor líquido é sempre zero, pois não há troca com o ambiente.",
+    "ok": false,
+    "porque": "Há troca de calor com as fontes (Q₁ entra e Q₂ sai). O calor líquido é Q₁ − Q₂ = W."
+   },
+   {
+    "t": "ΔU = Q + W, pois no ciclo o trabalho é sempre positivo.",
+    "ok": false,
+    "porque": "A convenção da aula é ΔU = Q − W, e não há razão para o trabalho do ciclo ter só sinal positivo em todas as etapas."
+   }
+  ]
+ },
+ {
+  "tema": "Transformações gasosas",
+  "enunciado": "Em uma transformação <strong>isovolumétrica</strong>, o que se anula na equação da 1ª lei?",
+  "conceito": "Isovolumétrica = volume constante. Sem variação de volume (ΔV = 0), o pistão não se desloca, então o gás não realiza nem recebe trabalho: <b>W = 0</b>. Assim, ΔU = Q — todo calor vira variação de energia interna.",
+  "alternativas": [
+   {
+    "t": "O trabalho, pois não há variação de volume.",
+    "ok": true,
+    "porque": "ΔV = 0 → W = P·ΔV = 0. Por isso aquecer um gás em recipiente fechado rígido aumenta a pressão e a temperatura, sem realizar trabalho."
+   },
+   {
+    "t": "O calor, pois o recipiente é fechado.",
+    "ok": false,
+    "porque": "Fechado não significa isolado termicamente. Um recipiente rígido pode perfeitamente receber calor e esquentar."
+   },
+   {
+    "t": "A energia interna, pois o gás não se move.",
+    "ok": false,
+    "porque": "A energia interna varia justamente porque o calor recebido não tem para onde ir além de agitar as moléculas."
+   },
+   {
+    "t": "A pressão, pois o volume é constante.",
+    "ok": false,
+    "porque": "Ao contrário: em volume constante, a pressão é a grandeza que mais varia quando a temperatura muda."
+   },
+   {
+    "t": "Nada se anula; a equação permanece completa.",
+    "ok": false,
+    "porque": "Se nada se anulasse, qual seria então a marca da isovolumétrica? A ausência de deslocamento é justamente o que zera o trabalho."
+   }
+  ],
+  "licao": "transformacoes"
+ },
+ {
+  "tema": "Transformações gasosas",
+  "enunciado": "Uma garrafa térmica é o exemplo clássico de qual transformação?",
+  "conceito": "A garrafa térmica é projetada para impedir troca de calor com o ambiente. Em Termodinâmica, o processo sem troca de calor recebe o nome de <b>adiabático</b>.",
+  "alternativas": [
+   {
+    "t": "Isotérmica, porque mantém a temperatura do café.",
+    "ok": false,
+    "porque": "Isotérmica é quando a temperatura do <b>gás</b> permanece constante, mas há troca de calor com o ambiente. A garrafa térmica é feita para <b>não</b> trocar calor: o nome disso é adiabático."
+   },
+   {
+    "t": "Isobárica, porque a pressão atmosférica é constante.",
+    "ok": false,
+    "porque": "A pressão é de fato constante, mas o critério decisivo da garrafa térmica é o isolamento térmico, não a pressão."
+   },
+   {
+    "t": "Adiabática, porque não há troca de calor com o ambiente.",
+    "ok": true,
+    "porque": "Exato: Q = 0. É a analogia usada em aula para lembrar do processo adiabático."
+   },
+   {
+    "t": "Isovolumétrica, porque o volume é fixo.",
+    "ok": false,
+    "porque": "O volume é fixo, mas isso descreveria uma isovolumétrica; o que caracteriza a garrafa térmica é o isolamento térmico."
+   },
+   {
+    "t": "Cíclica, porque o café volta à temperatura inicial.",
+    "ok": false,
+    "porque": "O café não descreve ciclo nenhum — ele só permanece quente. Ciclo é o que a máquina térmica faz."
+   }
+  ],
+  "licao": "transformacoes"
+ },
+ {
+  "tema": "Transformações gasosas",
+  "enunciado": "Numa transformação <strong>isobárica</strong>, qual é a vantagem de cálculo que ela oferece?",
+  "conceito": "Isobárica = pressão constante. Como a pressão não muda, basta multiplicá-la pela variação do volume: a fórmula simples <b>W = P·ΔV</b> vale sem complicação. Nas outras transformações a pressão varia e o cálculo exige o gráfico ou integração.",
+  "alternativas": [
+   {
+    "t": "O trabalho pode ser calculado diretamente por W = P·ΔV.",
+    "ok": true,
+    "porque": "Com P constante, a fórmula deduzida em aula se aplica direto. É também por isso que no gráfico P × V o trabalho é a área sob a linha horizontal."
+   },
+   {
+    "t": "O trabalho é sempre nulo.",
+    "ok": false,
+    "porque": "Trabalho nulo é da isovolumétrica. Na isobárica o gás expande e realiza trabalho normalmente."
+   },
+   {
+    "t": "O calor é sempre nulo.",
+    "ok": false,
+    "porque": "Calor nulo é da adiabática. Na isobárica há troca de calor — é o caso mais comum dos processos reais."
+   },
+   {
+    "t": "A energia interna permanece constante.",
+    "ok": false,
+    "porque": "ΔU constante só na isotérmica. Na isobárica o gás geralmente muda de temperatura."
+   },
+   {
+    "t": "A temperatura permanece constante.",
+    "ok": false,
+    "porque": "Na isobárica, se o volume muda, a temperatura muda obrigatoriamente (P·V/T constante)."
+   }
+  ],
+  "licao": "transformacoes"
+ },
+ {
+  "tema": "Transformações gasosas",
+  "licao": "transformacoes",
+  "enunciado": "Um gás recebe 600 J de calor em um recipiente rígido, de volume constante. Qual a variação da sua energia interna?",
+  "conceito": "Volume constante: ΔV = 0, logo <b>W = 0</b>. Pela 1ª lei, ΔU = Q − W = 600 − 0 = 600 J. Todo o calor fica guardado como energia interna (a temperatura sobe). 🧠 Bizu: isovolumétrica = ΔU = Q.",
+  "alternativas": [
+   {
+    "t": "600 J",
+    "ok": true,
+    "porque": "W = 0 (sem variação de volume), então ΔU = Q = 600 J."
+   },
+   {
+    "t": "0 J",
+    "ok": false,
+    "porque": "Zero seria numa isotérmica. Aqui a temperatura sobe, então ΔU ≠ 0."
+   },
+   {
+    "t": "−600 J",
+    "ok": false,
+    "porque": "Sinal trocado: o gás recebeu calor e não realizou trabalho, então a energia interna aumenta."
+   },
+   {
+    "t": "300 J",
+    "ok": false,
+    "porque": "Não há razão para dividir: sem trabalho, todo o calor vira energia interna."
+   },
+   {
+    "t": "1 200 J",
+    "ok": false,
+    "porque": "Dobrar o valor não tem base na 1ª lei. ΔU = Q − W, com W = 0."
+   }
+  ]
+ },
+ {
+  "tema": "Transformações gasosas",
+  "licao": "transformacoes",
+  "enunciado": "Em uma expansão isotérmica, um gás ideal realiza 250 J de trabalho. Que quantidade de calor ele recebe?",
+  "conceito": "Isotérmica: ΔT = 0, logo ΔU = 0. Pela 1ª lei, Q = W = 250 J: todo o calor recebido é convertido em trabalho. 🧠 Bizu: isotérmica = calor que entra, trabalho que sai.",
+  "alternativas": [
+   {
+    "t": "250 J",
+    "ok": true,
+    "porque": "ΔU = 0, então Q = W = 250 J."
+   },
+   {
+    "t": "0 J",
+    "ok": false,
+    "porque": "Q = 0 seria numa adiabática. Na isotérmica o gás precisa receber calor para manter a temperatura enquanto realiza trabalho."
+   },
+   {
+    "t": "−250 J",
+    "ok": false,
+    "porque": "O gás realiza trabalho às custas de calor recebido; Q é positivo (entra calor)."
+   },
+   {
+    "t": "500 J",
+    "ok": false,
+    "porque": "Somar calor e trabalho não vale: na isotérmica o calor é igual ao trabalho, não o dobro."
+   },
+   {
+    "t": "125 J",
+    "ok": false,
+    "porque": "Não há metade nem divisão: com ΔU = 0, calor e trabalho têm o mesmo valor."
+   }
+  ]
+ },
+ {
+  "tema": "2ª lei da Termodinâmica",
+  "enunciado": "O enunciado de Kelvin-Planck para a Segunda Lei da Termodinâmica afirma que:",
+  "conceito": "É impossível uma máquina térmica operando em ciclos converter <b>integralmente</b> o calor recebido em trabalho. Sempre sobra calor rejeitado para a fonte fria. É por isso que nenhum rendimento chega a 100% — nem em máquina ideal.",
+  "alternativas": [
+   {
+    "t": "O calor sempre flui do corpo frio para o quente espontaneamente.",
+    "ok": false,
+    "porque": "Isso é o enunciado de <b>Clausius</b>, e ainda por cima invertido: espontaneamente o calor vai do quente para o frio."
+   },
+   {
+    "t": "É impossível converter integralmente calor em trabalho em uma máquina que opera em ciclos.",
+    "ok": true,
+    "porque": "Essa é a forma de Kelvin-Planck trabalhada na aula. Sempre há calor rejeitado para a fonte fria, então η < 1 sempre."
+   },
+   {
+    "t": "A energia total do universo diminui a cada transformação.",
+    "ok": false,
+    "porque": "A conservação da energia é a <b>1ª lei</b>: a energia total se mantém. A 2ª lei trata da qualidade/direção da transformação, não da quantidade total."
+   },
+   {
+    "t": "Toda máquina térmica real tem rendimento maior que a de Carnot.",
+    "ok": false,
+    "porque": "Ao contrário: a de Carnot é o limite máximo. Nenhuma máquina real supera o rendimento de Carnot entre as mesmas temperaturas."
+   },
+   {
+    "t": "O rendimento de uma máquina térmica pode chegar a 100% se não houver atrito.",
+    "ok": false,
+    "porque": "Eliminar atrito melhora o rendimento, mas não fura a 2ª lei. O limite de Carnot continua valendo mesmo com máquina perfeita."
+   }
+  ],
+  "licao": "segunda-lei"
+ },
+ {
+  "tema": "2ª lei da Termodinâmica",
+  "licao": "segunda-lei",
+  "enunciado": "Por que o carregador de celular fica quente durante o uso?",
+  "conceito": "Nenhum aparelho aproveita 100% da energia: parte da que vem da tomada se perde na forma de <b>calor</b>. É a 2ª lei aparecendo no dia a dia, como lembrado em aula com o celular carregando. 🧠 Bizu: aqueceu sem querer = energia perdida em calor.",
+  "alternativas": [
+   {
+    "t": "Porque parte da energia da tomada se dissipa em calor e não vira carga.",
+    "ok": true,
+    "porque": "É perda de energia na forma de calor: nenhuma conversão é 100% eficiente."
+   },
+   {
+    "t": "Porque o carregador cria energia extra a partir do nada.",
+    "ok": false,
+    "porque": "Criar energia viola a 1ª lei. O calor vem da própria energia elétrica que entrou."
+   },
+   {
+    "t": "Porque o aquecimento mostra que o carregador está funcionando com rendimento de 100%.",
+    "ok": false,
+    "porque": "Ao contrário: se aquece, há perda. Rendimento de 100% não existe."
+   },
+   {
+    "t": "Porque o celular devolve calor ao carregador por Kelvin-Planck.",
+    "ok": false,
+    "porque": "O enunciado de Kelvin-Planck trata de máquinas térmicas em ciclo, e não explica esse aquecimento."
+   },
+   {
+    "t": "Porque o plástico do carregador absorve o frio do ambiente.",
+    "ok": false,
+    "porque": "Frio não é absorvido: é ausência de calor. O aquecimento é energia dissipada."
+   }
+  ]
+ },
+ {
+  "tema": "2ª lei da Termodinâmica",
+  "licao": "segunda-lei",
+  "enunciado": "Numa usina nuclear, a fissão aquece a água, e o vapor move as turbinas. Do ponto de vista da Termodinâmica, a usina:",
+  "conceito": "A usina nuclear funciona pelo mesmo princípio das demais: uma fonte quente (o reator) fornece calor, parte vira trabalho (turbina) e o resto vai para a fonte fria. É uma <b>máquina térmica</b>, como o professor destacou. 🧠 Bizu: calor → trabalho + calor rejeitado.",
+  "alternativas": [
+   {
+    "t": "É uma máquina térmica: recebe calor, converte parte em trabalho e rejeita o restante.",
+    "ok": true,
+    "porque": "Tem fonte quente (reator), substância de trabalho (vapor) e fonte fria (rio, mar ou torre de resfriamento)."
+   },
+   {
+    "t": "Não é máquina térmica, pois usa energia nuclear.",
+    "ok": false,
+    "porque": "A origem do calor não importa: o que define a máquina térmica é a conversão de calor em trabalho."
+   },
+   {
+    "t": "Converte todo o calor do reator em trabalho.",
+    "ok": false,
+    "porque": "Impossível pela 2ª lei: sempre há calor rejeitado para a fonte fria."
+   },
+   {
+    "t": "Funciona como um refrigerador gigante.",
+    "ok": false,
+    "porque": "O refrigerador gasta trabalho para mover calor. A usina faz o contrário: produz trabalho a partir do calor."
+   },
+   {
+    "t": "Dispensa a fonte fria, pois o reator é muito quente.",
+    "ok": false,
+    "porque": "Sem fonte fria não há ciclo: o calor rejeitado precisa ir para algum lugar."
+   }
+  ]
+ },
+ {
+  "tema": "Rendimento",
+  "enunciado": "O rendimento de uma máquina térmica é definido por:",
+  "estrutura": "η = W / Q₁\n\nW = trabalho realizado · Q₁ = calor recebido da fonte quente",
+  "conceito": "Rendimento é a fração da energia que entrou e virou trabalho útil. Compara o que <b>saiu</b> (trabalho) com o que <b>entrou</b> (calor da fonte quente). Por ser razão entre energias, é um número puro, sem unidade.",
+  "alternativas": [
+   {
+    "t": "η = W / Q₁, o trabalho dividido pelo calor recebido da fonte quente.",
+    "ok": true,
+    "porque": "É a definição. Se uma máquina recebe 1000 J e entrega 300 J de trabalho, η = 0,30 = 30%."
+   },
+   {
+    "t": "η = Q₁ / W, o calor dividido pelo trabalho.",
+    "ok": false,
+    "porque": "Inverte a fração. Como W < Q₁ sempre, isso daria η > 1 — ou seja, mais de 100% de rendimento, o que é impossível."
+   },
+   {
+    "t": "η = Q₂ / Q₁, o calor rejeitado dividido pelo recebido.",
+    "ok": false,
+    "porque": "Essa razão mede a <b>fração desperdiçada</b>. O rendimento é o complemento: η = 1 − Q₂/Q₁."
+   },
+   {
+    "t": "η = W · Q₁, o produto entre trabalho e calor.",
+    "ok": false,
+    "porque": "Produto de duas energias daria joule ao quadrado — não é adimensional. Rendimento é razão, não produto."
+   },
+   {
+    "t": "η = Q₁ − Q₂, a diferença entre os calores.",
+    "ok": false,
+    "porque": "Essa diferença é o próprio trabalho (W = Q₁ − Q₂), não o rendimento."
+   }
+  ],
+  "licao": "rendimento"
+ },
+ {
+  "tema": "Rendimento",
+  "enunciado": "Uma máquina térmica recebe 800 J da fonte quente e rejeita 600 J para a fonte fria a cada ciclo. Qual é o seu rendimento?",
+  "estrutura": "W = Q₁ − Q₂ = 800 − 600 = 200 J\nη = W / Q₁ = 200 / 800",
+  "conceito": "Primeiro ache o trabalho pela conservação de energia: o que entrou menos o que foi desperdiçado. Depois divida pelo calor de entrada. Nunca divida por Q₂ — o denominador é sempre a energia que entrou.",
+  "alternativas": [
+   {
+    "t": "25%",
+    "ok": true,
+    "porque": "W = 800 − 600 = 200 J. η = 200/800 = 0,25 = 25%. Confere com a outra forma: 1 − 600/800 = 1 − 0,75 = 0,25."
+   },
+   {
+    "t": "75%",
+    "ok": false,
+    "porque": "75% é a fração <b>desperdiçada</b> (600/800). O rendimento é o que sobra: 25%."
+   },
+   {
+    "t": "33%",
+    "ok": false,
+    "porque": "Sairia de 200/600, dividindo o trabalho pelo calor rejeitado. O denominador correto é o calor recebido (800 J)."
+   },
+   {
+    "t": "200%",
+    "ok": false,
+    "porque": "Rendimento nunca passa de 100%. Valor acima disso indica erro de fórmula ou de unidade."
+   },
+   {
+    "t": "50%",
+    "ok": false,
+    "porque": "Seria o caso de rejeitar 400 J. Aqui a máquina rejeita 600 J dos 800 J, ou seja, é pouco eficiente."
+   }
+  ],
+  "licao": "rendimento"
+ },
+ {
+  "tema": "Rendimento",
+  "enunciado": "Uma máquina térmica tem rendimento de 40% e realiza 2 000 J de trabalho por ciclo. Quanto calor ela recebe da fonte quente?",
+  "estrutura": "η = W / Q₁  →  0,40 = 2000 / Q₁",
+  "conceito": "Isolando Q₁: Q₁ = W / η. Sempre que o problema dá rendimento e trabalho, o calor de entrada vem de uma divisão simples. Se pedir o calor rejeitado, faça Q₂ = Q₁ − W.",
+  "alternativas": [
+   {
+    "t": "800 J",
+    "ok": false,
+    "porque": "Isso é 40% de 2000 — o cálculo ao contrário. O rendimento diz que 2000 J é 40% do total, não que o total seja 40% do trabalho."
+   },
+   {
+    "t": "5 000 J",
+    "ok": true,
+    "porque": "Q₁ = 2000/0,40 = 5 000 J. Conferindo: 40% de 5 000 = 2 000 J de trabalho, e 3 000 J vão para a fonte fria."
+   },
+   {
+    "t": "2 400 J",
+    "ok": false,
+    "porque": "Sairia de 2000 + 400, somando o percentual como se fosse energia. Percentual não se soma ao joule."
+   },
+   {
+    "t": "1 200 J",
+    "ok": false,
+    "porque": "Sairia de 2000 × 0,60. Não há motivo para usar o complemento do rendimento no calor de entrada."
+   },
+   {
+    "t": "3 000 J",
+    "ok": false,
+    "porque": "3 000 J é o calor <b>rejeitado</b> (5000 − 2000), não o recebido."
+   }
+  ],
+  "licao": "rendimento"
+ },
+ {
+  "tema": "Rendimento",
+  "licao": "rendimento",
+  "enunciado": "Qual dos valores abaixo pode ser o rendimento de uma máquina térmica?",
+  "conceito": "O rendimento fica sempre entre 0 e 1 (0% e 100%) e <b>nunca chega a 1</b>, pela 2ª lei. Por exemplo, 0,35 = 35%: a máquina aproveita 35% da energia recebida. 🧠 Bizu: rendimento é fração do que entrou, então nunca passa de 100%.",
+  "alternativas": [
+   {
+    "t": "0,35 (35%)",
+    "ok": true,
+    "porque": "Está entre 0 e 1 e é menor que 1: possível. É um valor típico de motor ou usina real."
+   },
+   {
+    "t": "1,00 (100%)",
+    "ok": false,
+    "porque": "Exigiria Q₂ = 0, ou seja, nenhum calor rejeitado. A 2ª lei (Kelvin-Planck) proíbe isso."
+   },
+   {
+    "t": "1,25 (125%)",
+    "ok": false,
+    "porque": "Passa de 100%: a máquina entregaria mais trabalho do que o calor que recebeu, o que violaria a conservação de energia."
+   },
+   {
+    "t": "110%",
+    "ok": false,
+    "porque": "Passa de 100%. Rendimento é uma fração da energia que entrou, então não pode superar o total."
+   },
+   {
+    "t": "−0,30",
+    "ok": false,
+    "porque": "Rendimento negativo não faz sentido: o trabalho útil seria negativo para uma máquina que deveria produzi-lo."
+   }
+  ]
+ },
+ {
+  "tema": "Rendimento",
+  "licao": "rendimento",
+  "enunciado": "Uma máquina térmica recebe 1 200 J da fonte quente e realiza 300 J de trabalho por ciclo. Qual o calor rejeitado para a fonte fria?",
+  "conceito": "Pela conservação de energia: <b>W = Q₁ − Q₂</b>, logo Q₂ = Q₁ − W = 1 200 − 300 = 900 J. O que não vira trabalho vai para a fonte fria. 🧠 Bizu: entrou − trabalho = rejeitado.",
+  "alternativas": [
+   {
+    "t": "900 J",
+    "ok": true,
+    "porque": "Q₂ = Q₁ − W = 1 200 − 300 = 900 J. (Rendimento: 300/1 200 = 25%.)"
+   },
+   {
+    "t": "1 500 J",
+    "ok": false,
+    "porque": "Sairia de somar Q₁ + W. O calor rejeitado é o que sobra: subtrai-se o trabalho."
+   },
+   {
+    "t": "300 J",
+    "ok": false,
+    "porque": "Esse é o trabalho realizado, não o calor rejeitado."
+   },
+   {
+    "t": "4 J",
+    "ok": false,
+    "porque": "Sairia de dividir 1 200 por 300, que não é uma grandeza em joules e não tem significado aqui."
+   },
+   {
+    "t": "25 J",
+    "ok": false,
+    "porque": "O 25 vem do rendimento (25%), que é uma fração, não uma quantidade de calor em joules."
+   }
+  ]
+ },
+ {
+  "tema": "Ciclo de Carnot",
+  "enunciado": "O ciclo de Carnot é formado por quais transformações?",
+  "conceito": "Quatro etapas alternadas: expansão isotérmica, expansão adiabática, compressão isotérmica e compressão adiabática. Duas a temperatura constante e duas sem troca de calor — é o ciclo mais eficiente possível entre duas temperaturas.",
+  "alternativas": [
+   {
+    "t": "Duas isobáricas e duas isovolumétricas.",
+    "ok": false,
+    "porque": "Isso desenharia um ciclo retangular no gráfico P × V, que não é o de Carnot. O de Carnot usa curvas: duas isotérmicas e duas adiabáticas."
+   },
+   {
+    "t": "Duas isotérmicas e duas adiabáticas.",
+    "ok": true,
+    "porque": "Expansão e compressão isotérmicas (contato com as fontes) alternadas com expansão e compressão adiabáticas (isoladas). É o que aparece no gráfico P × V em forma de ciclo fechado."
+   },
+   {
+    "t": "Quatro isotérmicas.",
+    "ok": false,
+    "porque": "Sem as adiabáticas, não haveria como mudar de temperatura entre uma fonte e outra — o ciclo não fecharia."
+   },
+   {
+    "t": "Duas adiabáticas e duas isobáricas.",
+    "ok": false,
+    "porque": "Mistura as etapas. As trocas de calor com as fontes, no ciclo de Carnot, são isotérmicas."
+   },
+   {
+    "t": "Uma isotérmica e três adiabáticas.",
+    "ok": false,
+    "porque": "Seria assimétrico e não corresponderia ao ciclo reversível idealizado por Carnot."
+   }
+  ],
+  "licao": "carnot"
+ },
+ {
+  "tema": "Ciclo de Carnot",
+  "enunciado": "O rendimento máximo de uma máquina de Carnot que opera entre 500 K (fonte quente) e 300 K (fonte fria) é:",
+  "estrutura": "η = 1 − T_fria / T_quente = 1 − 300/500",
+  "conceito": "Para Carnot o rendimento depende só das temperaturas absolutas. Aqui: 1 − 0,6 = 0,4. Atenção: as temperaturas <b>precisam</b> estar em Kelvin; usar Celsius na fórmula é o erro mais comum.",
+  "alternativas": [
+   {
+    "t": "40%",
+    "ok": true,
+    "porque": "η = 1 − 300/500 = 1 − 0,6 = 0,4 = 40%. Nenhuma máquina real entre essas duas temperaturas pode superar isso."
+   },
+   {
+    "t": "60%",
+    "ok": false,
+    "porque": "60% é a fração rejeitada (300/500). O rendimento é o complemento."
+   },
+   {
+    "t": "20%",
+    "ok": false,
+    "porque": "Sairia de (500−300)/500 dividido por 2, ou de alguma manipulação indevida. A conta correta é 1 − 300/500."
+   },
+   {
+    "t": "67%",
+    "ok": false,
+    "porque": "Sairia de 200/300, invertendo o denominador. O denominador é a temperatura da fonte quente."
+   },
+   {
+    "t": "100%",
+    "ok": false,
+    "porque": "Só seria possível com fonte fria a 0 K, o que é inatingível (3ª lei). Na prática, é sempre menor que 100%."
+   }
+  ],
+  "licao": "carnot"
+ },
+ {
+  "tema": "Ciclo de Carnot",
+  "enunciado": "Por que a máquina de Carnot é usada como <strong>referência</strong> para avaliar máquinas reais?",
+  "conceito": "Carnot define o teto teórico: entre duas temperaturas, nenhuma máquina pode render mais que ele. Se sua máquina rende 20% e o Carnot entre as mesmas temperaturas renderia 70%, ela está muito abaixo do possível — é esse o diagnóstico que o professor mostrou em aula.",
+  "alternativas": [
+   {
+    "t": "Porque é uma máquina que existe comercialmente e é barata de fabricar.",
+    "ok": false,
+    "porque": "A máquina de Carnot é teórica: exige processos reversíveis (infinitamente lentos, quase estáticos) e isolamento térmico perfeito nas adiabáticas, o que é impraticável. Não se compra uma pronta."
+   },
+   {
+    "t": "Porque define o rendimento máximo possível entre duas temperaturas; nenhuma máquina real a supera.",
+    "ok": true,
+    "porque": "É o teto teórico. Serve de régua: comparar o rendimento real com o de Carnot mostra quanto ainda se pode melhorar o projeto."
+   },
+   {
+    "t": "Porque seu rendimento é de 100%, servindo de meta ideal.",
+    "ok": false,
+    "porque": "Nem Carnot chega a 100%. Ele é o máximo <b>possível</b> para aquelas temperaturas, e esse máximo é sempre menor que 100%."
+   },
+   {
+    "t": "Porque dispensa fonte fria, simplificando o projeto.",
+    "ok": false,
+    "porque": "Todo ciclo de Carnot depende das duas fontes. Sem fonte fria não há rejeição de calor, e a 2ª lei proíbe."
+   },
+   {
+    "t": "Porque funciona sem receber calor.",
+    "ok": false,
+    "porque": "Ao contrário: ele recebe calor na expansão isotérmica. É uma máquina térmica como qualquer outra, só que ideal."
+   }
+  ],
+  "licao": "carnot"
+ },
+ {
+  "tema": "Ciclo de Carnot",
+  "licao": "carnot",
+  "enunciado": "Para aumentar o rendimento máximo (de Carnot) entre duas fontes, deve-se:",
+  "conceito": "Como η = 1 − T_fria/T_quente, o rendimento cresce quando a razão T_fria/T_quente diminui: <b>aumentar a temperatura da fonte quente</b> ou <b>diminuir a da fonte fria</b>. 🧠 Bizu: quanto maior o desnível entre as fontes, maior o teto.",
+  "alternativas": [
+   {
+    "t": "Aumentar a temperatura da fonte quente e/ou diminuir a temperatura da fonte fria.",
+    "ok": true,
+    "porque": "Isso diminui T_fria/T_quente e, portanto, aumenta 1 − T_fria/T_quente."
+   },
+   {
+    "t": "Diminuir a temperatura da fonte quente.",
+    "ok": false,
+    "porque": "Aumentaria a razão T_fria/T_quente e reduziria o rendimento máximo."
+   },
+   {
+    "t": "Aumentar a temperatura da fonte fria.",
+    "ok": false,
+    "porque": "Faria a razão T_fria/T_quente crescer, diminuindo o rendimento máximo."
+   },
+   {
+    "t": "Aumentar a massa de gás usada na máquina.",
+    "ok": false,
+    "porque": "O rendimento de Carnot depende só das duas temperaturas absolutas, não da quantidade de gás."
+   },
+   {
+    "t": "Medir as temperaturas em Celsius em vez de kelvin.",
+    "ok": false,
+    "porque": "Trocar a escala não muda o rendimento real; só estraga o cálculo. A fórmula exige kelvin."
+   }
+  ]
+ },
+ {
+  "tema": "Ciclo de Carnot",
+  "licao": "carnot",
+  "enunciado": "Entre as mesmas fontes, uma máquina de Carnot renderia 70%, mas a máquina testada rende só 20%. O que se conclui?",
+  "conceito": "Carnot é o teto. Se a máquina real rende 20% quando o máximo seria 70%, ela está <b>muito abaixo do possível</b>: há bastante espaço para melhorar o projeto. Foi o raciocínio do professor em aula. 🧠 Bizu: compare o real com o teto de Carnot.",
+  "alternativas": [
+   {
+    "t": "A máquina está muito abaixo do limite teórico; há muito espaço para melhorar.",
+    "ok": true,
+    "porque": "A comparação com o rendimento máximo (70%) mostra o quanto ainda falta (20%)."
+   },
+   {
+    "t": "A máquina é perfeita, pois todo rendimento real é aceitável.",
+    "ok": false,
+    "porque": "Só seria \"ótima\" se estivesse perto do teto de Carnot, e 20% está longe de 70%."
+   },
+   {
+    "t": "A máquina violou a 1ª lei da Termodinâmica.",
+    "ok": false,
+    "porque": "Rendimento baixo não viola a 1ª lei. A energia se conserva; apenas boa parte se perde como calor rejeitado."
+   },
+   {
+    "t": "O cálculo de Carnot está errado, pois nenhuma máquina real rende menos que ele.",
+    "ok": false,
+    "porque": "É o contrário: nenhuma máquina real rende mais que Carnot. Render menos é normal."
+   },
+   {
+    "t": "Não se pode comparar máquina real com a de Carnot.",
+    "ok": false,
+    "porque": "Pode e deve: é exatamente para isso que Carnot serve, como régua de desempenho máximo."
+   }
+  ]
+ },
+ {
+  "tema": "Temperatura absoluta",
+  "enunciado": "Ao usar a fórmula do rendimento de Carnot, as temperaturas devem ser expressas em:",
+  "estrutura": "η = 1 − T_fria / T_quente     (T em kelvin)",
+  "conceito": "A fórmula de Carnot exige escala <b>absoluta</b>, porque ela vem de uma razão entre energias proporcionais à temperatura absoluta. Em Celsius, uma fonte a 0 °C daria divisão por zero ou rendimento negativo — resultados sem sentido.",
+  "alternativas": [
+   {
+    "t": "Celsius, porque é a escala usada no Brasil.",
+    "ok": false,
+    "porque": "Em Celsius a razão deixa de fazer sentido físico: 0 °C não é ausência de agitação, então a proporcionalidade quebra."
+   },
+   {
+    "t": "Fahrenheit, porque tem mais precisão.",
+    "ok": false,
+    "porque": "Fahrenheit também não é absoluta (tem valores negativos). Precisão não resolve o problema conceitual."
+   },
+   {
+    "t": "Kelvin, a escala absoluta.",
+    "ok": true,
+    "porque": "Só em kelvin a temperatura é proporcional à energia cinética média das moléculas. Converta sempre: T(K) = T(°C) + 273."
+   },
+   {
+    "t": "Qualquer escala, desde que as duas estejam na mesma.",
+    "ok": false,
+    "porque": "É um erro comum, mas a razão T_fria/T_quente só é válida em escala absoluta. Em Celsius o resultado numérico sai errado."
+   },
+   {
+    "t": "Joule, convertendo a temperatura em energia.",
+    "ok": false,
+    "porque": "Joule mede energia, não temperatura. A conversão entre as duas envolve a constante de Boltzmann, fora do escopo aqui."
+   }
+  ],
+  "licao": "temperatura-absoluta"
+ },
+ {
+  "tema": "Temperatura absoluta",
+  "licao": "temperatura-absoluta",
+  "enunciado": "Uma máquina de Carnot opera entre fontes a 327 °C e 27 °C. Qual o seu rendimento máximo?",
+  "conceito": "Converta primeiro: 327 °C = 600 K e 27 °C = 300 K. Então η = 1 − 300/600 = 0,5 = <b>50%</b>. Usar Celsius direto dá resultados sem sentido. 🧠 Bizu: antes de qualquer razão de temperaturas, some 273.",
+  "alternativas": [
+   {
+    "t": "50%",
+    "ok": true,
+    "porque": "T quente = 327 + 273 = 600 K; T fria = 27 + 273 = 300 K; η = 1 − 300/600 = 0,5."
+   },
+   {
+    "t": "92%",
+    "ok": false,
+    "porque": "Sairia de usar Celsius direto: 1 − 27/327 ≈ 0,92. A fórmula de Carnot exige kelvin nas duas fontes."
+   },
+   {
+    "t": "8%",
+    "ok": false,
+    "porque": "Sairia de converter só a fonte fria, ou de usar 27/327: erro de escala. Converta as duas para kelvin."
+   },
+   {
+    "t": "95%",
+    "ok": false,
+    "porque": "Sairia de converter só a fonte quente (600 K) e deixar a fria em 27: mistura de escalas."
+   },
+   {
+    "t": "100%",
+    "ok": false,
+    "porque": "Só seria possível com fonte fria no zero absoluto (0 K), inatingível. O rendimento de Carnot é sempre menor que 100%."
+   }
+  ]
+ },
+ {
+  "tema": "Refrigeradores",
+  "enunciado": "Um refrigerador funciona:",
+  "conceito": "Ele faz o caminho contrário ao natural: retira calor da fonte fria (dentro da geladeira) e o descarrega na fonte quente (atrás da geladeira, aquela grade quente). Como isso não acontece espontaneamente, é preciso <b>fornecer trabalho</b> — é o compressor.",
+  "alternativas": [
+   {
+    "t": "Retirando calor da fonte fria e entregando-o à fonte quente, às custas de trabalho recebido.",
+    "ok": true,
+    "porque": "Exatamente. O calor vai do frio para o quente, mas só porque um trabalho externo (compressor) é realizado. É o processo inverso da máquina térmica."
+   },
+   {
+    "t": "Convertendo calor da fonte quente em trabalho, como qualquer máquina térmica.",
+    "ok": false,
+    "porque": "Essa é a máquina térmica. O refrigerador opera no sentido inverso: consome trabalho para mover calor."
+   },
+   {
+    "t": "Retirando calor da fonte fria sem consumir energia.",
+    "ok": false,
+    "porque": "Violaria a 2ª lei. Transferir calor do frio para o quente espontaneamente é impossível — é justamente por isso que a geladeira tem motor."
+   },
+   {
+    "t": "Produzindo frio a partir do nada, criando energia negativa.",
+    "ok": false,
+    "porque": "Frio não é uma substância, é ausência de agitação térmica. O refrigerador apenas <b>transporta</b> calor de um lugar para outro."
+   },
+   {
+    "t": "Aumentando o rendimento acima de 100% por meio do congelamento.",
+    "ok": false,
+    "porque": "Nenhum dispositivo supera 100% de rendimento. Na geladeira mede-se o coeficiente de desempenho, que não é rendimento no sentido da máquina térmica."
+   }
+  ],
+  "licao": "refrigeradores"
+ },
+ {
+  "tema": "Refrigeradores",
+  "enunciado": "A eficiência (coeficiente de desempenho) de um refrigerador é calculada por:",
+  "estrutura": "ε = Q_fria / W\n\nQ_fria = calor retirado do interior · W = trabalho do compressor",
+  "conceito": "O objetivo do refrigerador não é produzir trabalho, é <b>retirar calor</b> do ambiente frio. Por isso a conta se inverte em relação ao rendimento: o que se quer (calor removido) vai no numerador, e o que se gasta (trabalho) vai no denominador.",
+  "alternativas": [
+   {
+    "t": "ε = W / Q_fria",
+    "ok": false,
+    "porque": "Inverte a razão. Como o trabalho é menor que o calor removido, isso daria eficiência menor que 1 — e a geladeira teria desempenho pior que o de uma máquina comum."
+   },
+   {
+    "t": "ε = Q_fria / W",
+    "ok": true,
+    "porque": "É o objetivo dividido pelo custo. Uma geladeira que retira 400 J do interior gastando 100 J de trabalho tem ε = 4."
+   },
+   {
+    "t": "ε = Q_quente / Q_fria",
+    "ok": false,
+    "porque": "Essa razão não inclui o trabalho, que é justamente o custo do processo. Não mede desempenho."
+   },
+   {
+    "t": "ε = 1 − Q_fria/Q_quente",
+    "ok": false,
+    "porque": "Essa é a forma do rendimento de uma máquina térmica de Carnot, não do refrigerador."
+   },
+   {
+    "t": "ε = W · Q_fria",
+    "ok": false,
+    "porque": "Produto de energias não é adimensional e não representa eficiência."
+   }
+  ],
+  "licao": "refrigeradores"
+ },
+ {
+  "tema": "Refrigeradores",
+  "enunciado": "Uma geladeira retira 400 J de calor do seu interior consumindo 100 J de trabalho do compressor. Qual é o seu coeficiente de desempenho?",
+  "estrutura": "ε = Q_fria / W = 400 / 100",
+  "conceito": "Basta dividir o calor removido pelo trabalho gasto. Note que esse número <b>pode</b> ser maior que 1 — e isso não viola a 2ª lei, porque ele não mede conversão de calor em trabalho, mas transporte de calor.",
+  "alternativas": [
+   {
+    "t": "0,25",
+    "ok": false,
+    "porque": "Sairia de 100/400, invertendo a razão. O trabalho é o custo, então vai no denominador."
+   },
+   {
+    "t": "4",
+    "ok": true,
+    "porque": "ε = 400/100 = 4. Significa que, para cada joule de trabalho, a geladeira move 4 joules de calor do interior para fora."
+   },
+   {
+    "t": "5",
+    "ok": false,
+    "porque": "Sairia de (400+100)/100, somando o trabalho ao calor removido. O calor descarregado na fonte quente é 500 J, mas a eficiência usa só o calor da fonte fria."
+   },
+   {
+    "t": "75%",
+    "ok": false,
+    "porque": "Sairia de 300/400, usando uma diferença que não existe no problema. E eficiência de refrigerador não é percentual."
+   },
+   {
+    "t": "Impossível calcular sem a temperatura.",
+    "ok": false,
+    "porque": "Com Q_fria e W já é possível. A temperatura só seria necessária para o caso teórico de Carnot."
+   }
+  ],
+  "licao": "refrigeradores"
+ },
+ {
+  "tema": "Refrigeradores",
+  "licao": "refrigeradores",
+  "enunciado": "Uma geladeira retira 300 J do seu interior e recebe 100 J de trabalho do compressor. Que quantidade de calor ela despeja na cozinha (fonte quente)?",
+  "conceito": "A fonte quente recebe o calor retirado do interior <b>mais</b> o trabalho do compressor: Q_quente = Q_fria + W = 300 + 100 = 400 J. É por isso que a grade atrás da geladeira esquenta. 🧠 Bizu: o que foi retirado + o que foi gasto.",
+  "alternativas": [
+   {
+    "t": "400 J",
+    "ok": true,
+    "porque": "Q_quente = Q_fria + W = 300 + 100 = 400 J. Conservação de energia."
+   },
+   {
+    "t": "200 J",
+    "ok": false,
+    "porque": "Sairia de subtrair (300 − 100). Aqui o trabalho entra somando, porque é energia fornecida ao sistema."
+   },
+   {
+    "t": "300 J",
+    "ok": false,
+    "porque": "É só o calor retirado do interior; falta somar o trabalho do compressor."
+   },
+   {
+    "t": "100 J",
+    "ok": false,
+    "porque": "É o trabalho do compressor, não o calor despejado na fonte quente."
+   },
+   {
+    "t": "3 J",
+    "ok": false,
+    "porque": "Sairia de dividir 300 por 100 (que seria o coeficiente de desempenho), e não uma quantidade de calor."
+   }
+  ]
+ },
+ {
+  "tema": "Refrigeradores",
+  "licao": "refrigeradores",
+  "enunciado": "Qual dos aparelhos abaixo funciona como refrigerador, isto é, realiza trabalho para retirar calor de uma fonte fria?",
+  "conceito": "Geladeira e ar-condicionado são os exemplos citados em aula: o compressor gasta trabalho para tirar calor do ambiente frio e jogá-lo no quente. Locomotiva, motor e usina são <b>máquinas térmicas</b> (calor → trabalho). 🧠 Bizu: tira calor do frio = refrigerador.",
+  "alternativas": [
+   {
+    "t": "Ar-condicionado.",
+    "ok": true,
+    "porque": "Retira calor do ambiente interno e o joga para fora, às custas do trabalho do compressor."
+   },
+   {
+    "t": "Locomotiva a vapor.",
+    "ok": false,
+    "porque": "É uma máquina térmica: converte calor em trabalho, no sentido inverso ao do refrigerador."
+   },
+   {
+    "t": "Motor de combustão de um carro.",
+    "ok": false,
+    "porque": "Também é máquina térmica (calor da queima → trabalho)."
+   },
+   {
+    "t": "Usina termoelétrica.",
+    "ok": false,
+    "porque": "É máquina térmica: o calor da queima vira trabalho na turbina."
+   },
+   {
+    "t": "Lâmpada incandescente.",
+    "ok": false,
+    "porque": "Converte eletricidade em luz e calor; não move calor do frio para o quente."
+   }
+  ]
+ },
+ {
+  "tema": "Aplicação real",
+  "enunciado": "Numa locomotiva a vapor, qual é a sequência correta de transformações de energia?",
+  "conceito": "É o exemplo central da aula: queima do carvão libera calor → aquece a água e produz vapor → o vapor se expande e empurra o pistão → o pistão, ligado às bielas, gira a roda. Calor → trabalho mecânico → movimento.",
+  "alternativas": [
+   {
+    "t": "Energia elétrica → energia luminosa → movimento.",
+    "ok": false,
+    "porque": "Não há eletricidade no circuito da locomotiva a vapor. Trens elétricos são outro tipo de máquina."
+   },
+   {
+    "t": "Energia química do carvão → calor → expansão do vapor → movimento do pistão e das rodas.",
+    "ok": true,
+    "porque": "Essa é a sequência completa. O carvão é a fonte quente; o vapor é a substância de trabalho; o pistão converte expansão em rotação."
+   },
+   {
+    "t": "Calor → energia nuclear → movimento.",
+    "ok": false,
+    "porque": "Inverte a ordem e introduz um processo que não existe na locomotiva. Usinas nucleares também geram calor, mas por fissão."
+   },
+   {
+    "t": "Movimento → calor → energia química.",
+    "ok": false,
+    "porque": "Essa é a ordem inversa (frenagem regenerativa, por exemplo). Na locomotiva o objetivo é calor → movimento."
+   },
+   {
+    "t": "Energia solar → calor → vapor.",
+    "ok": false,
+    "porque": "A fonte é a queima de carvão, não a radiação solar."
+   }
+  ],
+  "licao": "maquinas-termicas"
+ },
+ {
+  "tema": "Aplicação real",
+  "enunciado": "Por que as máquinas térmicas exigem grande quantidade de combustível para produzir trabalho útil?",
+  "conceito": "Como o rendimento real é baixo (motores a gasolina em torno de 20% a 25%, diesel de 30% a 35%), a maior parte do calor vai embora pela fonte fria. Foi por isso que em aula a energia térmica foi chamada de \"o lixo das energias\": abundante, mas difícil de aproveitar.",
+  "alternativas": [
+   {
+    "t": "Porque o combustível tem baixo poder calorífico e não queima.",
+    "ok": false,
+    "porque": "O combustível queima muito bem. O problema não é a quantidade de energia liberada, e sim a fração que se consegue converter em trabalho."
+   },
+   {
+    "t": "Porque grande parte do calor é rejeitada para a fonte fria, e o rendimento real é baixo.",
+    "ok": true,
+    "porque": "É a consequência direta da 2ª lei. Se o rendimento é 30%, 70% do calor vai para o ambiente — daí a necessidade de muito combustível."
+   },
+   {
+    "t": "Porque as máquinas térmicas violam a conservação de energia.",
+    "ok": false,
+    "porque": "Nenhuma máquina viola a 1ª lei. A energia é conservada; o que se perde é <b>qualidade</b>, não quantidade."
+   },
+   {
+    "t": "Porque o vapor não consegue empurrar pistões.",
+    "ok": false,
+    "porque": "Consegue — é exatamente assim que a locomotiva funciona. O limite está na termodinâmica, não na mecânica do pistão."
+   },
+   {
+    "t": "Porque o atrito consome toda a energia.",
+    "ok": false,
+    "porque": "O atrito contribui, mas é pequeno comparado à rejeição de calor pela fonte fria, que é obrigatória pela 2ª lei."
+   }
+  ],
+  "licao": "maquinas-termicas"
+ },
+ {
+  "tema": "Aplicação real",
+  "licao": "maquinas-termicas",
+  "enunciado": "Sobre as máquinas a vapor da Revolução Industrial, qual afirmação reflete o que foi discutido em aula?",
+  "conceito": "A vantagem: gerar movimento a partir do calor. A desvantagem: queimar muito carvão e emitir muita fumaça e CO₂ (como na Londres de então, de céu sempre nublado). Toda evolução tem prós e contras. 🧠 Bizu: ganho de movimento, custo de poluição.",
+  "alternativas": [
+   {
+    "t": "Permitiram gerar movimento a partir do calor, mas queimavam muito carvão e causavam muita poluição.",
+    "ok": true,
+    "porque": "É o balanço feito em aula: vantagem (calor → movimento) e desvantagem (poluição e baixo aproveitamento)."
+   },
+   {
+    "t": "Eliminaram a poluição das cidades industriais.",
+    "ok": false,
+    "porque": "Foi o contrário: as cidades ficaram carregadas de fumaça pela queima de carvão."
+   },
+   {
+    "t": "Funcionavam sem fonte quente, só com a força das rodas.",
+    "ok": false,
+    "porque": "Sem a queima do combustível não haveria vapor nem movimento."
+   },
+   {
+    "t": "Aproveitavam 100% da energia do carvão.",
+    "ok": false,
+    "porque": "Nenhuma máquina térmica aproveita 100%: parte do calor sempre é rejeitada."
+   },
+   {
+    "t": "Eram movidas por energia solar.",
+    "ok": false,
+    "porque": "A fonte de calor era a queima do carvão, não o sol."
+   }
+  ]
+ }
 ];
 
 /* ============================================================
@@ -892,397 +2000,1007 @@ const QUESTIONS = [
    (ou quando quer entender melhor) e volta na mesma posicao.
    ============================================================ */
 const LICOES = {
-
-  "maquinas-termicas": {
-    titulo: "O que é uma máquina térmica",
-    resumo: "Um dispositivo que pega calor de uma fonte quente e devolve só uma parte dele como trabalho. O resto é jogado fora — e isso não é defeito de projeto, é lei da Física.",
-    blocos: [
-      {t:"h", v:"A ideia central"},
-      {t:"p", v:"Toda máquina térmica tem três personagens: uma <b>fonte quente</b> (a queima do carvão, a explosão da gasolina, o reator nuclear), uma <b>substância de trabalho</b> (o vapor d'água, os gases da combustão) e uma <b>fonte fria</b> (o ar atmosférico, a água do rio, o ambiente)."},
-      {t:"p", v:"A fonte quente fornece calor Q₁. A substância de trabalho se expande e empurra algo (o pistão). Uma parte do calor vira trabalho W. O que sobra, Q₂, é rejeitado para a fonte fria."},
-      {t:"formula", v:"Q₁ = W + Q₂", leg:"Energia que entra = trabalho útil + energia desperdiçada"},
-      {t:"h", v:"Por que \"parcialmente\""},
-      {t:"p", v:"A palavra <b>parcialmente</b> é o coração da definição. Se uma máquina convertesse todo o calor em trabalho, ela teria rendimento de 100% — e a Segunda Lei da Termodinâmica proíbe isso. Sempre existe Q₂."},
-      {t:"destaque", v:"Nenhuma máquina térmica, nem a mais perfeita já construída, aproveita todo o calor que recebe."},
-      {t:"h", v:"Exemplos"},
-      {t:"lista", v:[
-        "Locomotiva a vapor — queima carvão, aquece água, o vapor empurra o pistão.",
-        "Motor de combustão interna — a explosão da gasolina empurra o pistão.",
-        "Usina nuclear — a fissão aquece água, o vapor gira a turbina.",
-        "Usina termoelétrica — queima gás ou carvão para gerar vapor."
-      ]},
-      {t:"p", v:"Repare que todas fazem o mesmo caminho: <b>calor → trabalho</b>. A diferença é só o combustível."},
-      {t:"h", v:"Cuidado para não confundir"},
-      {t:"p", v:"O <b>refrigerador</b> faz o caminho inverso: gasta trabalho para mover calor do frio para o quente. Ele não é uma máquina térmica no sentido de \"produzir trabalho\", é o contrário disso."},
-      {t:"p", v:"E uma <b>usina hidrelétrica</b> também não é máquina térmica: ela converte energia potencial da água em trabalho, sem passar por calor."}
-    ],
-    erros: [
-      "Achar que máquina térmica é qualquer máquina — motor elétrico e hidrelétrica não entram.",
-      "Esquecer a fonte fria: sem ela não existe ciclo, e é ela que \"carrega\" o Q₂."
+ "maquinas-termicas": {
+  "titulo": "O que é uma máquina térmica",
+  "resumo": "Um dispositivo que pega calor de uma fonte quente e devolve só uma parte dele como trabalho. O resto é jogado fora — e isso não é defeito de projeto, é lei da Física.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "A ideia central"
+   },
+   {
+    "t": "p",
+    "v": "Toda máquina térmica tem três personagens: uma <b>fonte quente</b> (a queima do carvão, a explosão da gasolina, o reator nuclear), uma <b>substância de trabalho</b> (o vapor d'água, os gases da combustão) e uma <b>fonte fria</b> (o ar atmosférico, a água do rio, o ambiente)."
+   },
+   {
+    "t": "p",
+    "v": "A fonte quente fornece calor Q₁. A substância de trabalho se expande e empurra algo (o pistão). Uma parte do calor vira trabalho W. O que sobra, Q₂, é rejeitado para a fonte fria."
+   },
+   {
+    "t": "formula",
+    "v": "Q₁ = W + Q₂",
+    "leg": "Energia que entra = trabalho útil + energia desperdiçada"
+   },
+   {
+    "t": "h",
+    "v": "Por que \"parcialmente\""
+   },
+   {
+    "t": "p",
+    "v": "A palavra <b>parcialmente</b> é o coração da definição. Se uma máquina convertesse todo o calor em trabalho, ela teria rendimento de 100% — e a Segunda Lei da Termodinâmica proíbe isso. Sempre existe Q₂."
+   },
+   {
+    "t": "destaque",
+    "v": "Nenhuma máquina térmica, nem a mais perfeita já construída, aproveita todo o calor que recebe."
+   },
+   {
+    "t": "h",
+    "v": "Exemplos"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "Locomotiva a vapor — queima carvão, aquece água, o vapor empurra o pistão.",
+     "Motor de combustão interna — a explosão da gasolina empurra o pistão.",
+     "Usina nuclear — a fissão aquece água, o vapor gira a turbina.",
+     "Usina termoelétrica — queima gás ou carvão para gerar vapor."
     ]
-  },
-
-  "sistema": {
-    titulo: "Sistema, vizinhança e fronteira",
-    resumo: "Antes de calcular qualquer coisa, você escolhe o que está analisando. O que ficou dentro do recorte é o sistema; o resto é vizinhança.",
-    blocos: [
-      {t:"h", v:"A definição"},
-      {t:"p", v:"Um <b>sistema termodinâmico</b> é uma região do espaço delimitada por paredes ou membranas, separada da vizinhança, que você escolheu estudar."},
-      {t:"lista", v:[
-        "<b>Sistema</b> — o gás dentro do cilindro, por exemplo.",
-        "<b>Fronteira</b> — a parede do cilindro e a face do pistão. É por onde calor e trabalho atravessam.",
-        "<b>Vizinhança</b> — tudo o que está fora: o ar da sala, o operador, o chão."
-      ]},
-      {t:"formula", v:"Universo = Sistema + Vizinhança", leg:"Se você trata tudo como sistema, não sobra ninguém para trocar calor com ele"},
-      {t:"h", v:"Por que isso importa"},
-      {t:"p", v:"O sinal do calor e do trabalho depende de onde você colocou a fronteira. Se o gás é o sistema e ele empurra o pistão, o trabalho é realizado <b>pelo</b> sistema (positivo, na convenção da aula). Se você tivesse escolhido o pistão como sistema, o sinal se inverteria."},
-      {t:"destaque", v:"Escolha o sistema primeiro. Quase todo erro de sinal nasce de não saber quem é o sistema."},
-      {t:"h", v:"Tipos de sistema"},
-      {t:"lista", v:[
-        "<b>Aberto</b> — troca massa e energia (um copo de água quente evaporando).",
-        "<b>Fechado</b> — troca energia, mas não massa (o gás dentro do cilindro vedado).",
-        "<b>Isolado</b> — não troca nem massa nem energia (a garrafa térmica ideal)."
-      ]}
-    ],
-    erros: [
-      "Confundir o combustível com o sistema. O sistema é a substância de trabalho (o gás/vapor), não o carvão.",
-      "Achar que sistema fechado é o mesmo que isolado: fechado ainda pode trocar calor."
+   },
+   {
+    "t": "p",
+    "v": "Repare que todas fazem o mesmo caminho: <b>calor → trabalho</b>. A diferença é só o combustível."
+   },
+   {
+    "t": "h",
+    "v": "Cuidado para não confundir"
+   },
+   {
+    "t": "p",
+    "v": "O <b>refrigerador</b> faz o caminho inverso: gasta trabalho para mover calor do frio para o quente. Ele não é uma máquina térmica no sentido de \"produzir trabalho\", é o contrário disso."
+   },
+   {
+    "t": "p",
+    "v": "E uma <b>usina hidrelétrica</b> também não é máquina térmica: ela converte energia potencial da água em trabalho, sem passar por calor."
+   },
+   {
+    "t": "h",
+    "v": "Vantagens e desvantagens (Revolução Industrial)"
+   },
+   {
+    "t": "p",
+    "v": "Na época das primeiras máquinas a vapor (1800, Revolução Industrial), a grande <b>vantagem</b> foi gerar movimento a partir do calor. A <b>desvantagem</b>: era preciso queimar quilos e quilos de carvão, e a fumaça e o gás carbônico deixavam cidades como Londres cobertas de nuvens."
+   },
+   {
+    "t": "destaque",
+    "v": "Toda evolução vem com prós e contras. A energia térmica é difícil de aproveitar: por isso o professor a chamou de \"o lixo das energias\"."
+   }
+  ],
+  "erros": [
+   "Achar que máquina térmica é qualquer máquina — motor elétrico e hidrelétrica não entram.",
+   "Esquecer a fonte fria: sem ela não existe ciclo, e é ela que \"carrega\" o Q₂."
+  ]
+ },
+ "sistema": {
+  "titulo": "Sistema, vizinhança e fronteira",
+  "resumo": "Antes de calcular qualquer coisa, você escolhe o que está analisando. O que ficou dentro do recorte é o sistema; o resto é vizinhança.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "A definição"
+   },
+   {
+    "t": "p",
+    "v": "Um <b>sistema termodinâmico</b> é uma região do espaço delimitada por paredes ou membranas, separada da vizinhança, que você escolheu estudar."
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>Sistema</b> — o gás dentro do cilindro, por exemplo.",
+     "<b>Fronteira</b> — a parede do cilindro e a face do pistão. É por onde calor e trabalho atravessam.",
+     "<b>Vizinhança</b> — tudo o que está fora: o ar da sala, o operador, o chão."
     ]
-  },
-
-  "parametros": {
-    titulo: "Os três parâmetros de estado",
-    resumo: "Um gás é um caos de moléculas impossível de acompanhar uma a uma. Em vez disso, medimos três grandezas macroscópicas: pressão, volume e temperatura.",
-    blocos: [
-      {t:"h", v:"O problema"},
-      {t:"p", v:"Um mol de gás tem cerca de 6×10²³ moléculas, cada uma com sua velocidade e direção. Acompanhar isso é inviável. A Termodinâmica contorna o problema descrevendo o gás por três números que resumem o conjunto."},
-      {t:"formula", v:"P · V = n · R · T", leg:"Equação de Clapeyron — liga os três parâmetros de estado"},
-      {t:"h", v:"O que cada um significa"},
-      {t:"lista", v:[
-        "<b>Pressão (P)</b> — resultado das colisões das moléculas contra as paredes. Em pascal (Pa) ou atm.",
-        "<b>Volume (V)</b> — espaço ocupado pelo gás, igual ao volume interno do recipiente. Em m³ ou litro.",
-        "<b>Temperatura (T)</b> — mede o grau de agitação das moléculas. Em kelvin, sempre que houver fórmula."
-      ]},
-      {t:"h", v:"Estado x processo"},
-      {t:"p", v:"Um <b>estado</b> é um conjunto (P, V, T) num instante. Um <b>processo</b> é a passagem de um estado a outro. Quando dizemos \"transformação isotérmica\", estamos dizendo qual parâmetro ficou fixo durante o processo."},
-      {t:"destaque", v:"Temperatura mede agitação, não \"quanto calor tem\". Um objeto pode ter muita energia interna e temperatura baixa se for enorme."},
-      {t:"h", v:"As quatro transformações e o parâmetro fixo"},
-      {t:"lista", v:[
-        "<b>Isotérmica</b> — temperatura constante.",
-        "<b>Isobárica</b> — pressão constante.",
-        "<b>Isovolumétrica</b> (ou isocórica) — volume constante.",
-        "<b>Adiabática</b> — nenhuma troca de calor (Q = 0)."
-      ]},
-      {t:"p", v:"Note que adiabática não é \"parâmetro constante\": é ausência de troca de calor. É uma categoria diferente das outras três."}
-    ],
-    erros: [
-      "Usar graus Celsius nas fórmulas. Toda equação da termodinâmica com T exige kelvin.",
-      "Achar que adiabática significa temperatura constante — não significa."
+   },
+   {
+    "t": "formula",
+    "v": "Universo = Sistema + Vizinhança",
+    "leg": "Se você trata tudo como sistema, não sobra ninguém para trocar calor com ele"
+   },
+   {
+    "t": "h",
+    "v": "Por que isso importa"
+   },
+   {
+    "t": "p",
+    "v": "O sinal do calor e do trabalho depende de onde você colocou a fronteira. Se o gás é o sistema e ele empurra o pistão, o trabalho é realizado <b>pelo</b> sistema (positivo, na convenção da aula). Se você tivesse escolhido o pistão como sistema, o sinal se inverteria."
+   },
+   {
+    "t": "destaque",
+    "v": "Escolha o sistema primeiro. Quase todo erro de sinal nasce de não saber quem é o sistema."
+   },
+   {
+    "t": "h",
+    "v": "Tipos de sistema"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>Aberto</b> — troca massa e energia (um copo de água quente evaporando).",
+     "<b>Fechado</b> — troca energia, mas não massa (o gás dentro do cilindro vedado).",
+     "<b>Isolado</b> — não troca nem massa nem energia (a garrafa térmica ideal)."
     ]
-  },
-
-  "trabalho": {
-    titulo: "Trabalho de um gás: de onde vem W = P·ΔV",
-    resumo: "Não é fórmula para decorar. Ela sai de W = F·d, com dois passos de álgebra. Se você entender a dedução, nunca mais erra o sinal.",
-    blocos: [
-      {t:"h", v:"Passo 1 — o trabalho mecânico"},
-      {t:"p", v:"Trabalho é força vezes deslocamento. Se o gás empurra o pistão por uma altura h:"},
-      {t:"formula", v:"W = F · h"},
-      {t:"h", v:"Passo 2 — trocar força por pressão"},
-      {t:"p", v:"Pressão é força dividida por área, então força é pressão vezes área:"},
-      {t:"formula", v:"P = F / A    ⟹    F = P · A"},
-      {t:"h", v:"Passo 3 — juntar tudo"},
-      {t:"p", v:"Substituindo F na primeira equação:"},
-      {t:"formula", v:"W = P · A · h"},
-      {t:"p", v:"E aqui está o truque: <b>área da base vezes altura</b> é o volume de um cilindro. Então A·h é a variação de volume do gás:"},
-      {t:"formula", v:"A · h = ΔV    ⟹    W = P · ΔV", leg:"Válida quando a pressão é constante"},
-      {t:"h", v:"O sinal — a parte que mais cai em prova"},
-      {t:"lista", v:[
-        "<b>Expansão</b> (volume aumenta, ΔV > 0) → W positivo. O gás produz o movimento.",
-        "<b>Compressão</b> (volume diminui, ΔV < 0) → W negativo. Alguém empurra o gás.",
-        "<b>Volume constante</b> (ΔV = 0) → W = 0. Sem deslocamento, sem trabalho."
-      ]},
-      {t:"destaque", v:"Pense em quem faz o esforço: se o gás empurra, trabalho positivo; se empurram o gás, negativo."},
-      {t:"h", v:"E no gráfico P × V?"},
-      {t:"p", v:"O trabalho é a <b>área sob a curva</b> do processo. Numa expansão (curva indo para a direita) a área conta positiva; numa compressão, negativa. Num ciclo fechado, o trabalho líquido é a área interna do ciclo."}
-    ],
-    erros: [
-      "Trocar o sinal: expansão é positivo, compressão é negativo. Não é o contrário.",
-      "Usar W = P·ΔV numa transformação em que a pressão varia — ali é preciso calcular área no gráfico.",
-      "Esquecer de converter litro para m³ e atm para Pa nas contas em joule."
+   },
+   {
+    "t": "h",
+    "v": "Equilíbrio térmico e a lei zero"
+   },
+   {
+    "t": "p",
+    "v": "Quando dois corpos em contato têm temperaturas diferentes, o calor passa <b>espontaneamente</b> do mais quente para o mais frio, até as temperaturas se igualarem. Esse estado de temperaturas iguais é o <b>equilíbrio térmico</b>. É a ideia da lei zero da Termodinâmica."
+   },
+   {
+    "t": "destaque",
+    "v": "Calor vai do corpo mais quente para o mais frio. Nunca o contrário, a não ser que alguém faça trabalho (geladeira)."
+   }
+  ],
+  "erros": [
+   "Confundir o combustível com o sistema. O sistema é a substância de trabalho (o gás/vapor), não o carvão.",
+   "Achar que sistema fechado é o mesmo que isolado: fechado ainda pode trocar calor."
+  ]
+ },
+ "parametros": {
+  "titulo": "Os três parâmetros de estado",
+  "resumo": "Um gás é um caos de moléculas impossível de acompanhar uma a uma. Em vez disso, medimos três grandezas macroscópicas: pressão, volume e temperatura.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "O problema"
+   },
+   {
+    "t": "p",
+    "v": "Um mol de gás tem cerca de 6×10²³ moléculas, cada uma com sua velocidade e direção. Acompanhar isso é inviável. A Termodinâmica contorna o problema descrevendo o gás por três números que resumem o conjunto."
+   },
+   {
+    "t": "formula",
+    "v": "P · V = n · R · T",
+    "leg": "Equação de Clapeyron — liga os três parâmetros de estado"
+   },
+   {
+    "t": "h",
+    "v": "O que cada um significa"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>Pressão (P)</b> — resultado das colisões das moléculas contra as paredes. Em pascal (Pa) ou atm.",
+     "<b>Volume (V)</b> — espaço ocupado pelo gás, igual ao volume interno do recipiente. Em m³ ou litro.",
+     "<b>Temperatura (T)</b> — mede o grau de agitação das moléculas. Em kelvin, sempre que houver fórmula."
     ]
-  },
-
-  "energia-interna": {
-    titulo: "Energia interna: a agitação das moléculas",
-    resumo: "Energia interna é a soma das energias cinéticas de todas as moléculas. Como agitação é medida pela temperatura, só a temperatura altera a energia interna de um gás ideal.",
-    blocos: [
-      {t:"h", v:"A definição"},
-      {t:"p", v:"Cada molécula do gás se move com certa velocidade, e isso é energia cinética. A <b>energia interna (U)</b> é a soma dessa energia cinética para todas as moléculas do sistema."},
-      {t:"formula", v:"U = (3/2) · n · R · T", leg:"Para gás ideal monoatômico"},
-      {t:"h", v:"A consequência mais importante"},
-      {t:"p", v:"Olhe a fórmula: só aparece T. Não aparece pressão, não aparece volume. Isso significa que, para um gás ideal, a energia interna depende <b>exclusivamente da temperatura</b>."},
-      {t:"formula", v:"ΔT = 0    ⟹    ΔU = 0", leg:"Se a temperatura não muda, a energia interna não muda"},
-      {t:"destaque", v:"Isso explica por que a transformação isotérmica tem ΔU = 0, mesmo com o gás recebendo calor e realizando trabalho."},
-      {t:"h", v:"Para onde vai o calor na isotérmica?"},
-      {t:"p", v:"Se ΔU = 0 na 1ª lei (ΔU = Q − W), sobra Q = W. Todo o calor recebido é imediatamente convertido em trabalho. Nada fica guardado como aumento de temperatura."},
-      {t:"h", v:"E a temperatura caindo?"},
-      {t:"p", v:"Se a temperatura diminui, a agitação diminui, então a energia interna diminui: ΔU negativo. Isso acontece na expansão adiabática, em que o gás gasta energia interna para se expandir e esfria."}
-    ],
-    erros: [
-      "Achar que energia interna depende do volume. Se dependesse, a isotérmica teria ΔU ≠ 0 — e não tem.",
-      "Confundir energia interna com calor. Calor é energia <b>em trânsito</b>; energia interna é a que está guardada no gás."
+   },
+   {
+    "t": "h",
+    "v": "Estado x processo"
+   },
+   {
+    "t": "p",
+    "v": "Um <b>estado</b> é um conjunto (P, V, T) num instante. Um <b>processo</b> é a passagem de um estado a outro. Quando dizemos \"transformação isotérmica\", estamos dizendo qual parâmetro ficou fixo durante o processo."
+   },
+   {
+    "t": "destaque",
+    "v": "Temperatura mede agitação, não \"quanto calor tem\". Um objeto pode ter muita energia interna e temperatura baixa se for enorme."
+   },
+   {
+    "t": "h",
+    "v": "As quatro transformações e o parâmetro fixo"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>Isotérmica</b> — temperatura constante.",
+     "<b>Isobárica</b> — pressão constante.",
+     "<b>Isovolumétrica</b> (ou isocórica) — volume constante.",
+     "<b>Adiabática</b> — nenhuma troca de calor (Q = 0)."
     ]
-  },
-
-  "primeira-lei": {
-    titulo: "1ª Lei da Termodinâmica: o balanço de energia",
-    resumo: "Nada se cria, nada se perde. A energia que entra no gás como calor, ou sai como trabalho, ou fica guardada como energia interna.",
-    blocos: [
-      {t:"h", v:"A equação"},
-      {t:"formula", v:"ΔU = Q − W", leg:"ΔU: variação da energia interna · Q: calor recebido · W: trabalho realizado pelo gás"},
-      {t:"p", v:"Leia em voz alta: a variação da energia interna é o calor que <b>entrou</b> menos o trabalho que <b>saiu</b>. É contabilidade pura."},
-      {t:"h", v:"Tabela de sinais — decore esta, não a fórmula"},
-      {t:"lista", v:[
-        "Calor <b>recebido</b> pelo gás → Q positivo.",
-        "Calor <b>cedido</b> pelo gás → Q negativo.",
-        "Gás <b>se expande</b> (empurra o pistão) → W positivo.",
-        "Gás é <b>comprimido</b> → W negativo.",
-        "Temperatura <b>sobe</b> → ΔU positivo.",
-        "Temperatura <b>desce</b> → ΔU negativo.",
-        "Temperatura constante → ΔU = 0."
-      ]},
-      {t:"destaque", v:"Se você acertar os sinais, a conta é soma e subtração. Quase todo erro nessa matéria é erro de sinal."},
-      {t:"h", v:"Exemplo resolvido"},
-      {t:"p", v:"Um gás recebe 500 J de calor e realiza 200 J de trabalho. Quanto vale ΔU?"},
-      {t:"formula", v:"ΔU = 500 − 200 = +300 J"},
-      {t:"p", v:"A energia interna aumentou 300 J, então a temperatura subiu. Os 300 J ficaram guardados no gás."},
-      {t:"h", v:"Os quatro casos particulares"},
-      {t:"lista", v:[
-        "<b>Adiabática</b> (Q = 0): ΔU = −W. Expansão adiabática esfria, compressão adiabática esquenta.",
-        "<b>Isovolumétrica</b> (ΔV = 0, logo W = 0): ΔU = Q. Todo calor vira energia interna.",
-        "<b>Isotérmica</b> (ΔT = 0, logo ΔU = 0): Q = W. Todo calor vira trabalho.",
-        "<b>Ciclo completo</b> (volta ao estado inicial): ΔU = 0, então Q = W no ciclo inteiro."
-      ]}
-    ],
-    erros: [
-      "Somar Q e W quando a convenção manda subtrair o trabalho realizado pelo gás.",
-      "Achar que Q = 0 significa ΔU = 0. Significa apenas que a energia interna varia só pelo trabalho.",
-      "Esquecer que, num ciclo fechado, ΔU = 0 porque o estado final é igual ao inicial."
+   },
+   {
+    "t": "p",
+    "v": "Note que adiabática não é \"parâmetro constante\": é ausência de troca de calor. É uma categoria diferente das outras três."
+   }
+  ],
+  "erros": [
+   "Usar graus Celsius nas fórmulas. Toda equação da termodinâmica com T exige kelvin.",
+   "Achar que adiabática significa temperatura constante — não significa."
+  ]
+ },
+ "trabalho": {
+  "titulo": "Trabalho de um gás: de onde vem W = P·ΔV",
+  "resumo": "Não é fórmula para decorar. Ela sai de W = F·d, com dois passos de álgebra. Se você entender a dedução, nunca mais erra o sinal.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "Passo 1 — o trabalho mecânico"
+   },
+   {
+    "t": "p",
+    "v": "Trabalho é força vezes deslocamento. Se o gás empurra o pistão por uma altura h:"
+   },
+   {
+    "t": "formula",
+    "v": "W = F · h"
+   },
+   {
+    "t": "h",
+    "v": "Passo 2 — trocar força por pressão"
+   },
+   {
+    "t": "p",
+    "v": "Pressão é força dividida por área, então força é pressão vezes área:"
+   },
+   {
+    "t": "formula",
+    "v": "P = F / A    ⟹    F = P · A"
+   },
+   {
+    "t": "h",
+    "v": "Passo 3 — juntar tudo"
+   },
+   {
+    "t": "p",
+    "v": "Substituindo F na primeira equação:"
+   },
+   {
+    "t": "formula",
+    "v": "W = P · A · h"
+   },
+   {
+    "t": "p",
+    "v": "E aqui está o truque: <b>área da base vezes altura</b> é o volume de um cilindro. Então A·h é a variação de volume do gás:"
+   },
+   {
+    "t": "formula",
+    "v": "A · h = ΔV    ⟹    W = P · ΔV",
+    "leg": "Válida quando a pressão é constante"
+   },
+   {
+    "t": "h",
+    "v": "O sinal — a parte que mais cai em prova"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>Expansão</b> (volume aumenta, ΔV > 0) → W positivo. O gás produz o movimento.",
+     "<b>Compressão</b> (volume diminui, ΔV < 0) → W negativo. Alguém empurra o gás.",
+     "<b>Volume constante</b> (ΔV = 0) → W = 0. Sem deslocamento, sem trabalho."
     ]
-  },
-
-  "transformacoes": {
-    titulo: "As quatro transformações gasosas",
-    resumo: "Cada transformação tem um parâmetro fixo e uma consequência direta na 1ª lei. Saber qual termo zera resolve a maioria das questões.",
-    blocos: [
-      {t:"h", v:"Isotérmica — temperatura constante"},
-      {t:"p", v:"O gás troca calor com a fonte devagar o suficiente para a temperatura não mudar. Como U depende só de T, ΔU = 0."},
-      {t:"formula", v:"ΔU = 0    ⟹    Q = W"},
-      {t:"p", v:"Todo o calor recebido sai como trabalho. É o que acontece na expansão isotérmica do ciclo de Carnot."},
-      {t:"h", v:"Isobárica — pressão constante"},
-      {t:"p", v:"A pressão não muda, então a fórmula simples do trabalho se aplica direto."},
-      {t:"formula", v:"W = P · ΔV", leg:"A vantagem da isobárica é poder usar essa fórmula sem integrar"},
-      {t:"p", v:"Nada se anula na 1ª lei: há calor, há trabalho e a energia interna varia porque a temperatura muda."},
-      {t:"h", v:"Isovolumétrica — volume constante"},
-      {t:"p", v:"O volume não muda, então o pistão não se desloca. Sem deslocamento, não há trabalho."},
-      {t:"formula", v:"ΔV = 0    ⟹    W = 0    ⟹    ΔU = Q"},
-      {t:"p", v:"Todo o calor recebido fica no gás como energia interna: a temperatura e a pressão sobem. É o caso de aquecer uma panela de pressão fechada e rígida."},
-      {t:"h", v:"Adiabática — sem troca de calor"},
-      {t:"p", v:"Aqui não é um parâmetro que fica constante, é a <b>ausência de troca térmica</b>. O exemplo clássico é a garrafa térmica: ela impede que o calor entre ou saia."},
-      {t:"formula", v:"Q = 0    ⟹    ΔU = −W"},
-      {t:"p", v:"Se o gás expande adiabaticamente, ele realiza trabalho às custas da própria energia interna e <b>esfria</b>. Se é comprimido adiabaticamente, ganha energia interna e <b>esquenta</b> — é assim que o motor a diesel inflama o combustível sem vela."},
-      {t:"destaque", v:"A garrafa térmica é a imagem mental da adiabática. Guarde essa associação."},
-      {t:"h", v:"Resumo em uma tabela"},
-      {t:"lista", v:[
-        "Isotérmica → ΔT = 0 → ΔU = 0 → Q = W",
-        "Isobárica → P constante → W = P·ΔV",
-        "Isovolumétrica → ΔV = 0 → W = 0 → ΔU = Q",
-        "Adiabática → Q = 0 → ΔU = −W"
-      ]}
-    ],
-    erros: [
-      "Confundir adiabática com isotérmica. Não são parecidas: numa a temperatura varia muito.",
-      "Achar que na isovolumétrica o calor também é zero porque o recipiente é fechado. Fechado não é isolado.",
-      "Trocar isobárica por isovolumétrica na hora de aplicar W = P·ΔV."
+   },
+   {
+    "t": "destaque",
+    "v": "Pense em quem faz o esforço: se o gás empurra, trabalho positivo; se empurram o gás, negativo."
+   },
+   {
+    "t": "h",
+    "v": "E no gráfico P × V?"
+   },
+   {
+    "t": "p",
+    "v": "O trabalho é a <b>área sob a curva</b> do processo. Numa expansão (curva indo para a direita) a área conta positiva; numa compressão, negativa. Num ciclo fechado, o trabalho líquido é a área interna do ciclo."
+   },
+   {
+    "t": "h",
+    "v": "Por que o gás empurra o pistão?"
+   },
+   {
+    "t": "p",
+    "v": "Temperatura é o grau de agitação das moléculas. Aquecendo o gás, as moléculas se movem mais rápido e batem com mais força no pistão: a pressão cresce e o êmbolo é empurrado. Esse empurrão é o que realiza o trabalho."
+   }
+  ],
+  "erros": [
+   "Trocar o sinal: expansão é positivo, compressão é negativo. Não é o contrário.",
+   "Usar W = P·ΔV numa transformação em que a pressão varia — ali é preciso calcular área no gráfico.",
+   "Esquecer de converter litro para m³ e atm para Pa nas contas em joule."
+  ]
+ },
+ "energia-interna": {
+  "titulo": "Energia interna: a agitação das moléculas",
+  "resumo": "Energia interna é a soma das energias cinéticas de todas as moléculas. Como agitação é medida pela temperatura, só a temperatura altera a energia interna de um gás ideal.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "A definição"
+   },
+   {
+    "t": "p",
+    "v": "Cada molécula do gás se move com certa velocidade, e isso é energia cinética. A <b>energia interna (U)</b> é a soma dessa energia cinética para todas as moléculas do sistema."
+   },
+   {
+    "t": "formula",
+    "v": "U = (3/2) · n · R · T",
+    "leg": "Para gás ideal monoatômico"
+   },
+   {
+    "t": "h",
+    "v": "A consequência mais importante"
+   },
+   {
+    "t": "p",
+    "v": "Olhe a fórmula: só aparece T. Não aparece pressão, não aparece volume. Isso significa que, para um gás ideal, a energia interna depende <b>exclusivamente da temperatura</b>."
+   },
+   {
+    "t": "formula",
+    "v": "ΔT = 0    ⟹    ΔU = 0",
+    "leg": "Se a temperatura não muda, a energia interna não muda"
+   },
+   {
+    "t": "destaque",
+    "v": "Isso explica por que a transformação isotérmica tem ΔU = 0, mesmo com o gás recebendo calor e realizando trabalho."
+   },
+   {
+    "t": "h",
+    "v": "Para onde vai o calor na isotérmica?"
+   },
+   {
+    "t": "p",
+    "v": "Se ΔU = 0 na 1ª lei (ΔU = Q − W), sobra Q = W. Todo o calor recebido é imediatamente convertido em trabalho. Nada fica guardado como aumento de temperatura."
+   },
+   {
+    "t": "h",
+    "v": "E a temperatura caindo?"
+   },
+   {
+    "t": "p",
+    "v": "Se a temperatura diminui, a agitação diminui, então a energia interna diminui: ΔU negativo. Isso acontece na expansão adiabática, em que o gás gasta energia interna para se expandir e esfria."
+   },
+   {
+    "t": "h",
+    "v": "Exemplo com a fórmula de U"
+   },
+   {
+    "t": "p",
+    "v": "A fórmula U = (3/2)·n·R·T vale para o gás ideal <b>monoatômico</b> (os gases nobres, como hélio e argônio, citados em aula). Para outros gases muda o número que multiplica, mas continua aparecendo só a temperatura."
+   },
+   {
+    "t": "p",
+    "v": "Exemplo: 2 mol de gás monoatômico aquecidos de 300 K para 400 K (R ≈ 8,3 J/mol·K):"
+   },
+   {
+    "t": "formula",
+    "v": "ΔU = (3/2) · 2 · 8,3 · 100 ≈ 2 490 J"
+   },
+   {
+    "t": "p",
+    "v": "Positivo, porque a temperatura subiu."
+   }
+  ],
+  "erros": [
+   "Achar que energia interna depende do volume. Se dependesse, a isotérmica teria ΔU ≠ 0 — e não tem.",
+   "Confundir energia interna com calor. Calor é energia <b>em trânsito</b>; energia interna é a que está guardada no gás."
+  ]
+ },
+ "primeira-lei": {
+  "titulo": "1ª Lei da Termodinâmica: o balanço de energia",
+  "resumo": "Nada se cria, nada se perde. A energia que entra no gás como calor, ou sai como trabalho, ou fica guardada como energia interna.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "A equação"
+   },
+   {
+    "t": "formula",
+    "v": "ΔU = Q − W",
+    "leg": "ΔU: variação da energia interna · Q: calor recebido · W: trabalho realizado pelo gás"
+   },
+   {
+    "t": "p",
+    "v": "Leia em voz alta: a variação da energia interna é o calor que <b>entrou</b> menos o trabalho que <b>saiu</b>. É contabilidade pura."
+   },
+   {
+    "t": "h",
+    "v": "Tabela de sinais — decore esta, não a fórmula"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "Calor <b>recebido</b> pelo gás → Q positivo.",
+     "Calor <b>cedido</b> pelo gás → Q negativo.",
+     "Gás <b>se expande</b> (empurra o pistão) → W positivo.",
+     "Gás é <b>comprimido</b> → W negativo.",
+     "Temperatura <b>sobe</b> → ΔU positivo.",
+     "Temperatura <b>desce</b> → ΔU negativo.",
+     "Temperatura constante → ΔU = 0."
     ]
-  },
-
-  "segunda-lei": {
-    titulo: "2ª Lei: por que 100% é impossível",
-    resumo: "A 1ª lei diz que a energia se conserva. A 2ª lei diz que, mesmo se conservando, ela não pode ser convertida integralmente em trabalho.",
-    blocos: [
-      {t:"h", v:"O enunciado de Kelvin-Planck"},
-      {t:"p", v:"É impossível construir uma máquina térmica que, operando em ciclos, converta <b>integralmente</b> em trabalho todo o calor que recebe de uma fonte."},
-      {t:"formula", v:"η < 100%   sempre", leg:"Sempre sobra Q₂ rejeitado para a fonte fria"},
-      {t:"h", v:"O que isso significa na prática"},
-      {t:"p", v:"Não adianta caprichar no projeto, polir o pistão ou eliminar o atrito. Mesmo uma máquina termodinamicamente perfeita precisa jogar calor fora. O calor rejeitado é uma exigência da lei, não um defeito."},
-      {t:"destaque", v:"A 1ª lei proíbe criar energia. A 2ª lei proíbe usar toda a energia. São proibições diferentes."},
-      {t:"h", v:"O outro enunciado: Clausius"},
-      {t:"p", v:"É impossível transferir calor espontaneamente de um corpo frio para um corpo quente. Para fazer isso é preciso <b>fornecer trabalho</b> — é exatamente o que o compressor da geladeira faz."},
-      {t:"p", v:"Os dois enunciados são equivalentes: se um fosse violado, o outro também seria."},
-      {t:"h", v:"Onde isso aparece no seu dia a dia"},
-      {t:"lista", v:[
-        "O celular carregando esquenta: parte da energia da tomada vira calor, não carga.",
-        "O carregador fica morno pelo mesmo motivo.",
-        "O motor do carro precisa de radiador: sem jogar calor fora, ele funde.",
-        "A lâmpada incandescente esquentava mais do que iluminava."
-      ]},
-      {t:"h", v:"E a entropia?"},
-      {t:"p", v:"A 2ª lei também pode ser escrita assim: a entropia de um sistema isolado nunca diminui. Entropia é uma medida de desordem. O universo caminha para mais desordem, e é por isso que certas transformações têm sentido único."}
-    ],
-    erros: [
-      "Achar que a 2ª lei fala de conservação de energia — isso é a 1ª.",
-      "Pensar que uma máquina perfeita, sem atrito, chegaria a 100%. Não chega.",
-      "Decorar \"calor vai do frio para o quente\" sem o \"espontaneamente\". Com trabalho externo, isso acontece — é a geladeira."
+   },
+   {
+    "t": "destaque",
+    "v": "Se você acertar os sinais, a conta é soma e subtração. Quase todo erro nessa matéria é erro de sinal."
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido"
+   },
+   {
+    "t": "p",
+    "v": "Um gás recebe 500 J de calor e realiza 200 J de trabalho. Quanto vale ΔU?"
+   },
+   {
+    "t": "formula",
+    "v": "ΔU = 500 − 200 = +300 J"
+   },
+   {
+    "t": "p",
+    "v": "A energia interna aumentou 300 J, então a temperatura subiu. Os 300 J ficaram guardados no gás."
+   },
+   {
+    "t": "h",
+    "v": "Os quatro casos particulares"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>Adiabática</b> (Q = 0): ΔU = −W. Expansão adiabática esfria, compressão adiabática esquenta.",
+     "<b>Isovolumétrica</b> (ΔV = 0, logo W = 0): ΔU = Q. Todo calor vira energia interna.",
+     "<b>Isotérmica</b> (ΔT = 0, logo ΔU = 0): Q = W. Todo calor vira trabalho.",
+     "<b>Ciclo completo</b> (volta ao estado inicial): ΔU = 0, então Q = W no ciclo inteiro."
     ]
-  },
-
-  "rendimento": {
-    titulo: "Rendimento: quanto do calor virou trabalho",
-    resumo: "Rendimento é a fração da energia que entrou e virou trabalho útil. É sempre um número entre 0 e 1, sem unidade.",
-    blocos: [
-      {t:"h", v:"A definição"},
-      {t:"formula", v:"η = W / Q₁", leg:"W: trabalho realizado · Q₁: calor recebido da fonte quente"},
-      {t:"p", v:"O denominador é <b>sempre</b> o calor que entrou. Nunca o calor rejeitado, nunca a soma dos dois."},
-      {t:"h", v:"A forma equivalente"},
-      {t:"p", v:"Como a energia se conserva (Q₁ = W + Q₂), dá para escrever o rendimento só com os calores:"},
-      {t:"formula", v:"η = 1 − Q₂/Q₁", leg:"Q₂: calor rejeitado para a fonte fria"},
-      {t:"p", v:"As duas formas dão o mesmo resultado. Use a que o problema facilitar."},
-      {t:"h", v:"Por que nunca chega a 100%"},
-      {t:"p", v:"Para η = 1 seria preciso Q₂ = 0, ou seja, nenhum calor rejeitado. A 2ª lei proíbe. Por isso η está sempre entre 0 e 1."},
-      {t:"destaque", v:"η = 0,4 significa 40%. É a mesma coisa escrita de dois jeitos."},
-      {t:"h", v:"Exemplo resolvido 1 — achando o rendimento"},
-      {t:"p", v:"Uma máquina recebe 800 J e rejeita 600 J. Qual o rendimento?"},
-      {t:"p", v:"Primeiro o trabalho, pela conservação: W = 800 − 600 = 200 J. Depois a razão:"},
-      {t:"formula", v:"η = 200 / 800 = 0,25 = 25%"},
-      {t:"p", v:"Note que 600/800 = 75% é o desperdício, não o rendimento. Se a prova te oferecer 75% como alternativa, é a pegadinha."},
-      {t:"h", v:"Exemplo resolvido 2 — achando o calor"},
-      {t:"p", v:"Uma máquina de 40% de rendimento realiza 2 000 J. Quanto calor recebe?"},
-      {t:"formula", v:"Q₁ = W / η = 2000 / 0,40 = 5 000 J"},
-      {t:"p", v:"Conferindo: 40% de 5 000 é 2 000 (o trabalho) e sobram 3 000 J rejeitados."},
-      {t:"h", v:"Valores reais, para ter noção"},
-      {t:"lista", v:[
-        "Motor a gasolina (ciclo Otto): cerca de 20% a 25%.",
-        "Motor a diesel: cerca de 30% a 35%.",
-        "Usina termoelétrica a vapor: 35% a 40%.",
-        "Motor elétrico: 85% a 95% — mas ele não é máquina térmica, e é por isso que rende tanto."
-      ]}
-    ],
-    erros: [
-      "Dividir pelo calor rejeitado (Q₂) em vez do recebido (Q₁).",
-      "Inverter a fração e obter rendimento maior que 100%.",
-      "Confundir o desperdício com o rendimento: os dois somam 100%.",
-      "Somar o percentual como se fosse energia (2000 + 40% = ?). Percentual é razão."
+   }
+  ],
+  "erros": [
+   "Somar Q e W quando a convenção manda subtrair o trabalho realizado pelo gás.",
+   "Achar que Q = 0 significa ΔU = 0. Significa apenas que a energia interna varia só pelo trabalho.",
+   "Esquecer que, num ciclo fechado, ΔU = 0 porque o estado final é igual ao inicial."
+  ]
+ },
+ "transformacoes": {
+  "titulo": "As quatro transformações gasosas",
+  "resumo": "Cada transformação tem um parâmetro fixo e uma consequência direta na 1ª lei. Saber qual termo zera resolve a maioria das questões.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "Isotérmica — temperatura constante"
+   },
+   {
+    "t": "p",
+    "v": "O gás troca calor com a fonte devagar o suficiente para a temperatura não mudar. Como U depende só de T, ΔU = 0."
+   },
+   {
+    "t": "formula",
+    "v": "ΔU = 0    ⟹    Q = W"
+   },
+   {
+    "t": "p",
+    "v": "Todo o calor recebido sai como trabalho. É o que acontece na expansão isotérmica do ciclo de Carnot."
+   },
+   {
+    "t": "h",
+    "v": "Isobárica — pressão constante"
+   },
+   {
+    "t": "p",
+    "v": "A pressão não muda, então a fórmula simples do trabalho se aplica direto."
+   },
+   {
+    "t": "formula",
+    "v": "W = P · ΔV",
+    "leg": "A vantagem da isobárica é poder usar essa fórmula sem integrar"
+   },
+   {
+    "t": "p",
+    "v": "Nada se anula na 1ª lei: há calor, há trabalho e a energia interna varia porque a temperatura muda."
+   },
+   {
+    "t": "h",
+    "v": "Isovolumétrica — volume constante"
+   },
+   {
+    "t": "p",
+    "v": "O volume não muda, então o pistão não se desloca. Sem deslocamento, não há trabalho."
+   },
+   {
+    "t": "formula",
+    "v": "ΔV = 0    ⟹    W = 0    ⟹    ΔU = Q"
+   },
+   {
+    "t": "p",
+    "v": "Todo o calor recebido fica no gás como energia interna: a temperatura e a pressão sobem. É o caso de aquecer um recipiente fechado e rígido, como uma lata lacrada."
+   },
+   {
+    "t": "h",
+    "v": "Adiabática — sem troca de calor"
+   },
+   {
+    "t": "p",
+    "v": "Aqui não é um parâmetro que fica constante, é a <b>ausência de troca térmica</b>. O exemplo clássico é a garrafa térmica: ela impede que o calor entre ou saia."
+   },
+   {
+    "t": "formula",
+    "v": "Q = 0    ⟹    ΔU = −W"
+   },
+   {
+    "t": "p",
+    "v": "Se o gás expande adiabaticamente, ele realiza trabalho às custas da própria energia interna e <b>esfria</b>. Se é comprimido adiabaticamente, ganha energia interna e <b>esquenta</b> — é assim que o motor a diesel inflama o combustível sem vela."
+   },
+   {
+    "t": "destaque",
+    "v": "A garrafa térmica é a imagem mental da adiabática. Guarde essa associação."
+   },
+   {
+    "t": "h",
+    "v": "Resumo em uma tabela"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "Isotérmica → ΔT = 0 → ΔU = 0 → Q = W",
+     "Isobárica → P constante → W = P·ΔV",
+     "Isovolumétrica → ΔV = 0 → W = 0 → ΔU = Q",
+     "Adiabática → Q = 0 → ΔU = −W"
     ]
-  },
-
-  "carnot": {
-    titulo: "Ciclo de Carnot: o teto teórico",
-    resumo: "Carnot imaginou a máquina mais eficiente possível entre duas temperaturas. Ela não existe na prática — mas serve de régua para saber o quanto sua máquina real ainda pode melhorar.",
-    blocos: [
-      {t:"h", v:"As quatro etapas"},
-      {t:"p", v:"O ciclo alterna contato com as fontes e isolamento térmico, sempre de forma reversível:"},
-      {t:"lista", v:[
-        "<b>1. Expansão isotérmica</b> — em contato com a fonte quente, recebe Q₁ e realiza trabalho.",
-        "<b>2. Expansão adiabática</b> — isolado, continua expandindo e esfria até a temperatura da fonte fria.",
-        "<b>3. Compressão isotérmica</b> — em contato com a fonte fria, cede Q₂.",
-        "<b>4. Compressão adiabática</b> — isolado, é comprimido e esquenta até voltar à temperatura da fonte quente."
-      ]},
-      {t:"p", v:"São <b>duas isotérmicas e duas adiabáticas</b>, alternadas. No gráfico P × V o ciclo aparece como uma figura fechada."},
-      {t:"h", v:"O rendimento máximo"},
-      {t:"p", v:"Para o ciclo de Carnot o rendimento depende só das temperaturas absolutas das duas fontes:"},
-      {t:"formula", v:"η = 1 − T_fria / T_quente", leg:"Temperaturas obrigatoriamente em kelvin"},
-      {t:"h", v:"Exemplo resolvido"},
-      {t:"p", v:"Fonte quente a 500 K, fonte fria a 300 K:"},
-      {t:"formula", v:"η = 1 − 300/500 = 1 − 0,6 = 0,4 = 40%"},
-      {t:"p", v:"Nenhuma máquina real operando entre essas duas temperaturas pode passar de 40%."},
-      {t:"h", v:"Por que serve de referência"},
-      {t:"p", v:"Suponha que sua máquina real renda 20% nas mesmas temperaturas em que Carnot renderia 40%. Você está na metade do potencial — há muito espaço para melhorar o projeto. Se rendesse 38%, estaria quase no limite teórico e não valeria a pena investir mais."},
-      {t:"destaque", v:"Carnot não é uma meta a alcançar. É o limite que mostra o quanto ainda falta."},
-      {t:"h", v:"Por que é impraticável"},
-      {t:"p", v:"As isotérmicas reversíveis precisariam ser infinitamente lentas e as adiabáticas reversíveis infinitamente rápidas. Não dá para ter as duas coisas ao mesmo tempo numa máquina real. Por isso Carnot é teórica."},
-      {t:"h", v:"Como aumentar o rendimento real"},
-      {t:"p", v:"Pela fórmula, há dois caminhos: aumentar a temperatura da fonte quente ou diminuir a da fonte fria. Na prática, subir a temperatura de entrada é o mais usado — é por isso que motores modernos trabalham em temperaturas cada vez mais altas."}
-    ],
-    erros: [
-      "Usar graus Celsius na fórmula. Se a fonte fria estiver a 0 °C, a conta quebra.",
-      "Calcular 60% em vez de 40% — o 0,6 é a fração rejeitada.",
-      "Inverter a razão e dividir pela temperatura fria no denominador.",
-      "Achar que Carnot é uma máquina que se compra pronta. É um modelo teórico."
+   }
+  ],
+  "erros": [
+   "Confundir adiabática com isotérmica. Não são parecidas: numa a temperatura varia muito.",
+   "Achar que na isovolumétrica o calor também é zero porque o recipiente é fechado. Fechado não é isolado.",
+   "Trocar isobárica por isovolumétrica na hora de aplicar W = P·ΔV."
+  ]
+ },
+ "segunda-lei": {
+  "titulo": "2ª Lei: por que 100% é impossível",
+  "resumo": "A 1ª lei diz que a energia se conserva. A 2ª lei diz que, mesmo se conservando, ela não pode ser convertida integralmente em trabalho.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "O enunciado de Kelvin-Planck"
+   },
+   {
+    "t": "p",
+    "v": "É impossível construir uma máquina térmica que, operando em ciclos, converta <b>integralmente</b> em trabalho todo o calor que recebe de uma fonte."
+   },
+   {
+    "t": "formula",
+    "v": "η < 100%   sempre",
+    "leg": "Sempre sobra Q₂ rejeitado para a fonte fria"
+   },
+   {
+    "t": "h",
+    "v": "O que isso significa na prática"
+   },
+   {
+    "t": "p",
+    "v": "Não adianta caprichar no projeto, polir o pistão ou eliminar o atrito. Mesmo uma máquina termodinamicamente perfeita precisa jogar calor fora. O calor rejeitado é uma exigência da lei, não um defeito."
+   },
+   {
+    "t": "destaque",
+    "v": "A 1ª lei proíbe criar energia. A 2ª lei proíbe usar toda a energia. São proibições diferentes."
+   },
+   {
+    "t": "h",
+    "v": "O outro enunciado: Clausius"
+   },
+   {
+    "t": "p",
+    "v": "É impossível transferir calor espontaneamente de um corpo frio para um corpo quente. Para fazer isso é preciso <b>fornecer trabalho</b> — é exatamente o que o compressor da geladeira faz."
+   },
+   {
+    "t": "p",
+    "v": "Os dois enunciados são equivalentes: se um fosse violado, o outro também seria."
+   },
+   {
+    "t": "h",
+    "v": "Onde isso aparece no seu dia a dia"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "O celular carregando esquenta: parte da energia da tomada vira calor, não carga.",
+     "O carregador fica morno pelo mesmo motivo.",
+     "O motor do carro precisa de radiador: sem jogar calor fora, ele funde.",
+     "A lâmpada incandescente esquentava mais do que iluminava."
     ]
-  },
-
-  "refrigeradores": {
-    titulo: "Refrigeradores: o caminho inverso",
-    resumo: "A geladeira move calor do frio para o quente. Isso não acontece sozinho — é preciso pagar com trabalho, e é o compressor que faz esse serviço.",
-    blocos: [
-      {t:"h", v:"O que a geladeira faz"},
-      {t:"p", v:"Ela retira calor de dentro (fonte fria) e joga para fora (fonte quente). Aquela grade quente atrás da geladeira é a fonte quente recebendo o calor que estava dentro."},
-      {t:"formula", v:"Q_quente = Q_fria + W", leg:"O calor jogado fora é o que saiu de dentro mais o trabalho gasto"},
-      {t:"destaque", v:"Por isso a parte de trás da geladeira fica mais quente do que o calor que saiu de dentro. O compressor acrescentou energia ao sistema."},
-      {t:"h", v:"O coeficiente de desempenho"},
-      {t:"p", v:"Para o refrigerador, o \"produto\" não é trabalho, é calor removido. Então a conta se inverte:"},
-      {t:"formula", v:"ε = Q_fria / W", leg:"ε (épsilon) é o coeficiente de desempenho"},
-      {t:"p", v:"Exemplo: retira 400 J gastando 100 J de trabalho → ε = 4. Para cada joule pago, ele move 4 joules de calor."},
-      {t:"h", v:"Espere — maior que 1 não viola a 2ª lei?"},
-      {t:"p", v:"Não, e esse é o ponto que confunde. O refrigerador não está convertendo calor em trabalho, está <b>transportando</b> calor. A 2ª lei proíbe η > 1 para máquina térmica; para refrigerador, ε > 1 é normal e esperado."},
-      {t:"h", v:"De onde vem o frio"},
-      {t:"p", v:"Frio não é uma substância que se produz. É apenas ausência de agitação térmica. A geladeira não \"cria frio\": ela remove calor do interior."},
-      {t:"h", v:"Aplicações do mesmo princípio"},
-      {t:"lista", v:[
-        "<b>Geladeira e freezer</b> — removem calor do interior.",
-        "<b>Ar-condicionado</b> — remove calor do ambiente e joga para fora.",
-        "<b>Bomba de calor</b> — usa o mesmo ciclo para aquecer, invertendo o objetivo.",
-        "<b>Desumidificador</b> — condensa a umidade ao resfriar o ar."
-      ]}
-    ],
-    erros: [
-      "Achar que a geladeira produz frio do nada, sem consumir energia.",
-      "Calcular ε = W/Q_fria (invertido) e concluir que a eficiência é baixa.",
-      "Usar Q_quente no numerador em vez de Q_fria.",
-      "Pensar que ε > 1 é impossível — é justamente o normal."
+   },
+   {
+    "t": "h",
+    "v": "E a entropia?"
+   },
+   {
+    "t": "p",
+    "v": "A 2ª lei também pode ser escrita assim: a entropia de um sistema isolado nunca diminui. Entropia é uma medida de desordem. O universo caminha para mais desordem, e é por isso que certas transformações têm sentido único."
+   },
+   {
+    "t": "h",
+    "v": "Toda máquina térmica funciona assim, até as usinas"
+   },
+   {
+    "t": "p",
+    "v": "As usinas termoelétricas e as <b>usinas nucleares</b> seguem o mesmo princípio da locomotiva: fonte quente, parte do calor vira trabalho e o resto vai para a fonte fria. O que muda é só a origem do calor (carvão, gás ou fissão)."
+   }
+  ],
+  "erros": [
+   "Achar que a 2ª lei fala de conservação de energia — isso é a 1ª.",
+   "Pensar que uma máquina perfeita, sem atrito, chegaria a 100%. Não chega.",
+   "Decorar \"calor vai do frio para o quente\" sem o \"espontaneamente\". Com trabalho externo, isso acontece — é a geladeira."
+  ]
+ },
+ "rendimento": {
+  "titulo": "Rendimento: quanto do calor virou trabalho",
+  "resumo": "Rendimento é a fração da energia que entrou e virou trabalho útil. É sempre um número entre 0 e 1, sem unidade.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "A definição"
+   },
+   {
+    "t": "formula",
+    "v": "η = W / Q₁",
+    "leg": "W: trabalho realizado · Q₁: calor recebido da fonte quente"
+   },
+   {
+    "t": "p",
+    "v": "O denominador é <b>sempre</b> o calor que entrou. Nunca o calor rejeitado, nunca a soma dos dois."
+   },
+   {
+    "t": "h",
+    "v": "A forma equivalente"
+   },
+   {
+    "t": "p",
+    "v": "Como a energia se conserva (Q₁ = W + Q₂), dá para escrever o rendimento só com os calores:"
+   },
+   {
+    "t": "formula",
+    "v": "η = 1 − Q₂/Q₁",
+    "leg": "Q₂: calor rejeitado para a fonte fria"
+   },
+   {
+    "t": "p",
+    "v": "As duas formas dão o mesmo resultado. Use a que o problema facilitar."
+   },
+   {
+    "t": "h",
+    "v": "Por que nunca chega a 100%"
+   },
+   {
+    "t": "p",
+    "v": "Para η = 1 seria preciso Q₂ = 0, ou seja, nenhum calor rejeitado. A 2ª lei proíbe. Por isso η está sempre entre 0 e 1."
+   },
+   {
+    "t": "destaque",
+    "v": "η = 0,4 significa 40%. É a mesma coisa escrita de dois jeitos."
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido 1 — achando o rendimento"
+   },
+   {
+    "t": "p",
+    "v": "Uma máquina recebe 800 J e rejeita 600 J. Qual o rendimento?"
+   },
+   {
+    "t": "p",
+    "v": "Primeiro o trabalho, pela conservação: W = 800 − 600 = 200 J. Depois a razão:"
+   },
+   {
+    "t": "formula",
+    "v": "η = 200 / 800 = 0,25 = 25%"
+   },
+   {
+    "t": "p",
+    "v": "Note que 600/800 = 75% é o desperdício, não o rendimento. Se a prova te oferecer 75% como alternativa, é a pegadinha."
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido 2 — achando o calor"
+   },
+   {
+    "t": "p",
+    "v": "Uma máquina de 40% de rendimento realiza 2 000 J. Quanto calor recebe?"
+   },
+   {
+    "t": "formula",
+    "v": "Q₁ = W / η = 2000 / 0,40 = 5 000 J"
+   },
+   {
+    "t": "p",
+    "v": "Conferindo: 40% de 5 000 é 2 000 (o trabalho) e sobram 3 000 J rejeitados."
+   },
+   {
+    "t": "h",
+    "v": "Valores reais, para ter noção"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "Motor a gasolina (ciclo Otto): cerca de 20% a 25%.",
+     "Motor a diesel: cerca de 30% a 35%.",
+     "Usina termoelétrica a vapor: 35% a 40%.",
+     "Motor elétrico: 85% a 95% — mas ele não é máquina térmica, e é por isso que rende tanto."
     ]
-  },
-
-  "temperatura-absoluta": {
-    titulo: "Por que kelvin e não graus Celsius",
-    resumo: "Nas fórmulas da termodinâmica, a temperatura precisa ser proporcional à energia das moléculas. Só a escala absoluta garante isso.",
-    blocos: [
-      {t:"h", v:"A conversão"},
-      {t:"formula", v:"T(K) = T(°C) + 273", leg:"Use 273,15 se precisar de mais precisão"},
-      {t:"p", v:"Exemplos rápidos: 27 °C = 300 K. 0 °C = 273 K. −273 °C = 0 K."},
-      {t:"h", v:"O que há de especial no zero absoluto"},
-      {t:"p", v:"0 K é o ponto em que a agitação térmica é mínima. Não existe temperatura menor, porque não existe agitação menor que zero. Em Celsius, o zero é arbitrário — foi escolhido pelo ponto de fusão da água, não por um limite físico."},
-      {t:"h", v:"Por que a fórmula de Carnot exige kelvin"},
-      {t:"p", v:"O rendimento de Carnot vem de uma razão entre energias, e essas energias são proporcionais à temperatura <b>absoluta</b>. Se você usa Celsius, a proporção se rompe."},
-      {t:"p", v:"Veja o absurdo: com fonte fria a 0 °C e quente a 300 °C, a razão em Celsius daria η = 1 − 0/300 = 100%, o que é impossível. Em kelvin: η = 1 − 273/573 ≈ 52%, que faz sentido."},
-      {t:"destaque", v:"Sempre que a fórmula tiver T em uma razão, converta para kelvin antes de calcular."},
-      {t:"h", v:"Quais fórmulas exigem kelvin"},
-      {t:"lista", v:[
-        "<b>Exigem:</b> P·V = nRT, U = (3/2)nRT, η = 1 − T_f/T_q, qualquer razão de temperaturas.",
-        "<b>Não exigem:</b> Q = mcΔT (aqui aparece ΔT, e a variação é igual nas duas escalas)."
-      ]},
-      {t:"p", v:"Isso é útil: em calor sensível, tanto faz usar °C ou K, porque a diferença entre duas temperaturas é a mesma nas duas escalas."}
-    ],
-    erros: [
-      "Misturar escalas na mesma conta (uma fonte em °C e outra em K).",
-      "Esquecer de somar 273 ao converter para kelvin.",
-      "Usar °C na fórmula de Carnot e obter rendimento negativo ou acima de 100%."
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido 3 — achando o calor rejeitado"
+   },
+   {
+    "t": "p",
+    "v": "Uma máquina recebe 1 200 J e realiza 300 J. O que sobra vai para a fonte fria:"
+   },
+   {
+    "t": "formula",
+    "v": "Q₂ = Q₁ − W = 1 200 − 300 = 900 J"
+   },
+   {
+    "t": "p",
+    "v": "O rendimento dessa máquina é 300/1 200 = 25%."
+   }
+  ],
+  "erros": [
+   "Dividir pelo calor rejeitado (Q₂) em vez do recebido (Q₁).",
+   "Inverter a fração e obter rendimento maior que 100%.",
+   "Confundir o desperdício com o rendimento: os dois somam 100%.",
+   "Somar o percentual como se fosse energia (2000 + 40% = ?). Percentual é razão."
+  ]
+ },
+ "carnot": {
+  "titulo": "Ciclo de Carnot: o teto teórico",
+  "resumo": "Carnot imaginou a máquina mais eficiente possível entre duas temperaturas. Ela não existe na prática — mas serve de régua para saber o quanto sua máquina real ainda pode melhorar.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "As quatro etapas"
+   },
+   {
+    "t": "p",
+    "v": "O ciclo alterna contato com as fontes e isolamento térmico, sempre de forma reversível:"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>1. Expansão isotérmica</b> — em contato com a fonte quente, recebe Q₁ e realiza trabalho.",
+     "<b>2. Expansão adiabática</b> — isolado, continua expandindo e esfria até a temperatura da fonte fria.",
+     "<b>3. Compressão isotérmica</b> — em contato com a fonte fria, cede Q₂.",
+     "<b>4. Compressão adiabática</b> — isolado, é comprimido e esquenta até voltar à temperatura da fonte quente."
     ]
-  }
+   },
+   {
+    "t": "p",
+    "v": "São <b>duas isotérmicas e duas adiabáticas</b>, alternadas. No gráfico P × V o ciclo aparece como uma figura fechada."
+   },
+   {
+    "t": "h",
+    "v": "O rendimento máximo"
+   },
+   {
+    "t": "p",
+    "v": "Para o ciclo de Carnot o rendimento depende só das temperaturas absolutas das duas fontes:"
+   },
+   {
+    "t": "formula",
+    "v": "η = 1 − T_fria / T_quente",
+    "leg": "Temperaturas obrigatoriamente em kelvin"
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido"
+   },
+   {
+    "t": "p",
+    "v": "Fonte quente a 500 K, fonte fria a 300 K:"
+   },
+   {
+    "t": "formula",
+    "v": "η = 1 − 300/500 = 1 − 0,6 = 0,4 = 40%"
+   },
+   {
+    "t": "p",
+    "v": "Nenhuma máquina real operando entre essas duas temperaturas pode passar de 40%."
+   },
+   {
+    "t": "h",
+    "v": "Por que serve de referência"
+   },
+   {
+    "t": "p",
+    "v": "Suponha que sua máquina real renda 20% nas mesmas temperaturas em que Carnot renderia 40%. Você está na metade do potencial — há muito espaço para melhorar o projeto. Se rendesse 38%, estaria quase no limite teórico e não valeria a pena investir mais."
+   },
+   {
+    "t": "destaque",
+    "v": "Carnot não é uma meta a alcançar. É o limite que mostra o quanto ainda falta."
+   },
+   {
+    "t": "h",
+    "v": "Por que é impraticável"
+   },
+   {
+    "t": "p",
+    "v": "Para ser reversível, cada etapa teria de acontecer de forma infinitamente lenta (quase estática), com isolamento térmico perfeito nas adiabáticas e troca de calor sem diferença de temperatura nas isotérmicas. Uma máquina real precisa funcionar depressa e tem atrito e perdas. Por isso Carnot é teórica."
+   },
+   {
+    "t": "h",
+    "v": "Como aumentar o rendimento real"
+   },
+   {
+    "t": "p",
+    "v": "Pela fórmula, há dois caminhos: aumentar a temperatura da fonte quente ou diminuir a da fonte fria. Na prática, subir a temperatura de entrada é o mais usado — é por isso que motores modernos trabalham em temperaturas cada vez mais altas."
+   }
+  ],
+  "erros": [
+   "Usar graus Celsius na fórmula. Se a fonte fria estiver a 0 °C, a conta quebra.",
+   "Calcular 60% em vez de 40% — o 0,6 é a fração rejeitada.",
+   "Inverter a razão e dividir pela temperatura fria no denominador.",
+   "Achar que Carnot é uma máquina que se compra pronta. É um modelo teórico."
+  ]
+ },
+ "refrigeradores": {
+  "titulo": "Refrigeradores: o caminho inverso",
+  "resumo": "A geladeira move calor do frio para o quente. Isso não acontece sozinho — é preciso pagar com trabalho, e é o compressor que faz esse serviço.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "O que a geladeira faz"
+   },
+   {
+    "t": "p",
+    "v": "Ela retira calor de dentro (fonte fria) e joga para fora (fonte quente). Aquela grade quente atrás da geladeira é a fonte quente recebendo o calor que estava dentro."
+   },
+   {
+    "t": "formula",
+    "v": "Q_quente = Q_fria + W",
+    "leg": "O calor jogado fora é o que saiu de dentro mais o trabalho gasto"
+   },
+   {
+    "t": "destaque",
+    "v": "Por isso a parte de trás da geladeira fica mais quente do que o calor que saiu de dentro. O compressor acrescentou energia ao sistema."
+   },
+   {
+    "t": "h",
+    "v": "O coeficiente de desempenho"
+   },
+   {
+    "t": "p",
+    "v": "Para o refrigerador, o \"produto\" não é trabalho, é calor removido. Então a conta se inverte:"
+   },
+   {
+    "t": "formula",
+    "v": "ε = Q_fria / W",
+    "leg": "ε (épsilon) é o coeficiente de desempenho"
+   },
+   {
+    "t": "p",
+    "v": "Exemplo: retira 400 J gastando 100 J de trabalho → ε = 4. Para cada joule pago, ele move 4 joules de calor."
+   },
+   {
+    "t": "h",
+    "v": "Espere — maior que 1 não viola a 2ª lei?"
+   },
+   {
+    "t": "p",
+    "v": "Não, e esse é o ponto que confunde. O refrigerador não está convertendo calor em trabalho, está <b>transportando</b> calor. A 2ª lei proíbe η > 1 para máquina térmica; para refrigerador, ε > 1 é normal e esperado."
+   },
+   {
+    "t": "h",
+    "v": "De onde vem o frio"
+   },
+   {
+    "t": "p",
+    "v": "Frio não é uma substância que se produz. É apenas ausência de agitação térmica. A geladeira não \"cria frio\": ela remove calor do interior."
+   },
+   {
+    "t": "h",
+    "v": "Aplicações do mesmo princípio"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>Geladeira e freezer</b> — removem calor do interior.",
+     "<b>Ar-condicionado</b> — remove calor do ambiente e joga para fora.",
+     "<b>Bomba de calor</b> — usa o mesmo ciclo para aquecer, invertendo o objetivo.",
+     "<b>Desumidificador</b> — condensa a umidade ao resfriar o ar."
+    ]
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido — quanto calor sai pela grade"
+   },
+   {
+    "t": "p",
+    "v": "Uma geladeira retira 300 J do interior e gasta 100 J de trabalho. O calor despejado na cozinha é:"
+   },
+   {
+    "t": "formula",
+    "v": "Q_quente = Q_fria + W = 300 + 100 = 400 J"
+   },
+   {
+    "t": "p",
+    "v": "Seu coeficiente de desempenho é ε = 300/100 = 3."
+   }
+  ],
+  "erros": [
+   "Achar que a geladeira produz frio do nada, sem consumir energia.",
+   "Calcular ε = W/Q_fria (invertido) e concluir que a eficiência é baixa.",
+   "Usar Q_quente no numerador em vez de Q_fria.",
+   "Pensar que ε > 1 é impossível — é justamente o normal."
+  ]
+ },
+ "temperatura-absoluta": {
+  "titulo": "Por que kelvin e não graus Celsius",
+  "resumo": "Nas fórmulas da termodinâmica, a temperatura precisa ser proporcional à energia das moléculas. Só a escala absoluta garante isso.",
+  "blocos": [
+   {
+    "t": "h",
+    "v": "A conversão"
+   },
+   {
+    "t": "formula",
+    "v": "T(K) = T(°C) + 273",
+    "leg": "Use 273,15 se precisar de mais precisão"
+   },
+   {
+    "t": "p",
+    "v": "Exemplos rápidos: 27 °C = 300 K. 0 °C = 273 K. −273 °C = 0 K."
+   },
+   {
+    "t": "h",
+    "v": "O que há de especial no zero absoluto"
+   },
+   {
+    "t": "p",
+    "v": "0 K é o ponto em que a agitação térmica é mínima. Não existe temperatura menor, porque não existe agitação menor que zero. Em Celsius, o zero é arbitrário — foi escolhido pelo ponto de fusão da água, não por um limite físico."
+   },
+   {
+    "t": "h",
+    "v": "Por que a fórmula de Carnot exige kelvin"
+   },
+   {
+    "t": "p",
+    "v": "O rendimento de Carnot vem de uma razão entre energias, e essas energias são proporcionais à temperatura <b>absoluta</b>. Se você usa Celsius, a proporção se rompe."
+   },
+   {
+    "t": "p",
+    "v": "Veja o absurdo: com fonte fria a 0 °C e quente a 300 °C, a razão em Celsius daria η = 1 − 0/300 = 100%, o que é impossível. Em kelvin: η = 1 − 273/573 ≈ 52%, que faz sentido."
+   },
+   {
+    "t": "destaque",
+    "v": "Sempre que a fórmula tiver T em uma razão, converta para kelvin antes de calcular."
+   },
+   {
+    "t": "h",
+    "v": "Quais fórmulas exigem kelvin"
+   },
+   {
+    "t": "lista",
+    "v": [
+     "<b>Exigem:</b> P·V = nRT, U = (3/2)nRT, η = 1 − T_f/T_q, qualquer razão de temperaturas.",
+     "<b>Não exigem:</b> Q = mcΔT (aqui aparece ΔT, e a variação é igual nas duas escalas)."
+    ]
+   },
+   {
+    "t": "p",
+    "v": "Isso é útil: em calor sensível, tanto faz usar °C ou K, porque a diferença entre duas temperaturas é a mesma nas duas escalas."
+   },
+   {
+    "t": "h",
+    "v": "Exemplo resolvido — Carnot com temperaturas em Celsius"
+   },
+   {
+    "t": "p",
+    "v": "Fontes a 327 °C e 27 °C. Primeiro converta: 600 K e 300 K. Só então:"
+   },
+   {
+    "t": "formula",
+    "v": "η = 1 − 300/600 = 0,5 = 50%"
+   },
+   {
+    "t": "p",
+    "v": "Se você usasse Celsius direto (1 − 27/327), obteria cerca de 92%, um valor errado."
+   }
+  ],
+  "erros": [
+   "Misturar escalas na mesma conta (uma fonte em °C e outra em K).",
+   "Esquecer de somar 273 ao converter para kelvin.",
+   "Usar °C na fórmula de Carnot e obter rendimento negativo ou acima de 100%."
+  ]
+ }
 };
 
 // de qual aula cada questao trata (na ordem do array QUESTIONS)
-const LICAO_POR_QUESTAO = [
-  "maquinas-termicas","sistema","parametros","trabalho","trabalho","trabalho",
-  "energia-interna","energia-interna","primeira-lei","primeira-lei",
-  "transformacoes","transformacoes","transformacoes","segunda-lei",
-  "rendimento","rendimento","rendimento","carnot","carnot","carnot",
-  "refrigeradores","refrigeradores","refrigeradores","maquinas-termicas","maquinas-termicas",
-  "temperatura-absoluta","primeira-lei","primeira-lei"
-];
-QUESTIONS.forEach((q, i) => { q.licao = LICAO_POR_QUESTAO[i] || "primeira-lei"; });
+QUESTIONS.forEach(q => { q.licao = q.licao || "primeira-lei"; });
 
 
 
@@ -1294,7 +3012,8 @@ const timerEl = document.getElementById('timer');
 const logEl   = document.getElementById('log');
 const LETTERS = ['a','b','c','d','e'];
 
-const LIMITE_SEG = 50 * 60;      // 50 minutos de prova
+const SEG_POR_QUESTAO = 90;     // 1,5 minuto por questao
+const LIMITE_SEG = QUESTIONS.length * SEG_POR_QUESTAO;   // tempo total da prova
 const K_LOG    = 'simulado_fisica_log_v1';     // historico de eventos
 const K_SESSAO = 'simulado_fisica_sessao_v1';  // marcador de tentativa em andamento
 
@@ -1445,6 +3164,9 @@ function montarQuiz(){
     for (let k = 0; k < qtd; k++) pool.push(l);
   }
   pool = shuffleArr(pool);
+  // no maximo 2 respostas certas seguidas na mesma letra
+  const maiorSeq = v => { let m = 1, c = 1; for (let i = 1; i < v.length; i++) { c = v[i] === v[i - 1] ? c + 1 : 1; if (c > m) m = c; } return m; };
+  for (let t = 0; t < 2000 && maiorSeq(pool) > 2; t++) pool = shuffleArr(pool);
 
   return QUESTIONS.map((q, qi) => {
     const correta = q.alternativas.findIndex(a => a.ok);
@@ -1515,7 +3237,7 @@ function telaInicial(){
   stage.innerHTML = `
     <section class="card">
       <span class="chip">Antes de começar</span>
-      <p class="q">Simulado de Física — <strong>${QUESTIONS.length} questões</strong> de Termodinâmica, <strong>50 minutos</strong> de prova.</p>
+      <p class="q">Simulado de Física — <strong>${QUESTIONS.length} questões</strong> de Termodinâmica, <strong>${Math.round(LIMITE_SEG / 60)} minutos</strong> de prova.</p>
       <ul class="start-rules">
         <li>O cronômetro começa em <b>Iniciar simulado</b> e não pausa.</li>
         <li>Cada resposta pede <b>confirmação</b> antes de revelar o gabarito.</li>
@@ -1545,8 +3267,8 @@ function comecar(comTempo, motivo){
 
   logAdd(motivo === 'reiniciou' ? 'reiniciou' : 'iniciou',
          motivo === 'reiniciou'
-           ? `tentativa ${tentativa} — recomeçou do zero${comTempo ? ' com 50 min' : ' sem tempo'}`
-           : `tentativa ${tentativa} — ${comTempo ? '50 minutos' : 'sem tempo'}`);
+           ? `tentativa ${tentativa} — recomeçou do zero${comTempo ? ' com ' + Math.round(LIMITE_SEG / 60) + ' min' : ' sem tempo'}`
+           : `tentativa ${tentativa} — ${comTempo ? Math.round(LIMITE_SEG / 60) + ' minutos' : 'sem tempo'}`);
   marcarSessao();
   renderQuestion();
 }
@@ -1831,7 +3553,7 @@ function results(porTempo){
       </div>
       <div class="meta-row">
         <span>Tentativa: <b>${tentativa}ª</b></span>
-        <span>Tempo: <b>${fmt(segUsados)}</b>${porTempo ? ' (limite)' : ' de 50:00'}</span>
+        <span>Tempo: <b>${fmt(segUsados)}</b>${porTempo ? ' (limite)' : ' de ' + fmt(LIMITE_SEG)}</span>
         <span>Em branco: <b>${semResposta}</b></span>
         <span>Média por questão: <b>${answers.length >= 3 ? fmt(segUsados / answers.length) : '—'}</b></span>
         <span>Reinícios + saídas: <b>${rr.reinicios + rr.interrupcoes}</b></span>

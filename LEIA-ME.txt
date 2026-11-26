@@ -1,5 +1,5 @@
 ﻿SIMULADO DE FISICA - MAQUINAS TERMICAS E TERMODINAMICA
-2o ano do Ensino Medio - 28 questoes - 50 minutos
+2o ano do Ensino Medio - 48 questoes - 72 minutos (1,5 min por questao)
 ====================================================
 
 >>> JEITO MAIS FACIL <<<
@@ -11,8 +11,8 @@ clique em "Mais informacoes" e depois em "Executar assim mesmo".
 
 
 >>> O QUE TEM DENTRO <<<
-- 28 questoes de multipla escolha, com gabarito comentado
-- Cronometro de 50 minutos
+- 48 questoes de multipla escolha, com gabarito comentado
+- Cronometro de 72 minutos (1,5 minuto por questao)
 - Confirmacao antes de revelar a resposta
 - Registro de tentativas, reinicios e saidas no meio
 - 12 AULAS completas: toda resposta tem um botao
